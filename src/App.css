@@ -90,7 +90,7 @@
 
 }
 
-.buttonUnclicked:hover {
+.buttonUnclicked:hover, .buttonUnclicked:active {
  background-color: #597EF7;
  color: white;
  opacity: 0.48;

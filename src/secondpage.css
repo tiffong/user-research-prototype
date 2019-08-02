@@ -92,7 +92,7 @@
   height: 1000px;
   width: 560px;
   background-color: #D8D8D8;
-  overflow: auto;
+
 
 
 }
@@ -119,7 +119,8 @@
 
 .historytitle {
   padding-left: 10px;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: lighter;
 }
 
 .instructions {
@@ -131,10 +132,11 @@
 .button2 {
 	height: 53px;
 	width: 102px;
-  padding:20px;
-  background-color: #D8D8D8;
+  margin-top: 7px;
+  background-color: #f4f4f4;
   border-radius: 75px;
   text-align: center;
+  font-size: 14px;
 }
 
 .button2:hover {
@@ -153,7 +155,7 @@
   flex-direction:row;
   justify-content: space-between;
   padding-right:50px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 .rightside2 {

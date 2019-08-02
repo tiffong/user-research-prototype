@@ -37,7 +37,7 @@ class SecondPage extends Component {
 // sets up the posters that are displayed by putting them in an array
   componentDidMount() {
     this.setState(prevState => ({
-      parray: [...prevState.parray, ii1, ii2, ii3, ii4, ii5, ii6, ii7, ii8, ii9, y],
+      parray: [...prevState.parray, ii1, ii2, ii3, ii4, ii5, ii6, ii7, ii8, ii9, ii10],
     }))
 
 //initially set the historyarray to white spaces
