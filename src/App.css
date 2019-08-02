@@ -1,0 +1,314 @@
+.App {
+
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  padding-left: 20px;
+}
+
+.App-logo {
+/*  animation: App-logo-spin infinite 20s linear;
+*/  height: 40vmin;
+  pointer-events: none;
+}
+
+.leftside {
+  background-color: white;
+/*  min-height: 100vh;*/
+/*  display: flex;*/
+  flex-direction: column;
+
+
+  align-items: left;
+/*  justify-content: center;*/
+
+  color: black;
+  padding-right: 200px;
+}
+
+.App-link {
+/*  color: #61dafb;*/
+}
+
+.title {
+
+ font-family: arial;
+  font-size: 40px;
+  color: #000000;
+  letter-spacing: 0;
+  align-items: left;
+  justify-content: left;
+  font-weight:  bold;
+  margin-top: 20px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.colshape {
+  font-size: 25px;
+  font-weight: bold;
+  font-family: arial;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  justify-content: left;
+  align-items: left;
+}
+
+.button {
+        background-color: #D8D8D8;
+        color: black;
+        height:  45px;
+        width: 150px;
+        font-size: 15px;
+        font-weight: lighter;
+        text-align: center;
+/*        position: absolute;
+        left: 140px;*/
+
+}
+
+.buttonClicked {
+  background-color: #597EF7;
+  color: white;
+  height:  45px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: lighter;
+  text-align: center;
+/*        position: absolute;
+  left: 140px;*/
+
+}
+.buttonUnclicked {
+  background-color: #D8D8D8;
+  color: black;
+  height:  45px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: lighter;
+  text-align: center;
+
+}
+
+.buttonUnclicked:hover {
+ background-color: #597EF7;
+ color: white;
+ opacity: 0.48;
+}
+
+.button:hover {
+ background-color: #597EF7;
+ color: white;
+ opacity: 0.48;}
+
+.button:active {
+  background: #597EF7;
+  color: white;
+              }
+
+#left {
+  border-radius: 25px 0px 0px 25px;
+
+}
+#right {
+  border-radius: 0px 25px 25px 0px;
+}
+
+.buttongroup {
+
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  left: 140px;
+}
+
+.buttonflex{
+  display: flex;
+  flex-direction: row;
+  margin: 30px;
+
+}
+
+.hsv{
+  font-weight: lighter;
+  font-size: 13.5pt;
+  font-family: arial;
+  margin-right: 0px;
+
+
+}
+.checkboxes {
+  padding-left: 20px;
+  padding-top:30px;
+  flex-direction: row;
+
+}
+
+.shapecheck {
+  transform: scale(1.2);
+  color: black;
+  vertical-align: middle;
+
+}
+
+.circleClicked {
+  height: 50px;
+  width: 50px;
+  background-color: #597EF7;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 30px;
+  vertical-align: middle;
+  margin-left: 6px;
+
+}
+
+.circleUnclicked {
+  height: 50px;
+  width: 50px;
+  background-color: #D8D8D8;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 30px;
+  vertical-align: middle;
+  margin-left: 6px;
+
+}
+
+.squareClicked {
+  height: 50px;
+  width: 50px;
+  background-color: #597EF7;
+  display: inline-block;
+  margin-right: 30px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.squareUnclicked {
+  height: 50px;
+  width: 50px;
+  background-color: #D8D8D8;
+  display: inline-block;
+  margin-right: 30px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.triangleClicked {
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid #597EF7;
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+
+.triangleUnclicked {
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid #D8D8D8;
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+
+.conditionaltext {
+  padding-left:25px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+
+}
+
+.genbutton {
+          color: white;
+          height: 60px;
+          width: 250px;
+          background-color: #597EF7;
+          border-radius: 75px;
+          margin-top: 15px;
+/*          position: absolute;
+          left: 580px;*/
+          font-size: 20px;
+
+}
+
+.genbutton:hover {
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+
+.rightside {
+  display: flex;
+  padding-left: 40px;
+  margin-right: 40px;
+  height: 825px;
+  width: 300px;
+  background-color: #D8D8D8;
+
+
+}
+
+
+.rightsideflex{
+  display: flex;
+  flex-direction: column;
+  
+
+}
+
+#samples {
+  text-align: 'center';
+  display: flex;
+  font-family: arial;
+  font-weight: bold;
+  padding-top: 15px;
+  margin-bottom: 10px;
+  font-size: 17pt;
+
+}
+
+
+
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+
+/*for when i added instructions on the right side
+*/.evenmorerightside {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 20px;
+  
+
+}
+
+.instone {
+  padding: 5px;
+}
+.insttwo {
+  padding:  5px;
+}

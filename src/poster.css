@@ -1,0 +1,12 @@
+.poster {
+	height: 120px;
+	width: 120px;
+	padding: 5px;
+}
+
+
+.poster:hover {
+	transform: scale(1.1);
+	transition: all 0.3s;
+
+}
