@@ -14,7 +14,8 @@ const ii7 = require('./img/sample7.png')
 const ii8 = require('./img/sample8.png')
 const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
- 
+const white = require('./img/white.png')
+
 
 class MergePage extends Component {
   
@@ -33,6 +34,11 @@ class MergePage extends Component {
 
     this.setState(prevState => ({
       parray: [...prevState.parray, ii1, ii2, ii3, ii4, ii5, ii6, ii7, ii8, ii9, ii10],
+    }))
+
+//intially set leftrightarray
+    this.setState(prevState => ({
+      leftrightarray: [...prevState.leftrightarray, white,white],
     }))
 
   }

@@ -18,7 +18,8 @@ const ii7 = require('./img/sample7.png')
 const ii8 = require('./img/sample8.png')
 const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
-
+const white = require('./img/white.png')
+const y  = require('./img/y.png')
 
 class SecondPage extends Component {
   constructor(props) {
@@ -36,7 +37,12 @@ class SecondPage extends Component {
 // sets up the posters that are displayed by putting them in an array
   componentDidMount() {
     this.setState(prevState => ({
-      parray: [...prevState.parray, ii1, ii2, ii3, ii4, ii5, ii6, ii7, ii8, ii9, ii10],
+      parray: [...prevState.parray, ii1, ii2, ii3, ii4, ii5, ii6, ii7, ii8, ii9, y],
+    }))
+
+//initially set the historyarray to white spaces
+    this.setState(prevState => ({
+      historyarray: [...prevState.historyarray, white, white, white, white],
     }))
 
 // theoretically the intial state of the center poster should be the very first one in parray
@@ -127,7 +133,7 @@ class SecondPage extends Component {
 		      	</div>
 
 		    <div className='history'>
-		    	<div className='historytitle' >Clicked Posters</div>
+		    	<div className='historytitle' > Recently Clicked Posters</div>
 	    		<Poster importedposter = {this.state.historyarray[0]} handleSelection={this.handleSelection}  />
 	      		<Poster importedposter = {this.state.historyarray[1]} handleSelection={this.handleSelection}  />
 	      		<Poster importedposter = {this.state.historyarray[2]} handleSelection={this.handleSelection}  />

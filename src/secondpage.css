@@ -94,6 +94,7 @@
   background-color: #D8D8D8;
   overflow: auto;
 
+
 }
 
 .posterrows{
@@ -103,6 +104,7 @@
 }
 
 .history {
+  margin-top: 10px;
   padding-top: 15px;
   padding-bottom: 10px;
   padding-left: 5px;

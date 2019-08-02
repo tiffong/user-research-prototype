@@ -32,7 +32,7 @@ class Poster extends React.Component{
   }
 
   render(){
-    return <img alt='secondpageposter' className = 'poster' src = {this.props.importedposter} onClick = {() => this.props.handleSelection(this.props.importedposter)} />
+    return <img alt='2pgposter' className = 'poster' src = {this.props.importedposter} onClick = {() => this.props.handleSelection(this.props.importedposter)} />
   }
 }
 

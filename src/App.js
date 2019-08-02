@@ -276,6 +276,9 @@ handleLowClick() {
     this.setState({
       LowClicked: !this.state.LowClicked
     });
+
+
+    
   }
 
     if(this.state.HighLowClicked) {
@@ -406,13 +409,11 @@ handleGenerate() {
 
   render(){
 
-
-
     return <div className="App">
 
       <header className="leftside">
         <poster/>
-        <h2 className='title'> Automatic Background Generator </h2>
+        <h2 className='title'> DesignFinder: Automated Design </h2>
 
         <div className='colshape'> Color Range </div>
 

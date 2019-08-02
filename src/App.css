@@ -62,18 +62,6 @@
   align-items: left;
 }
 
-.button {
-        background-color: #D8D8D8;
-        color: black;
-        height:  45px;
-        width: 150px;
-        font-size: 15px;
-        font-weight: lighter;
-        text-align: center;
-/*        position: absolute;
-        left: 140px;*/
-
-}
 
 .buttonClicked {
   background-color: #597EF7;
@@ -83,6 +71,8 @@
   font-size: 15px;
   font-weight: lighter;
   text-align: center;
+  outline: none !important;
+  box-shadow: none;
 /*        position: absolute;
   left: 140px;*/
 
@@ -95,6 +85,8 @@
   font-size: 15px;
   font-weight: lighter;
   text-align: center;
+  outline: none !important;
+  box-shadow: none;
 
 }
 
@@ -102,17 +94,11 @@
  background-color: #597EF7;
  color: white;
  opacity: 0.48;
+ outline: none !important;
+ box-shadow: none;
+
 }
 
-.button:hover {
- background-color: #597EF7;
- color: white;
- opacity: 0.48;}
-
-.button:active {
-  background: #597EF7;
-  color: white;
-              }
 
 #left {
   border-radius: 25px 0px 0px 25px;
