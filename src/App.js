@@ -278,7 +278,7 @@ handleLowClick() {
     });
 
 
-    
+
   }
 
     if(this.state.HighLowClicked) {
@@ -287,9 +287,9 @@ handleLowClick() {
       });
     }
 
-    if(this.state.HighLowClicked) {
+    if(this.state.HighClicked) {
       this.setState({
-        HighLowClicked: false
+        HighClicked: false
       });
     }
 
@@ -297,7 +297,7 @@ handleLowClick() {
 
 handleBrightClick() {
 
-  if ((!this.state.BrightClicked && this.state.BrightDarkClicked) || (!this.state.BrightClicked && this.state.BrightDarkClicked)) {
+  if ((!this.state.BrightClicked && this.state.BrightDarkClicked) || (!this.state.BrightClicked && this.state.DarkClicked)) {
     this.setState({
       BrightClicked: !this.state.BrightClicked
     });
