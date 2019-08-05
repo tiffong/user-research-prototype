@@ -27,7 +27,7 @@ class App extends React.Component{
     
   constructor(props) {
     super(props);
-    this.handleCoolClick = this.handleCoolClick.bind(this)
+    // this.handleCoolClick = this.handleCoolClick.bind(this)
     this.handleCoolWarmClick = this.handleCoolWarmClick.bind(this)
     this.handleWarmClick = this.handleWarmClick.bind(this)
 
@@ -71,6 +71,9 @@ class App extends React.Component{
       posters: [...prevState.posters, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10]
 
     }))
+
+    // var fileDownload = require('js-file-download');
+    // fileDownload(i1, 'filename.png');
 
   } 
 
@@ -143,7 +146,8 @@ class App extends React.Component{
 //   }
 
 
-  handleCoolClick() {
+//using arrow function instead of binding the context
+  handleCoolClick = () => {
     
 // example for adding new posters upon new click
     
@@ -394,15 +398,6 @@ handleGenerate() {
   } else {
     console.log('Pick at least one shape')
   }
-
-  if (!this.state.circle && !this.state.square && !this.state.triangle) {
-
-  }
-
-
-
-  // }
-  // this.props.push({pathname: '/secondpage', state: {message: "hello, im a passed message!"}});
 
 }
 

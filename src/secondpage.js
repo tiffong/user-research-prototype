@@ -78,7 +78,7 @@ class SecondPage extends Component {
 	      	
 		      	<div className='buttflexrow'>
 			      	<button className='button2' onClick={()=>{this.props.history.push('/');}} > Back </button>
-			      	<div className='instructions'> Click designs you like and explore!  </div>
+			      	<div className='instructions'> Click a design to explore!  </div>
 			      	<button className='button2' onClick={()=> {this.props.history.push('/mergepage');}}  >  Transition Mode </button>
 		      	</div>
 
@@ -133,7 +133,7 @@ class SecondPage extends Component {
 		      	</div>
 
 		    <div className='history'>
-		    	<div className='historytitle' > Recently Clicked Posters</div>
+		    	<div className='historytitle' > Recently Clicked Designs </div>
 	    		<Poster importedposter = {this.state.historyarray[0]} handleSelection={this.handleSelection}  />
 	      		<Poster importedposter = {this.state.historyarray[1]} handleSelection={this.handleSelection}  />
 	      		<Poster importedposter = {this.state.historyarray[2]} handleSelection={this.handleSelection}  />

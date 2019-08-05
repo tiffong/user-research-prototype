@@ -68,7 +68,7 @@ class MergePage extends Component {
 	      	<div className='buttflexrow'>
 		      	<button className='button2' onClick={()=>{this.props.history.push('/secondpage');}} > Back </button>
 		      	
-		      	<div className='instr'> Choose two to see the transition! </div>
+		      	<div className='instr'> Click on two - see the transition! </div>
 
 		      	<button className='button2' onClick={this.handleCancel}> Cancel </button>
 	      	</div>

@@ -230,12 +230,16 @@
 /*          position: absolute;
           left: 580px;*/
           font-size: 20px;
+          outline: none !important;
+          box-shadow: none;
 
 }
 
 .genbutton:hover {
   transform: scale(1.1);
   transition: all 0.3s;
+          outline: none !important;
+          box-shadow: none;
 }
 
 .rightside {
