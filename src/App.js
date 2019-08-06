@@ -73,7 +73,7 @@ class App extends React.Component{
     }))
 
     // var fileDownload = require('js-file-download');
-    // fileDownload(i1, 'filename.png');
+    // fileDownload(require('./img/sample10.png'), 'hellothere');
 
   } 
 
