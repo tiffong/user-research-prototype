@@ -51,7 +51,7 @@ def parse_req_1():
     
     return result
 
-@app.route("/test", methods = ["GET"])
+@app.route("/test", methods = ["POST"])
 def test():
     data = parse_req_1()
     print(data, type(data["random_noise"]))
@@ -85,7 +85,7 @@ def parse_req_2():
   
     return result
 
-@app.route("/sample_generator", methods = ["GET"])
+@app.route("/sample_generator", methods = ["POST"])
 def sample_generator():    
         # get data
     data = parse_req()
@@ -108,8 +108,8 @@ def sample_generator():
         saver.restore(sess, model_file)
         graph = tf.get_default_graph()
         g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-        noise_img = graph.get_tensor_by_name("random_X_3:0")
-        condition_img = graph.get_tensor_by_name("condition_X_3:0")
+        noise_img = graph.get_tensor_by_name("random_X:0")
+        condition_img = graph.get_tensor_by_name("condition_X:0")
 
         img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
         np.savetxt("output_1.csv", img[:10], delimiter = ",")
@@ -117,49 +117,46 @@ def sample_generator():
         # the test output on postman
         # return str(img.shape)
 
-@app.route("/img_generator", methods = ["GET"])
-def img_generator(): 
-    if request.method == "GET":      
-        # get data
-        data = parse_req()
-        print(data)
-        with tf.Session() as sess:
-            # random input
-            noise_input = np.random.uniform(-1, 1, size = (row_num, random_dim))
-            # condition input
-            condition_vector = []
-            for k, v in data.items():
-                condition_vector.append(v)  
-            condition_vector = np.array(condition_vector * row_num)
-            condition_input = condition_vector.reshape(row_num, condition_dim) 
-            
-            print(noise_input.shape)
-            print(condition_input.shape)
+@app.route("/img_generator", methods = ["POST"])
+def img_generator():      
+    # get data
+    data = parse_req()
+    print(data)
+    with tf.Session() as sess:
+        # random input
+        noise_input = np.random.uniform(-1, 1, size = (row_num, random_dim))
+        # condition input
+        condition_vector = []
+        for k, v in data.items():
+            condition_vector.append(v)  
+        condition_vector = np.array(condition_vector * row_num)
+        condition_input = condition_vector.reshape(row_num, condition_dim) 
+        
+        print(noise_input.shape)
+        print(condition_input.shape)
 
-            saver = tf.train.import_meta_graph(meta_path)
-            model_file = tf.train.latest_checkpoint(model_path)
-            saver.restore(sess, model_file)
-            graph = tf.get_default_graph()
-            g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-            noise_img = graph.get_tensor_by_name("random_X_3:0")
-            condition_img = graph.get_tensor_by_name("condition_X_3:0")
+        saver = tf.train.import_meta_graph(meta_path)
+        model_file = tf.train.latest_checkpoint(model_path)
+        saver.restore(sess, model_file)
+        graph = tf.get_default_graph()
+        g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
+        noise_img = graph.get_tensor_by_name("random_X:0")
+        condition_img = graph.get_tensor_by_name("condition_X:0")
 
-            img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
-            #np.savetxt("output_2.csv", img, delimiter = ",")
-            
-            all_input = np.hstack((noise_input, condition_input))
-            #np.savetxt("input_2.csv", all_input, delimiter = ",")
+        img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
+        #np.savetxt("output_2.csv", img, delimiter = ",")
+        
+        all_input = np.hstack((noise_input, condition_input))
+        #np.savetxt("input_2.csv", all_input, delimiter = ",")
 
-            output = np.hstack((all_input, img))
-            np.savetxt("output_2.csv", output, delimiter = ",")
-            
-            return send_file("output_2.csv")
-            # the test of output shape on postman
-            # return str(output.shape)
-    else:
-        return "You can get nothing!"
+        output = np.hstack((all_input, img))
+        np.savetxt("output_2.csv", output, delimiter = ",")
+        
+        return send_file("output_2.csv")
+        # the test of output shape on postman
+        # return str(output.shape)
 
-@app.route("/img_augmentation", methods = ["GET"])
+@app.route("/img_augmentation", methods = ["POST"])
 def img_augmentation():     
     # get data including random_noise
     data = parse_req_1()
@@ -185,8 +182,8 @@ def img_augmentation():
         saver.restore(sess, model_file)
         graph = tf.get_default_graph()
         g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-        noise_img = graph.get_tensor_by_name("random_X_3:0")
-        condition_img = graph.get_tensor_by_name("condition_X_3:0")
+        noise_img = graph.get_tensor_by_name("random_X:0")
+        condition_img = graph.get_tensor_by_name("condition_X:0")
         img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
         img = [img[0]]
         
@@ -281,7 +278,7 @@ def img_augmentation():
         # the test output on postman
         # return str(output.shape)
 
-@app.route("/img_comparison", methods = ["GET"])
+@app.route("/img_comparison", methods = ["POST"])
 def img_comparison():     
     # get data
     data = parse_req_2()
@@ -316,8 +313,8 @@ def img_comparison():
         saver.restore(sess, model_file)
         graph = tf.get_default_graph()
         g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-        noise_img = graph.get_tensor_by_name("random_X_3:0")
-        condition_img = graph.get_tensor_by_name("condition_X_3:0")
+        noise_img = graph.get_tensor_by_name("random_X:0")
+        condition_img = graph.get_tensor_by_name("condition_X:0")
         
         img_1 = sess.run(g_output, feed_dict = {noise_img: noise_input_1, condition_img: condition_input_1})
         img_1 = [img_1[0]]
