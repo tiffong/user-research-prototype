@@ -17,7 +17,9 @@ const i7 = require('./img/sample7.png')
 const i8 = require('./img/sample8.png')
 const i9 = require('./img/sample9.png')
 const i10 = require('./img/sample10.png')
-
+const svgexample = <svg width ={'100'} height ={'200'}id= "Ebene_1" style={{"enableBackground":"new 0 0 32 32"}} version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" xmlSpace="preserve">
+              <path d="M17.1,27h-10v-0.5c2.3,0,2.3-1,2.3-3.5h5.5c0,2.5,0,3.5,2.3,3.5V27z M30,6v20c0,0.6-0.4,1-1,1H18c-0.6,0-1-0.4-1-1v-4H3&#xD;&#xA;&#x9;c-0.6,0-1-0.4-1-1V9c0-0.6,0.4-1,1-1l14,0V6c0-0.6,0.4-1,1-1l11,0C29.6,5,30,5.4,30,6z M17,20h3v-9v-1h-1h-2H4v10H17z M24.8,22.5&#xD;&#xA;&#x9;c0-0.7-0.6-1.2-1.2-1.2s-1.2,0.6-1.2,1.2s0.6,1.2,1.2,1.2S24.8,23.2,24.8,22.5z M28,10h-6v1h6V10z M28,8h-7c0.6,0,1,0.4,1,1h6V8z"/>
+                </svg>
 
 var exportedposters = 100;
 
@@ -407,6 +409,8 @@ handleGenerate() {
     return <div className="App">
 
       <header className="leftside">
+
+
         <poster/>
         <h2 className='title'> DesignFinder: Automated Design </h2>
 
