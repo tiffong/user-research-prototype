@@ -24,10 +24,12 @@ class MergePage extends Component {
 
   	this.state = {
   		leftrightarray: [],
-  		parray: []
+  		parray: [],
+  		isGreyClicked: false
   	}
 
   	this.handleCancel = this.handleCancel.bind(this)
+ 	this.handleGreyClick = this.handleGreyClick.bind(this)
   }
 
   componentDidMount() {
@@ -56,6 +58,15 @@ class MergePage extends Component {
   		leftrightarray: []
   		})
   	
+  }
+
+  handleGreyClick() {
+  	console.log('a grey square was clicked')
+
+  	this.setState(prevState => ({
+      isGreyClicked: true
+    }))
+
   }
 
 	render() {
@@ -135,49 +146,66 @@ class MergePage extends Component {
 
 	      <div className = 'rightside3'>
 
+
+	      <div className = 'conditionalpopupdiv'>
+	          {true && 
+
+		            <div className='popup'> 
+		            	<button className='cancelbutton'> X </button>
+		            	
+		            	<img src={ii2} className='popupimage'/>  
+		            	
+		            	<div className='popuprow'>
+			            	<button className='favoritebutton'> Add to favorites </button>
+			            	<button className = 'explorebutton'> Explore </button>
+		            	</div> 
+		            </div>
+	          }
+          </div>
+
 	      	<div className = 'row3'>
 	      		<PosterSample posterselection={this.state.leftrightarray[0]} />
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
+	      		<span className="square4" onClick={this.handleGreyClick}></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
 	      		
 	      	</div>
 
 	      	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
+	      		<span className="square4"></span>
+	      		<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
 	      		
 	      	</div>
       	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
+	      		<span className="square4"></span>
+	      		<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
 	      		
 	      	</div>
       	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
+	      		<span className="square4"></span>
+	      		<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
 	      		
 	      	</div>
       	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
+	      		<span className="square4"></span>
+	      		<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
 	  			<PosterSample posterselection={this.state.leftrightarray[1]} />
 	     </div>
 
