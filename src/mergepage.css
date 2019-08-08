@@ -50,10 +50,10 @@
 	background-color: white;
 	display: flex;
 	flex-direction: column;
-	z-index: 2;
+	z-index: 9;
 	position: absolute;
 	align-items: center;
-	right: 600px;
+	right: 550px;
 	border: .8px solid grey;
 }
 

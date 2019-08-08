@@ -92,6 +92,31 @@ class MergePage extends Component {
 
   }
 
+  dynamicallyRenderRows = () => {
+
+  	return (
+		 <div className = 'row3'>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+		</div>
+  	)
+
+  }
+
+  dynamicallyRenderPosters = () => {
+  	
+  	var indents = []
+  	for (var i=0; i<100; i++) {
+  		indents.push(<MergePoster importedposter = {this.state.parray[i%10]} handleSelection={this.handleSelection.bind(this)}  />
+		)
+  	}
+  	return (indents)
+  }
+
 	render() {
 		return(
 
@@ -102,74 +127,21 @@ class MergePage extends Component {
 	      	<div className='buttflexrow'>
 		      	<button className='button2' onClick={()=>{this.props.history.push('/secondpage');}} > Back </button>
 		      	
-		      	<div className='instr'> Click on two - see the transition! </div>
+		      	<div className='instr'> Click two - see the transition! </div>
 
 		      	<button className='button2' onClick={this.handleCancel}> Cancel </button>
 	      	</div>
 
 	      <div className='posterrows'>	
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[0]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	      	
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	 
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	 
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	 
+
+	      	{this.dynamicallyRenderPosters()}
+	      
+
 	      </div>
 
 		    <div className='history'>
 		    	<div className='historytitle' > Favorites </div>
-	    		<MergePoster importedposter = {this.state.favorites[0]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.favorites[1]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.favorites[2]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.favorites[3]} handleSelection={this.handleSelection.bind(this)}  />	
+	
 		    </div>
 
 	    </div>
@@ -199,44 +171,23 @@ class MergePage extends Component {
 	  			<span className="square4"></span>
 	  			<span className="square4"></span>
 	  			<span className="square4"></span>
-	      		
 	      	</div>
 
-	      	<div className = 'row3'>
-	      		<span className="square4"></span>
-	      		<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	      		
+	      	<div> 
+	      		{this.dynamicallyRenderRows()}
+	      		{this.dynamicallyRenderRows()}
+	      		{this.dynamicallyRenderRows()}
 	      	</div>
-      	<div className = 'row3'>
-	      		<span className="square4"></span>
-	      		<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	      		
-	      	</div>
-      	<div className = 'row3'>
-	      		<span className="square4"></span>
-	      		<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	      		
-	      	</div>
-      	<div className = 'row3'>
+
+
+      		<div className = 'row3'>
 	      		<span className="square4"></span>
 	      		<span className="square4"></span>
 	  			<span className="square4"></span>
 	  			<span className="square4"></span>
 	  			<span className="square4"></span>
 	  			<PosterSample posterselection={this.state.leftrightarray[1]} />
-	     </div>
+	     	</div>
 
 	      		
 
