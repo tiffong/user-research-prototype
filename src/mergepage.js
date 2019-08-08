@@ -25,7 +25,9 @@ class MergePage extends Component {
   	this.state = {
   		leftrightarray: [],
   		parray: [],
-  		isGreyClicked: false
+  		isGreyClicked: false,
+  		xout: false,
+  		favorites: []
   	}
 
   	this.handleCancel = this.handleCancel.bind(this)
@@ -67,6 +69,27 @@ class MergePage extends Component {
       isGreyClicked: true
     }))
 
+  	this.setState(prevState => ({
+      xout: false
+    }))
+
+
+  }
+
+  handleXout = () =>  {
+  	this.setState(prevState => ({
+      xout: true
+    }))
+
+
+    this.setState(prevState => ({
+      isGreyClicked: false
+    }))
+  }
+
+  handleFavorite = () => {
+  	this.handleXout()
+
   }
 
 	render() {
@@ -74,7 +97,7 @@ class MergePage extends Component {
 
       <div className = 'lrcontainer2'>
 
-	      <div className = 'leftside2'>
+	    <div className = 'leftside2'>
 	      	
 	      	<div className='buttflexrow'>
 		      	<button className='button2' onClick={()=>{this.props.history.push('/secondpage');}} > Back </button>
@@ -84,7 +107,7 @@ class MergePage extends Component {
 		      	<button className='button2' onClick={this.handleCancel}> Cancel </button>
 	      	</div>
 
-	      	
+	      <div className='posterrows'>	
 	      	<div className = 'row'>
 	      		<MergePoster importedposter = {this.state.parray[0]} handleSelection={this.handleSelection.bind(this)}  />
 	      		<MergePoster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection.bind(this)}  />
@@ -139,26 +162,32 @@ class MergePage extends Component {
 	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
 	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
 	      	</div>	 
-
-
 	      </div>
 
+		    <div className='history'>
+		    	<div className='historytitle' > Favorites </div>
+	    		<MergePoster importedposter = {this.state.favorites[0]} handleSelection={this.handleSelection.bind(this)}  />
+	      		<MergePoster importedposter = {this.state.favorites[1]} handleSelection={this.handleSelection.bind(this)}  />
+	      		<MergePoster importedposter = {this.state.favorites[2]} handleSelection={this.handleSelection.bind(this)}  />
+	      		<MergePoster importedposter = {this.state.favorites[3]} handleSelection={this.handleSelection.bind(this)}  />	
+		    </div>
 
-	      <div className = 'rightside3'>
+	    </div>
+
+
+	    <div className = 'rightside3'>
 
 
 	      <div className = 'conditionalpopupdiv'>
-	          {true && 
+	          {this.state.isGreyClicked && !this.state.xout && 
 
 		            <div className='popup'> 
-		            	<button className='cancelbutton'> X </button>
+		            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
 		            	
 		            	<img src={ii2} className='popupimage'/>  
 		            	
 		            	<div className='popuprow'>
-			            	<button className='favoritebutton'> Add to favorites </button>
-			            	<button className = 'explorebutton'> Explore </button>
-		            	</div> 
+			            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
 		            </div>
 	          }
           </div>
