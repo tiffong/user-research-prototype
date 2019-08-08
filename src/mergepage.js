@@ -16,7 +16,6 @@ const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
 const white = require('./img/white.png')
 
-
 class MergePage extends Component {
   
   constructor(props) {
