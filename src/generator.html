@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SVG.js</title>
+</head>
+<body>
+	<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">设置海报显示</button>
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-body">
+	            	开始的海报index:<input id="poster-start" type="text" class="form-control" placeholder="0" value="0">
+	            	结束的海报index:<input id="poster-end" type="text" class="form-control" placeholder="100" value="100">
+	            	间隔的海报数量:<input id="poster-gap" type="text" class="form-control" placeholder="1" value="1">
+	        	</div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	                <button id="setting-confirm" type="button" class="btn btn-primary" data-dismiss="modal">提交更改</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+  <div id="test"></div>
+  <script type="text/javascript" src="js/lib/jquery.min.js"></script>
+  <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <script type="text/javascript" src="js/lib/svg.js"></script>
+  <script type="text/javascript" src="js/generator_new.js"></script>
+</body>
+</html>

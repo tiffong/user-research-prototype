@@ -131,27 +131,25 @@ class App extends React.Component{
     } 
 
 
-    // var base = "http://127.0.0.1:5000/sample_generator?circle=0.3&square=0.3&triangle=0.3&bright_dark=0.5&soft_sharp=0.5&warm_cool=0.5&simple_complex=0.5&disorder_inorder=0.5&high_low=0.5"
+    //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
 
-    // var response = await axios.get(base)
-    //
-    // var data = response.data
-    // getDataCallback(data)
-    // console.log(data)
-
-      axios.post('http://127.0.0.1:5000/sample_generator', {
+    var requestBody = {
           circle : 0.3,
-          square : 0.3,
-          triangle : 0.3,
-          bright_dark : 0.5,
-          soft_sharp : 0.5,
-          warm_cool : 0.5,
-          simple_complex : 0.5,
-          disorder_inorder : 0.5,
-          high_low : 0.5
-      })
+              square : 0.3,
+              triangle : 0.3,
+              bright_dark : 0.5,
+              soft_sharp : 0.5,
+              warm_cool : 0.5,
+              simple_complex : 0.5,
+              disorder_inorder : 0.5,
+              high_low : 0.5
+      }
+
+      axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
       .then(function (response) {
-          console.log(response);
+
+          getDataCallback(response.data)
+
       })
       .catch(function (error) {
           console.log(error);
@@ -503,7 +501,7 @@ handleGenerate() {
 
       <header className = 'rightside'>
         
-        <div className='rightsideflex'> 
+        <div className='rightsideflex'>
           <h2 id="samples"> Samples </h2>
 
           <div className ='row'>
@@ -532,13 +530,8 @@ handleGenerate() {
           </div>
 
           <button className='genbutton' onClick={this.handleGenerate}> See More Designs > </button>
-          
 
         </div>
-
-
-
-
       </header>
 
 
