@@ -112,7 +112,7 @@ def sample_generator():
         condition_img = graph.get_tensor_by_name("condition_X:0")
 
         img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
-        np.savetxt("output_1.csv", img[:10], delimiter = ",")
+        np.savetxt("output_1.csv", img[:10], delimiter = ",", fmt = "%.10f")
         return send_file("output_1.csv")
         # the test output on postman
         # return str(img.shape)
@@ -150,7 +150,7 @@ def img_generator():
         #np.savetxt("input_2.csv", all_input, delimiter = ",")
 
         output = np.hstack((all_input, img))
-        np.savetxt("output_2.csv", output, delimiter = ",")
+        np.savetxt("output_2.csv", output, delimiter = ",", fmt = "%.10f")
         
         return send_file("output_2.csv")
         # the test of output shape on postman
@@ -272,7 +272,7 @@ def img_augmentation():
         img = img[1:]
         all_input = np.hstack((noise_input[:24], condition_final_output))
         output = np.hstack((all_input, img))
-        np.savetxt("output_3.csv", output, delimiter = ",")
+        np.savetxt("output_3.csv", output, delimiter = ",", fmt = "%.10f")
         return send_file("output_3.csv")
         
         # the test output on postman
@@ -338,7 +338,7 @@ def img_comparison():
         all_input = np.hstack((n_output, c_output))
         # we don not need the first two pictures
         output = np.hstack((all_input, img[2:]))
-        np.savetxt("output_4.csv", output, delimiter = ",")
+        np.savetxt("output_4.csv", output, delimiter = ",", fmt = '%.10f')
         return send_file("output_4.csv")
             
         # the test output on postman
