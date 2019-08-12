@@ -7,8 +7,8 @@ import numpy as np
 
 app = Flask(__name__)
 
-meta_path = "baseline_9conditions_loss -1.1 2/generator.ckpt.meta"
-model_path = "./baseline_9conditions_loss -1.1 2/"
+meta_path = "model 0807/generator.ckpt.meta"
+model_path = "./model 0807/"
 
 row_num = 100
 random_dim = 30
