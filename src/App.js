@@ -4,6 +4,7 @@ import './App.css';
 
 // this was used to test the functionality of exporting things from page to page
 import PosterSamples from './postersamples.js'
+import SVGPosterSamples from './SVGpostersamples.js'
 import axios  from 'axios'
 
 
@@ -25,8 +26,6 @@ var exportedposters = 100;
 
 class App extends React.Component{
    
-
-    
   constructor(props) {
     super(props);
     // this.handleCoolClick = this.handleCoolClick.bind(this)

@@ -16,7 +16,6 @@ const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
 const white = require('./img/white.png')
 
-
 class MergePage extends Component {
   
   constructor(props) {
@@ -24,10 +23,14 @@ class MergePage extends Component {
 
   	this.state = {
   		leftrightarray: [],
-  		parray: []
+  		parray: [],
+  		isGreyClicked: false,
+  		xout: false,
+  		favorites: []
   	}
 
   	this.handleCancel = this.handleCancel.bind(this)
+ 	this.handleGreyClick = this.handleGreyClick.bind(this)
   }
 
   componentDidMount() {
@@ -58,128 +61,132 @@ class MergePage extends Component {
   	
   }
 
+  handleGreyClick() {
+  	console.log('a grey square was clicked')
+
+  	this.setState(prevState => ({
+      isGreyClicked: true
+    }))
+
+  	this.setState(prevState => ({
+      xout: false
+    }))
+
+
+  }
+
+  handleXout = () =>  {
+  	this.setState(prevState => ({
+      xout: true
+    }))
+
+
+    this.setState(prevState => ({
+      isGreyClicked: false
+    }))
+  }
+
+  handleFavorite = () => {
+  	this.handleXout()
+
+  }
+
+  dynamicallyRenderRows = () => {
+
+  	return (
+		 <div className = 'row3'>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+			<span className="square4"></span>
+		</div>
+  	)
+
+  }
+
+  dynamicallyRenderPosters = () => {
+  	
+  	var indents = []
+  	for (var i=0; i<100; i++) {
+  		indents.push(<MergePoster importedposter = {this.state.parray[i%10]} handleSelection={this.handleSelection.bind(this)}  />
+		)
+  	}
+  	return (indents)
+  }
+
 	render() {
 		return(
 
       <div className = 'lrcontainer2'>
 
-	      <div className = 'leftside2'>
+	    <div className = 'leftside2'>
 	      	
 	      	<div className='buttflexrow'>
 		      	<button className='button2' onClick={()=>{this.props.history.push('/secondpage');}} > Back </button>
 		      	
-		      	<div className='instr'> Click on two - see the transition! </div>
+		      	<div className='instr'> Click two - see the transition! </div>
 
 		      	<button className='button2' onClick={this.handleCancel}> Cancel </button>
 	      	</div>
 
-	      	
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[0]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	      	
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	 
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	 
-	      	<div className = 'row'>
-	      		<MergePoster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection.bind(this)}  />
-	      		<MergePoster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection.bind(this)}  />
-	      	</div>	 
+	      <div className='posterrows'>	
 
+	      	{this.dynamicallyRenderPosters()}
+	      
 
 	      </div>
 
+		    <div className='history'>
+		    	<div className='historytitle' > Favorites </div>
+	
+		    </div>
 
-	      <div className = 'rightside3'>
+	    </div>
+
+
+	    <div className = 'rightside3'>
+
+
+	      <div className = 'conditionalpopupdiv'>
+	          {this.state.isGreyClicked && !this.state.xout && 
+
+		            <div className='popup'> 
+		            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
+		            	
+		            	<img src={ii2} className='popupimage'/>  
+		            	
+		            	<div className='popuprow'>
+			            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
+		            </div>
+	          }
+          </div>
 
 	      	<div className = 'row3'>
 	      		<PosterSample posterselection={this.state.leftrightarray[0]} />
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	      		
+	      		<span className="square4" onClick={this.handleGreyClick}></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
 	      	</div>
 
-	      	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	      		
+	      	<div> 
+	      		{this.dynamicallyRenderRows()}
+	      		{this.dynamicallyRenderRows()}
+	      		{this.dynamicallyRenderRows()}
 	      	</div>
-      	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	      		
-	      	</div>
-      	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	      		
-	      	</div>
-      	<div className = 'row3'>
-	      		<span className="square2"></span>
-	      		<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
-	  			<span className="square2"></span>
+
+
+      		<div className = 'row3'>
+	      		<span className="square4"></span>
+	      		<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
+	  			<span className="square4"></span>
 	  			<PosterSample posterselection={this.state.leftrightarray[1]} />
-	     </div>
+	     	</div>
 
 	      		
 

@@ -19,7 +19,6 @@ const ii8 = require('./img/sample8.png')
 const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
 const white = require('./img/white.png')
-const y  = require('./img/y.png')
 
 class SecondPage extends Component {
   constructor(props) {
@@ -28,7 +27,10 @@ class SecondPage extends Component {
   	this.state = {
   		parray: [],
   		clickedposter: null,
-  		historyarray: []
+  		historyarray: [],
+  		isGreyClicked: false,
+  		xout: false,
+  		favorites: []
   	}
 
   	this.handleSelection = this.handleSelection.bind(this)
@@ -52,6 +54,7 @@ class SecondPage extends Component {
 
   }
 
+
 // once you click a poster, this function handles the selection, 
 // setting the clicked poster image to the one that was clicked
 // chosenposter is found from within the poster component
@@ -63,10 +66,46 @@ class SecondPage extends Component {
     this.setState(prevState => ({
       historyarray: [ chosenposter , ...prevState.historyarray],
     }))
+  }
 
+  handleGreyClick =() => {
+  	console.log('a grey square was clicked')
+
+  	this.setState(prevState => ({
+      isGreyClicked: true
+    }))
+
+  	this.setState(prevState => ({
+      xout: false
+    }))
 
 
   }
+
+  handleXout = () =>  {
+  	this.setState(prevState => ({
+      xout: true
+    }))
+
+
+    this.setState(prevState => ({
+      isGreyClicked: false
+    }))
+  }
+
+  handleFavorite = () => {
+  	this.handleXout()
+
+  }
+  dynamicallyRenderPosters = () => {
+  	
+  	var indents = []
+  	for (var i=0; i<100; i++) {
+  		indents.push(<Poster importedposter = {this.state.parray[i%10]} handleSelection={this.handleSelection} />)
+  	}
+
+  	return (indents)
+  }  
 
   render() {
     return (
@@ -84,52 +123,7 @@ class SecondPage extends Component {
 
 
 		      	<div className='posterrows'>
-			      	<div className = 'row'>
-			      		<Poster importedposter = {this.state.parray[0]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection}  />	
-			      	</div>
-
-			      	<div className = 'row'>
-			      		<Poster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection}  />	
-			      	</div>
-
-			      	<div className = 'row'>
-			      		<Poster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[2]} handleSelection={this.handleSelection}  />	
-			      	</div>
-
-			      	<div className = 'row'>
-			      		<Poster importedposter = {this.state.parray[3]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[4]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[5]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[6]} handleSelection={this.handleSelection}  />	
-			      	</div>
-
-			      	<div className = 'row'>
-			      		<Poster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection}  />	
-			      	</div>
-			      	<div className = 'row'>
-			      		<Poster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection}  />	
-			      	</div>
-			      	<div className = 'row'>
-			      		<Poster importedposter = {this.state.parray[7]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[8]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[9]} handleSelection={this.handleSelection}  />
-			      		<Poster importedposter = {this.state.parray[1]} handleSelection={this.handleSelection}  />	
-			      	</div>
+			      	{this.dynamicallyRenderPosters()}
 		      	</div>
 
 		    <div className='history'>
@@ -145,6 +139,21 @@ class SecondPage extends Component {
 
 	      <div className = 'rightside2'>
 
+
+		      <div className = 'conditionalpopupdiv'>
+		          {this.state.isGreyClicked && !this.state.xout && 
+
+			            <div className='popup'> 
+			            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
+			            	
+			            	<img src={ii2} className='popupimage'/>  
+			            	
+			            	<div className='popuprow'>
+				            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
+			            </div>
+		          }
+	          </div>
+
 		      <div className='sideflex'> 
 
 			      <div className='simple'> Simple </div>
@@ -158,7 +167,7 @@ class SecondPage extends Component {
 			      	</div>
 
 			      	<div className = 'row'>
-			      		<span className="square2"></span>
+			      		<span className="square2" onClick={this.handleGreyClick}></span>
 			      		<span className="square3" id='null'></span>
 			      		<span className="square3" id='null'></span>
 			      		<span className="square2" ></span>
