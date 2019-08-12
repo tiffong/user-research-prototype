@@ -4,6 +4,11 @@ import './App.css';
 
 // this was used to test the functionality of exporting things from page to page
 import PosterSamples from './postersamples.js'
+
+import {getDataCallback} from './autobg/generator.js'
+
+
+
 import axios  from 'axios'
 
 
@@ -72,6 +77,8 @@ class App extends React.Component{
 
     }))
 
+      this.getDataAxios()
+
     // var fileDownload = require('js-file-download');
     // fileDownload(require('./img/sample10.png'), 'hellothere');
 
@@ -124,13 +131,31 @@ class App extends React.Component{
     } 
 
 
-    var base = "https://api.example.com/items"
+    // var base = "http://127.0.0.1:5000/sample_generator?circle=0.3&square=0.3&triangle=0.3&bright_dark=0.5&soft_sharp=0.5&warm_cool=0.5&simple_complex=0.5&disorder_inorder=0.5&high_low=0.5"
 
-    const response =
-      await axios.get( base,
-          { params: {name: 'bruno'}}
-      )
-    console.log(response.data)
+    // var response = await axios.get(base)
+    //
+    // var data = response.data
+    // getDataCallback(data)
+    // console.log(data)
+
+      axios.post('http://127.0.0.1:5000/sample_generator', {
+          circle : 0.3,
+          square : 0.3,
+          triangle : 0.3,
+          bright_dark : 0.5,
+          soft_sharp : 0.5,
+          warm_cool : 0.5,
+          simple_complex : 0.5,
+          disorder_inorder : 0.5,
+          high_low : 0.5
+      })
+      .then(function (response) {
+          console.log(response);
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
   }
 
 
