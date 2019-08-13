@@ -88,15 +88,7 @@ class App extends React.Component{
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state)
 
-    axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
-    .then(function (response) {
-
-        getDataCallback(response.data)
-
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+    this.getDataAxios()
 
   }
 
@@ -106,55 +98,72 @@ class App extends React.Component{
     var hueVar = 0
     var satVar = 0
     var valVar = 0
-    var shapes = ''
+    var cirVar = 0
+    var squareVar = 0
+    var triVar = 0
+
 
     if(this.state.CoolClicked) {
-      hueVar = 1
+      hueVar = 0.3
     } else if (this.state.CoolWarmClicked) {
-      hueVar =2
+      hueVar = 0.5
     } else {
-      hueVar = 3
+      hueVar = 0.7
     }
 
     if(this.state.HighClicked) {
-      satVar = 1
+      satVar = 0.3
     } else if (this.state.HighLowClicked) {
-      satVar =2
+      satVar = 0.5
     } else {
-      satVar = 3
+      satVar = 0.7
     }   
 
     if(this.state.BrightClicked) {
-      valVar = 1
+      valVar = 0.3
     } else if (this.state.BrightDarkClicked) {
-      valVar =2
+      valVar = 0.5
     } else {
-      valVar = 3
+      valVar = 0.7
     }    
 
     if(this.state.circle) {
-      shapes = shapes+ 'circle'
-    } 
-    if(this.state.square) {
-      shapes = shapes+'square'
-    } 
-    if(this.state.triangle) {
-      shapes = shapes+ 'square'
-    } 
+        cirVar = 1
+      if(this.state.square && !this.state.triangle) { //circle square
+        cirVar = 0.5
+        triVar = 0.5
+      } else if (!this.state.square && this.state.triangle) { //circle triangle 
+        cirVar = 0.5
+        triVar = 0.5
+      } else { //all 3 shapes
+        cirVar = 0.3
+        triVar = 0.3
+        squareVar = 0.3
+      }
+    }
+
+    if (this.state.square && this.state.triangle) {
+      squareVar = 0.5
+      triVar = 0.5
+    } else if (this.state.square && !this.state.triangle &&  !this.state.circle) { //only the square
+      squareVar= 1
+    } else if (this.state.triangle && !this.state.square && !this.state.circle) { //only the triangle
+      triVar = 1
+    }
 
 
     //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
 
       requestBody = {
-          circle : 0.3,
-          square : 0.3,
-          triangle : 0.3,
-          bright_dark : 0.5,
+          circle : cirVar,
+          square : squareVar,
+          triangle : triVar,
+          bright_dark : valVar,
           soft_sharp : 0.5,
-          warm_cool : 0.5,
+          warm_cool : hueVar,
           simple_complex : 0.5,
           disorder_inorder : 0.5,
-          high_low : 0.5
+          high_low : satVar
       }
 
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
