@@ -849,8 +849,8 @@ function createPoster(csvdata, num) {
             })
             elementColor.from("0%", "0%").to("0%", "100%")
 
-            console.log(shapeList)
-            console.log(shapeNormalX,shapeNormalY,shapeNormalZ,shapeNormalX*NUM_ELEMENT_X*NUM_ELEMENT_Y+NUM_ELEMENT_X*shapeNormalY+shapeNormalZ)
+            // console.log(shapeList)
+            // console.log(shapeNormalX,shapeNormalY,shapeNormalZ,shapeNormalX*NUM_ELEMENT_X*NUM_ELEMENT_Y+NUM_ELEMENT_X*shapeNormalY+shapeNormalZ)
 
             var shapeNormal = shapeList[shapeNormalX * NUM_ELEMENT_X * NUM_ELEMENT_Y + NUM_ELEMENT_X * shapeNormalY + shapeNormalZ].clone()
 
@@ -974,6 +974,7 @@ var div;
 function getDataCallback(data) {
     // $.get("/test.csv",function(data){
     // console.log(data);
+    $(".postersamples").empty()
     var features = csv2array(data);
 
     console.log(features)

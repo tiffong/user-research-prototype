@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask import request
 from flask import send_file
 import tensorflow as tf
@@ -6,6 +7,8 @@ import numpy as np
 
 
 app = Flask(__name__)
+CORS(app)
+
 
 meta_path = "model 0807/generator.ckpt.meta"
 model_path = "./model 0807/"
