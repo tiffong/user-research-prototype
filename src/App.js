@@ -135,14 +135,14 @@ class App extends React.Component{
 
     var requestBody = {
           circle : 0.3,
-              square : 0.3,
-              triangle : 0.3,
-              bright_dark : 0.5,
-              soft_sharp : 0.5,
-              warm_cool : 0.5,
-              simple_complex : 0.5,
-              disorder_inorder : 0.5,
-              high_low : 0.5
+          square : 0.3,
+          triangle : 0.3,
+          bright_dark : 0.5,
+          soft_sharp : 0.5,
+          warm_cool : 0.5,
+          simple_complex : 0.5,
+          disorder_inorder : 0.5,
+          high_low : 0.5
       }
 
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
