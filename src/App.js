@@ -26,6 +26,8 @@ const i10 = require('./img/sample10.png')
 
 var exportedposters = 100;
 
+var requestBody = {}
+
 class App extends React.Component{
    
 
@@ -64,9 +66,8 @@ class App extends React.Component{
       triangle: false,
 
       posters: []
+
     }
-
-
 
   }
 
@@ -86,6 +87,17 @@ class App extends React.Component{
 
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state)
+
+    axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
+    .then(function (response) {
+
+        getDataCallback(response.data)
+
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
   }
 
 
@@ -133,7 +145,7 @@ class App extends React.Component{
 
     //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
 
-    var requestBody = {
+      requestBody = {
           circle : 0.3,
           square : 0.3,
           triangle : 0.3,
@@ -505,28 +517,28 @@ handleGenerate() {
           <h2 id="samples"> Samples </h2>
 
           <div className ='row'>
-            <PosterSamples posterselection={this.state.posters[0]} />
-            <PosterSamples posterselection={this.state.posters[1]} />
+            <PosterSamples id="poster0" />
+            <PosterSamples id="poster1" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[2]}/>
-          <PosterSamples posterselection={this.state.posters[3]}/>
+            <PosterSamples id="poster2" />
+            <PosterSamples id="poster3" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[4]}/>
-          <PosterSamples posterselection={this.state.posters[5]}/>
+            <PosterSamples id="poster4" />
+            <PosterSamples id="poster5" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[6]}/>
-          <PosterSamples posterselection={this.state.posters[7]}/>
+            <PosterSamples id="poster6" />
+            <PosterSamples id="poster7" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[8]}/>
-          <PosterSamples posterselection={this.state.posters[9]}/>
+            <PosterSamples id="poster8" />
+            <PosterSamples id="poster9" />
           </div>
 
           <button className='genbutton' onClick={this.handleGenerate}> See More Designs > </button>

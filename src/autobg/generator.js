@@ -439,7 +439,7 @@ var tRotation_1 = [0, 30, 60, 90, 120, 150, 180],
 //Layout
 
 var width = 1080 / 4,
-    height = 1314 / 4;
+    height = 1080 / 4;
 var fontSizeSmall = 5,
     fontSizeMid = 8,
     fontSizeLarge = 10;
@@ -814,11 +814,11 @@ createShapes(_circleList,_rectList,_triList,_draw)
 // 生成海报，并为每一张海报添加click函数
 function createPoster(csvdata, num) {
 
-    var subdiv = document.createElement("div");
-    subdiv.setAttribute("id", "poster"+num);
-    subdiv.setAttribute("class", "poster");
-    div.appendChild(subdiv)
-    document.body.appendChild(div);
+    // var subdiv = document.createElement("div");
+    // subdiv.setAttribute("id", "poster"+num);
+    // subdiv.setAttribute("class", "poster");
+    // div.appendChild(subdiv)
+    // document.body.appendChild(div);
     // console.log(pnt.state);
     var draw = SVG('poster'+num).size(width, height)
 
@@ -876,27 +876,27 @@ function createPoster(csvdata, num) {
     // console.log(new Date().getTime()-start);
     drawList.push(draw);
     draw.attr('num', num);
-    draw.click(function () {
-        document.getElementById("audio-click").play();
-
-        // 点击海报则放大显示
-        document.getElementById('chooseposter').style.display = 'block';
-        document.getElementById('overlay0').style.display = 'block';
-        if (choosed === null)
-            choosed = SVG("choosed").fill('#0f4');
-        choosed.svg(draw.svg());
-        choosed.attr({
-            'num': num
-        });
-        choosed.scale(4.92);
-        choosed.translate(1294, 1559);
-        // pnt.setState({
-        //     num: draw.attr('num')
-        // });
-
-        // 添加放大动画
-        $("#chooseposter").addClass("choose-poster-ani");
-    })
+    // draw.click(function () {
+    //     document.getElementById("audio-click").play();
+    //
+    //     // 点击海报则放大显示
+    //     document.getElementById('chooseposter').style.display = 'block';
+    //     document.getElementById('overlay0').style.display = 'block';
+    //     if (choosed === null)
+    //         choosed = SVG("choosed").fill('#0f4');
+    //     choosed.svg(draw.svg());
+    //     choosed.attr({
+    //         'num': num
+    //     });
+    //     choosed.scale(4.92);
+    //     choosed.translate(1294, 1559);
+    //     // pnt.setState({
+    //     //     num: draw.attr('num')
+    //     // });
+    //
+    //     // 添加放大动画
+    //     $("#chooseposter").addClass("choose-poster-ani");
+    // })
 }
 
 
