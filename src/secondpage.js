@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import './secondpage.css';
 import Poster from './poster.js'
 import PosterSample from './postersamples.js'
-// import exportedposters from './App.js'
-
+import axios  from 'axios'
+import {getDataCallback} from './autobg/generator.js'
 import {Line, Triangle} from 'react-shapes';
-
+//reactsvg stuff
+import { render } from 'react-dom'
+import ReactSVG from 'react-svg'
 
 // assume these real posters that have been imported imported from the code
 const ii1 = require('./img/sample1.png')
@@ -19,6 +21,12 @@ const ii8 = require('./img/sample8.png')
 const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
 const white = require('./img/white.png')
+var svg_ex = <svg width="40" height="40" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <rect x="5" y="5" width="30" height="30" stroke="black" fill="transparent" stroke-width="5" />
+</svg>
+
+
+var requestBody = {}
 
 class SecondPage extends Component {
   constructor(props) {
@@ -30,7 +38,8 @@ class SecondPage extends Component {
   		historyarray: [],
   		isGreyClicked: false,
   		xout: false,
-  		favorites: []
+  		favorites: [],
+  		clickedid: 'poster8'
   	}
 
   	this.handleSelection = this.handleSelection.bind(this)
@@ -39,7 +48,7 @@ class SecondPage extends Component {
 // sets up the posters that are displayed by putting them in an array
   componentDidMount() {
     this.setState(prevState => ({
-      parray: [...prevState.parray, ii1, ii2, ii3, ii4, ii5, ii6, ii7, ii8, ii9, ii10],
+      parray: [...prevState.parray, svg_ex],
     }))
 
 //initially set the historyarray to white spaces
@@ -51,6 +60,15 @@ class SecondPage extends Component {
     this.setState({
       clickedposter: ii1
     })
+
+   this.getDataAxios()
+   console.log('requestbody')
+   console.log(requestBody)
+
+  }
+
+
+  componentDidUpdate(prevProps, prevState) {
 
   }
 
@@ -66,6 +84,15 @@ class SecondPage extends Component {
     this.setState(prevState => ({
       historyarray: [ chosenposter , ...prevState.historyarray],
     }))
+  }
+
+//this is used to handle when you click a svg, of class <Poster>
+  handleSVGClick = () => {
+
+
+  	//using the ID of the clicked poster, insert DIV
+  	console.log('Clicked an SVG')
+
   }
 
   handleGreyClick =() => {
@@ -95,17 +122,57 @@ class SecondPage extends Component {
 
   handleFavorite = () => {
   	this.handleXout()
-
   }
+
   dynamicallyRenderPosters = () => {
   	
   	var indents = []
-  	for (var i=0; i<100; i++) {
-  		indents.push(<Poster importedposter = {this.state.parray[i%10]} handleSelection={this.handleSelection} />)
+
+  	for (var i=0; i<10; i++) {
+
+  		var name = 'poster'+i
+  		// indents.push(<Poster id={name} handleSelection={this.handleSelection} />)
+  		indents.push(<Poster id={name}  />)
+
   	}
 
   	return (indents)
   }  
+
+  async getDataAxios(){
+      
+    var hueVar = 0
+    var satVar = 0
+    var valVar = 0
+    var cirVar = 0
+    var squareVar = 0
+    var triVar = 0
+
+    //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
+
+      requestBody = {
+          circle : 0.3,
+          square : 0.3,
+          triangle : 0.3,
+          bright_dark : 0.5,
+          soft_sharp : 0.5,
+          warm_cool : 0.5,
+          simple_complex : 0.5,
+          disorder_inorder : 0.5,
+          high_low : 0.5
+      }
+
+
+      axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
+      .then(function (response) {
+
+          getDataCallback(response.data)
+
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+  }
 
   render() {
     return (
@@ -123,11 +190,27 @@ class SecondPage extends Component {
 
 
 		      	<div className='posterrows'>
-			      	{this.dynamicallyRenderPosters()}
+
+
+				     <div className='row'>
+				      	<Poster id='poster0' handleSVGClick={this.handleSVGClick } />
+				      	<Poster id='poster1' handleSVGClick={this.handleSVGClick } />
+				      	<Poster id='poster2' handleSVGClick={this.handleSVGClick } />
+				      	<Poster id='poster3' handleSVGClick={this.handleSVGClick } />
+				     </div>
+
+				     <div className='row'>
+				      	<Poster id='poster4' handleSVGClick={this.handleSVGClick } />
+				      	<Poster id='poster5' handleSVGClick={this.handleSVGClick } />
+				      	<Poster id='poster6' handleSVGClick={this.handleSVGClick } />
+				      	<Poster id='poster7' handleSVGClick={this.handleSVGClick } />
+				     </div>
+
+
 		      	</div>
 
 		    <div className='history'>
-		    	<div className='historytitle' > Recently Clicked Designs </div>
+		    	<div className='historytitle' > Favorites </div>
 	    		<Poster importedposter = {this.state.historyarray[0]} handleSelection={this.handleSelection}  />
 	      		<Poster importedposter = {this.state.historyarray[1]} handleSelection={this.handleSelection}  />
 	      		<Poster importedposter = {this.state.historyarray[2]} handleSelection={this.handleSelection}  />
@@ -138,7 +221,6 @@ class SecondPage extends Component {
 
 
 	      <div className = 'rightside2'>
-
 
 		      <div className = 'conditionalpopupdiv'>
 		          {this.state.isGreyClicked && !this.state.xout && 
@@ -167,75 +249,77 @@ class SecondPage extends Component {
 			      	</div>
 
 			      	<div className = 'row'>
-			      		<span className="square2" onClick={this.handleGreyClick}></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2" ></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square0' ></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square1' ></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2  onClick={this.handleGreyClick} id='square2' "></div>
 			      	</div>
 			      	
 
 			      	<div className = 'row'>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>			   
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square3' ></div>			   
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square4' ></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square5' ></div>
+			      		<div className="square3" id='null'></div>
 			      	</div>
 
 			      	<div className = 'row'>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
-			      		<span className="square2"></span>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square3" id='null'></span>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square6' ></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square7' ></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square8' ></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square3" id='null'></div>
 
 			      	</div>
 
 			      	<div className = 'row'>
-			      		<span className="square2"></span>
-			      		<span className="square2"></span>			      
-			      		<span className="square2"></span>
-			      		<PosterSample posterselection={this.state.clickedposter} />
-			      		<span className="square2"></span>
-			      		<span className="square2"></span>
-			      		<span className="square2"></span>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square9' ></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square10' ></div>			      
+			      		<div className="square2" onClick={this.handleGreyClick} id='square11' ></div>
+
+			      		<Poster id={this.state.clickedid} id='square12' />
+
+			      		<div className="square2" onClick={this.handleGreyClick} id='square12' ></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
 			      	</div>
 
 			      	<div className = 'row'>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square3" id='null'></span>			      	
-			      		<span className="square2"></span>
-			      		<span className="square2"></span>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square3" id='null'></span>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square3" id='null'></div>			      	
+			      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square17' ></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square3" id='null'></div>
 			      	</div>
 
 			      	<div className = 'row'>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>			      	
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square18' ></div>			      	
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square19' ></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square20' ></div>
+			      		<div className="square3" id='null'></div>
 			      	</div>
 
 			      	<div className = 'row'>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>			      	
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square3" id='null'></span>
-			      		<span className="square2"></span>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square21' ></div>
+			      		<div className="square3" id='null'></div>			      	
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square22' ></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square3" id='null'></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square23' ></div>
 			      	</div>			      				      
 
 			      	<div className = 'bottomflex'>

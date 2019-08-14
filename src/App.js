@@ -6,9 +6,6 @@ import './App.css';
 import PosterSamples from './postersamples.js'
 
 import {getDataCallback} from './autobg/generator.js'
-
-
-
 import axios  from 'axios'
 
 
@@ -24,14 +21,10 @@ const i9 = require('./img/sample9.png')
 const i10 = require('./img/sample10.png')
 
 
-var exportedposters = 100;
-
 var requestBody = {}
 
 class App extends React.Component{
    
-
-    
   constructor(props) {
     super(props);
     // this.handleCoolClick = this.handleCoolClick.bind(this)
@@ -165,6 +158,7 @@ class App extends React.Component{
           disorder_inorder : 0.5,
           high_low : satVar
       }
+
 
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
       .then(function (response) {
@@ -555,13 +549,10 @@ handleGenerate() {
         </div>
       </header>
 
-
-
     </div>
   } 
 }
 
 
 export {App};
-export default exportedposters;
-
+export default requestBody;
