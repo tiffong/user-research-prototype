@@ -23,7 +23,6 @@ def parse_req():
     requestedData = request.get_json()
 
     print(requestedData)
-    print(requestedData["circle"])
     result = {}
 
     result["circle"] = requestedData["circle"]*2 - 1
@@ -40,21 +39,25 @@ def parse_req():
 
 def parse_req_1():
 
+    requestedData = request.get_json()
+    print(requestedData)
+
     result = {}
 
-    result["circle"] = float(request.args.get("circle"))*2 - 1
-    result["square"] = float(request.args.get("square"))*2 - 1
-    result["triangle"] = float(request.args.get("triangle"))*2 - 1
-    result["bright_dark"] = float(request.args.get("bright_dark"))*2 - 1
-    result["soft_sharp"] = float(request.args.get("soft_sharp"))*2 - 1
-    result["warm_cool"] = float(request.args.get("warm_cool"))*2 - 1
-    result["simple_complex"] = float(request.args.get("simple_complex"))*2 - 1
-    result["disorder_inorder"] = float(request.args.get("disorder_inorder"))*2 - 1
-    result["high_low"] = float(request.args.get("high_low"))*2 - 1
+    result["circle"] = requestedData["circle"]*2 - 1
+    result["square"] = requestedData["square"]*2 - 1
+    result["triangle"] = requestedData["triangle"]*2 - 1
+    result["bright_dark"] = requestedData["bright_dark"]*2 - 1
+    result["soft_sharp"] = requestedData["soft_sharp"]*2 - 1
+    result["warm_cool"] = requestedData["warm_cool"]*2 - 1
+    result["simple_complex"] = requestedData["simple_complex"]*2 - 1
+    result["disorder_inorder"] = requestedData["disorder_inorder"]*2 - 1
+    result["high_low"] = requestedData["high_low"]*2 - 1
 
     # it depends on the type of data from front end
     # now it just for test on postman
-    result["random_noise"] = [float(x) for x in request.args.get("random_noise")[1:-1].split(",")]
+    # result["random_noise"] = [float(x) for x in request.args.get("random_noise")[1:-1].split(",")]
+    result["random_noise"] = requestedData["random_noise"]
 
     return result
 

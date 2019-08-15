@@ -812,7 +812,7 @@ var _circleList = [], _rectList = [], _triList = [];
 createShapes(_circleList,_rectList,_triList,_draw)
 
 // 生成海报，并为每一张海报添加click函数
-function createPoster(csvdata, num) {
+function createPoster(csvdata, num, isExtended) {
 
     // var subdiv = document.createElement("div");
     // subdiv.setAttribute("id", "poster"+num);
@@ -820,8 +820,10 @@ function createPoster(csvdata, num) {
     // div.appendChild(subdiv)
     // document.body.appendChild(div);
     // console.log(pnt.state);
-    var draw = SVG('poster'+num).size(width, height)
-
+    if(isExtended)
+        var draw = SVG('square'+num).size(width, height)
+    else
+        var draw = SVG('poster'+num).size(width, height)
 
     var circleList = _circleList.concat(),
         rectList = _rectList.concat(),
@@ -971,13 +973,29 @@ function setChoosedNull() {
 var posterList = [];
 var div;
 // 获取到服务器返回的csv文件后的回调函数
-function getDataCallback(data) {
+
+var features
+var noises=[]
+function getDataCallback(data, containedNoise, isExtended) {
     // $.get("/test.csv",function(data){
     // console.log(data);
     $(".postersamples").empty()
-    var features = csv2array(data);
+    $(".square2").empty()
+    features = csv2array(data);
+
+    if(containedNoise){
+        for(var f in features){//
+            for(var g in features[f]){
+                features[f][g] = parseFloat(features[f][g])
+            }
+            noises[f] = features[f].slice(0,39)
+            features[f] =  features[f].slice(39)
+        }
+    }
+
 
     console.log(features)
+    // console.log(noises)
 
     for (var i = 0; i < features.length; i++) {
         var element = {
@@ -1078,7 +1096,7 @@ function getDataCallback(data) {
         var poster = [element, element2, element3, element4, element5, element6, element7, element8, element9, element10, element11,
             element12, element13, element14, element15, element16, element17, element18, bg]
 
-        createPoster(poster, i)
+        createPoster(poster, i, isExtended)
 
         posterList.push(poster);
     }
@@ -1089,7 +1107,9 @@ export {
     _rectList,
     _triList,
     height,
-    width
+    width,
+    features,
+    noises
 };
 
 export {

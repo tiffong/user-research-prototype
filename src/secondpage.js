@@ -3,11 +3,11 @@ import './secondpage.css';
 import Poster from './poster.js'
 import PosterSample from './postersamples.js'
 import axios  from 'axios'
-import {getDataCallback} from './autobg/generator.js'
+import {getDataCallback,noises} from './autobg/generator.js'
 import {Line, Triangle} from 'react-shapes';
 //reactsvg stuff
 import { render } from 'react-dom'
-import ReactSVG from 'react-svg'
+// import ReactSVG from 'react-svg'
 
 // assume these real posters that have been imported imported from the code
 const ii1 = require('./img/sample1.png')
@@ -91,7 +91,35 @@ class SecondPage extends Component {
 
 
   	//using the ID of the clicked poster, insert DIV
-  	console.log('Clicked an SVG')
+  	var clickedID = this.state.clickedid.replace(/[^0-9]/ig,"")
+  	console.log(clickedID)
+  	console.log(noises)
+
+	requestBody = {
+        circle: noises[clickedID][0],
+        square: noises[clickedID][1],
+        triangle: noises[clickedID][2],
+        bright_dark: noises[clickedID][3],
+        soft_sharp: noises[clickedID][4],
+        warm_cool: noises[clickedID][5],
+        simple_complex: noises[clickedID][6],
+        disorder_inorder: noises[clickedID][7],
+        high_low: noises[clickedID][8],
+        random_noise:noises[clickedID].slice(9)
+    }
+
+    console.log(requestBody)
+
+
+	axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
+	  .then(function (response) {
+		  getDataCallback(response.data, true, true)
+	  })
+	  .catch(function (error) {
+		  console.log(error);
+	  });
+
+
 
   }
 
@@ -163,10 +191,10 @@ class SecondPage extends Component {
       }
 
 
-      axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
+      axios.post('http://127.0.0.1:5000/img_generator', requestBody)
       .then(function (response) {
 
-          getDataCallback(response.data)
+          getDataCallback(response.data, true, false)
 
       })
       .catch(function (error) {
@@ -255,7 +283,7 @@ class SecondPage extends Component {
 			      		<div className="square2" onClick={this.handleGreyClick} id='square1' ></div>
 			      		<div className="square3" id='null'></div>
 			      		<div className="square3" id='null'></div>
-			      		<div className="square2  onClick={this.handleGreyClick} id='square2' "></div>
+			      		<div className="square2" onClick={this.handleGreyClick} id='square2'></div>
 			      	</div>
 			      	
 
@@ -285,7 +313,7 @@ class SecondPage extends Component {
 			      		<div className="square2" onClick={this.handleGreyClick} id='square10' ></div>			      
 			      		<div className="square2" onClick={this.handleGreyClick} id='square11' ></div>
 
-			      		<Poster id={this.state.clickedid} id='square12' />
+			      		<Poster id={this.state.clickedid} id='selectedPoster' />
 
 			      		<div className="square2" onClick={this.handleGreyClick} id='square12' ></div>
 			      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
@@ -304,7 +332,7 @@ class SecondPage extends Component {
 
 			      	<div className = 'row'>
 			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square18' ></div>			      	
+			      		<div className="square2" onClick={this.handleGreyClick} id='square18' ></div>
 			      		<div className="square3" id='null'></div>
 			      		<div className="square2" onClick={this.handleGreyClick} id='square19' ></div>
 			      		<div className="square3" id='null'></div>

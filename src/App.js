@@ -162,9 +162,7 @@ class App extends React.Component{
 
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
       .then(function (response) {
-
-          getDataCallback(response.data)
-
+          getDataCallback(response.data, false, false)
       })
       .catch(function (error) {
           console.log(error);
