@@ -47,9 +47,7 @@ class SecondPage extends Component {
 
 // sets up the posters that are displayed by putting them in an array
   componentDidMount() {
-    this.setState(prevState => ({
-      twoclickedposters: [...prevState.parray, 'poster0', 'poster1'],
-    }))
+
 
 //initially set the historyarray to white spaces
     this.setState(prevState => ({
@@ -71,7 +69,8 @@ class SecondPage extends Component {
   componentDidUpdate(prevProps, prevState) {
   	console.log('state of transition mode', this.state.transitionmodeclicked)
   	console.log('first of the clicked posters', this.state.twoclickedposters[0])
-
+  	console.log('second of the clicked posters', this.state.twoclickedposters[1])
+  	console.log('length of clicked posters array', this.state.twoclickedposters.length)
   }	
 
 
@@ -94,10 +93,12 @@ class SecondPage extends Component {
   	// set clicked id to clicked poster
   	var id_of_clicked_poster = e.currentTarget.id
 
-  	//add to array fortwo clicked posters
   	this.setState(prevState => ({
-      twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
-    }))
+	      twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
+	}))
+
+  	//add to array fortwo clicked posters
+
   	//console.log("currenttarget", e.currentTarget.id)
   	// this.setState({
    //    clickedid: id_of_clicked_poster
@@ -105,8 +106,8 @@ class SecondPage extends Component {
 
 
  //using the number ID of the clicked poster, insert DIV
-  	
-  	if(!this.state.transitionmodeclicked) {
+ //if you are in explore mode
+  	if(!this.state.transitionmodeclicked)  {
 	   	var clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
 	  	console.log('ID of the poster you clicked: ', clickedID)
 	  	console.log('noises', noises)
@@ -138,48 +139,54 @@ class SecondPage extends Component {
 
  //if you are in tranistion  mode, you  must  click two
   	  console.log('CLICK TWO HAHAHAHA')
-  	 
-  	  var clickedID_1 = this.state.twoclickedposters[0];
-	  var clickedID_2 = this.state.twoclickedposters[1];
-
-      console.log(noises)
-
-      requestBody = {
-          circle_1: noises[clickedID_1][0],
-          square_1: noises[clickedID_1][1],
-          triangle_1: noises[clickedID_1][2],
-          bright_dark_1: noises[clickedID_1][3],
-          soft_sharp_1: noises[clickedID_1][4],
-          warm_cool_1: noises[clickedID_1][5],
-          simple_complex_1: noises[clickedID_1][6],
-          disorder_inorder_1: noises[clickedID_1][7],
-          high_low_1: noises[clickedID_1][8],
-          random_noise_1:noises[clickedID_1].slice(9),
-
-          circle_2: noises[clickedID_2][0],
-          square_2: noises[clickedID_2][1],
-          triangle_2: noises[clickedID_2][2],
-          bright_dark_2: noises[clickedID_2][3],
-          soft_sharp_2: noises[clickedID_2][4],
-          warm_cool_2: noises[clickedID_2][5],
-          simple_complex_2: noises[clickedID_2][6],
-          disorder_inorder_2: noises[clickedID_2][7],
-          high_low_2: noises[clickedID_2][8],
-          random_noise_2:noises[clickedID_2].slice(9)
-      }
-
-      console.log(requestBody)
 
 
-      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
-          .then(function (response) {
-              getDataCallback(response.data, true, true)
-          })
-          .catch(function (error) {
-              console.log(error);
-          });
+	  	 if(this.state.twoclickedposters.length > 1) {
+
+
+		  	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+			  var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
+
+
+
+		      console.log(noises)
+
+		      requestBody = {
+		          circle_1: noises[clickedID_1][0],
+		          square_1: noises[clickedID_1][1],
+		          triangle_1: noises[clickedID_1][2],
+		          bright_dark_1: noises[clickedID_1][3],
+		          soft_sharp_1: noises[clickedID_1][4],
+		          warm_cool_1: noises[clickedID_1][5],
+		          simple_complex_1: noises[clickedID_1][6],
+		          disorder_inorder_1: noises[clickedID_1][7],
+		          high_low_1: noises[clickedID_1][8],
+		          random_noise_1:noises[clickedID_1].slice(9),
+
+		          circle_2: noises[clickedID_2][0],
+		          square_2: noises[clickedID_2][1],
+		          triangle_2: noises[clickedID_2][2],
+		          bright_dark_2: noises[clickedID_2][3],
+		          soft_sharp_2: noises[clickedID_2][4],
+		          warm_cool_2: noises[clickedID_2][5],
+		          simple_complex_2: noises[clickedID_2][6],
+		          disorder_inorder_2: noises[clickedID_2][7],
+		          high_low_2: noises[clickedID_2][8],
+		          random_noise_2:noises[clickedID_2].slice(9)
+		      }
+
+		      console.log(requestBody)
+
+
+		      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+		          .then(function (response) {
+		              getDataCallback(response.data, true, true)
+		          })
+		          .catch(function (error) {
+		              console.log(error);
+		          });
+		}
   	}
-
 
   }
 
@@ -234,10 +241,67 @@ class SecondPage extends Component {
 //if you click transition mode then the state will be changed to transition mode clicked
   handleTransitionModeClick = () => {
   	
+  	//if   youare in transition mode, then you should  have the cancel functionality
+  	//when you cancel, the squares should be grey
 
-  	this.setState(prevState => ({
-      transitionmodeclicked: true
-    })) 
+
+  	if(this.state.transitionmodeclicked) {
+	  	this.setState(prevState => ({
+		      twoclickedposters: []
+		}))
+
+//if you arein explore mode, you go the default setting of first two
+  	} else {
+	  	
+
+	  	this.setState(prevState => ({
+	      transitionmodeclicked: true
+	    })) 
+
+	   	this.setState(prevState => ({
+		      twoclickedposters: ['poster0', 'poster1', ...prevState.twoclickedposters]
+		}))
+
+	   	//get  initial request
+	   	var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+		var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
+
+		      requestBody = {
+		          circle_1: noises[clickedID_1][0],
+		          square_1: noises[clickedID_1][1],
+		          triangle_1: noises[clickedID_1][2],
+		          bright_dark_1: noises[clickedID_1][3],
+		          soft_sharp_1: noises[clickedID_1][4],
+		          warm_cool_1: noises[clickedID_1][5],
+		          simple_complex_1: noises[clickedID_1][6],
+		          disorder_inorder_1: noises[clickedID_1][7],
+		          high_low_1: noises[clickedID_1][8],
+		          random_noise_1:noises[clickedID_1].slice(9),
+
+		          circle_2: noises[clickedID_2][0],
+		          square_2: noises[clickedID_2][1],
+		          triangle_2: noises[clickedID_2][2],
+		          bright_dark_2: noises[clickedID_2][3],
+		          soft_sharp_2: noises[clickedID_2][4],
+		          warm_cool_2: noises[clickedID_2][5],
+		          simple_complex_2: noises[clickedID_2][6],
+		          disorder_inorder_2: noises[clickedID_2][7],
+		          high_low_2: noises[clickedID_2][8],
+		          random_noise_2:noises[clickedID_2].slice(9)
+		      }
+		      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+		          .then(function (response) {
+		              getDataCallback(response.data, true, true)
+		          })
+		          .catch(function (error) {
+		              console.log(error);
+		          });
+		
+
+
+  	}
+
+
 
     //should do something else if it is supposed to be a "CANCEL" button
 
@@ -560,7 +624,7 @@ class SecondPage extends Component {
 
 				<div className='rightsidetransition'>
 					<div className='row'> 
-				        <div className='square3'> </div>
+				        <div className='square2'> Pic 1 </div>
 				        <div className='square2' id='square0'> </div>
 				        <div className='square2' id='square1'> </div>
 				        <div className='square2' id='square2'> </div>
@@ -604,7 +668,7 @@ class SecondPage extends Component {
 				        <div className='square2' id='square25'> </div>
 				        <div className='square2' id='square26'> </div>
 				        <div className='square2' id='square27'> </div>
-				        <div className='square3'> </div>
+				        <div className='square2'> Pic 2 </div>
 				    </div>
 
 				</div>
