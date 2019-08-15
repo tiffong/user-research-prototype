@@ -3,7 +3,7 @@ import './secondpage.css';
 import Poster from './poster.js'
 import PosterSample from './postersamples.js'
 import axios  from 'axios'
-import {getDataCallback,noises} from './autobg/generator.js'
+import {getDataCallback,noises,features} from './autobg/generator.js'
 import {Line, Triangle} from 'react-shapes';
 //reactsvg stuff
 import { render } from 'react-dom'
@@ -21,9 +21,7 @@ const ii8 = require('./img/sample8.png')
 const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
 const white = require('./img/white.png')
-var svg_ex = <svg width="40" height="40" version="1.1" xmlns="http://www.w3.org/2000/svg">
-  <rect x="5" y="5" width="30" height="30" stroke="black" fill="transparent" stroke-width="5" />
-</svg>
+var hello = null
 
 
 var requestBody = {}
@@ -39,7 +37,8 @@ class SecondPage extends Component {
   		isGreyClicked: false,
   		xout: false,
   		favorites: [],
-  		clickedid: 'poster8'
+  		clickedid: 'poster8',
+  		transitionmodeclicked: false,
   	}
 
   	this.handleSelection = this.handleSelection.bind(this)
@@ -48,7 +47,7 @@ class SecondPage extends Component {
 // sets up the posters that are displayed by putting them in an array
   componentDidMount() {
     this.setState(prevState => ({
-      parray: [...prevState.parray, svg_ex],
+      parray: [...prevState.parray],
     }))
 
 //initially set the historyarray to white spaces
@@ -86,30 +85,38 @@ class SecondPage extends Component {
     }))
   }
 
-//this is used to handle when you click a svg, of class <Poster>
-  handleSVGClick = () => {
+//this is used to handle when you click a svg
+  handleSVGClick = (e) => {
 
+  	// set clicked id to clicked poster
+  	var id_of_clicked_poster = e.currentTarget.id
 
-  	//using the ID of the clicked poster, insert DIV
-  	var clickedID = this.state.clickedid.replace(/[^0-9]/ig,"")
-  	console.log(clickedID)
-  	console.log(noises)
+  	//console.log("currenttarget", e.currentTarget.id)
+  	// this.setState({
+   //    clickedid: id_of_clicked_poster
+   //  });
+
+    // console.log('ss', this.state.clickedid)
+
+  	//using the number ID of the clicked poster, insert DIV
+  	var clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
+  	console.log('ID of the poster you clicked: ', clickedID)
+  	console.log('noises', noises)
 
 	requestBody = {
-        circle: noises[clickedID][0],
-        square: noises[clickedID][1],
-        triangle: noises[clickedID][2],
-        bright_dark: noises[clickedID][3],
-        soft_sharp: noises[clickedID][4],
-        warm_cool: noises[clickedID][5],
-        simple_complex: noises[clickedID][6],
-        disorder_inorder: noises[clickedID][7],
-        high_low: noises[clickedID][8],
-        random_noise:noises[clickedID].slice(9)
+        circle: noises[clickedID][30],
+        square: noises[clickedID][31],
+        triangle: noises[clickedID][32],
+        bright_dark: noises[clickedID][33],
+        soft_sharp: noises[clickedID][34],
+        warm_cool: noises[clickedID][35],
+        simple_complex: noises[clickedID][36],
+        disorder_inorder: noises[clickedID][37],
+        high_low: noises[clickedID][38],
+        random_noise:noises[clickedID].slice(0,30)
     }
 
-    console.log(requestBody)
-
+    console.log('request body', requestBody)
 
 	axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
 	  .then(function (response) {
@@ -118,9 +125,6 @@ class SecondPage extends Component {
 	  .catch(function (error) {
 		  console.log(error);
 	  });
-
-
-
   }
 
   handleGreyClick =() => {
@@ -152,20 +156,84 @@ class SecondPage extends Component {
   	this.handleXout()
   }
 
+//if you click transition mode then the state will be changed to transition mode clicked
+  handleTransitionModeClick = () => {
+  	this.setState(prevState => ({
+      transitionmodeclicked: !prevState.transitionmodeclicked
+    }))   
+
+  	console.log(this.state.transitionmodeclicked)
+  }
+
   dynamicallyRenderPosters = () => {
-  	
+ 
   	var indents = []
 
-  	for (var i=0; i<10; i++) {
+  	for (var i=0; i<100; i+=4) {
 
   		var name = 'poster'+i
-  		// indents.push(<Poster id={name} handleSelection={this.handleSelection} />)
-  		indents.push(<Poster id={name}  />)
+  		var name2 = 'poster'+(i+1)
+  		var name3 = 'poster'+(i+2)
+  		var name4 = 'poster'+(i+3)
+
+  		indents.push(
+  			<div className='row'>
+	  			<div className='poster' id={name} onClick={ this.handleSVGClick }  > </div>
+	  			<div className='poster' id={name2} onClick={ this.handleSVGClick }  > </div>
+	  			<div className='poster' id={name3} onClick={ this.handleSVGClick }  > </div>
+	  			<div className='poster' id={name4} onClick={ this.handleSVGClick }  > </div>
+  			</div>
+  		)
 
   	}
 
   	return (indents)
-  }  
+  }
+
+  dynamicallyRenderTransitionRows = () => {
+
+    var indents2 = []
+
+    indents2.push(
+      <div className='row'> 
+        <div className='square3'> </div>
+        <div className='square2' id='square0'> </div>
+        <div className='square2' id='square1'> </div>
+        <div className='square2' id='square2'> </div>
+        <div className='square2' id='square3'> </div>
+      </div>
+    )
+
+    for(var i=4; i<20;  i+=5) {
+      var name = 'square'+i
+      var name2 = 'square'+(i+1)
+      var name3 = 'square'+(i+2)
+      var name4 = 'square'+(i+3)
+      var name5 = 'square'+(i+4)
+
+      indents2.push(
+      <div className='row'>
+        <div className='square2' id={name}> </div> 
+        <div className='square2' id={name2}> </div>
+        <div className='square2' id={name3}> </div>
+        <div className='square2' id={name4}> </div>   
+        <div className='square2' id={name5}> </div> 
+      </div>
+        )
+    }
+
+    indents2.push(
+      <div className='row'> 
+        <div className='square2' id='square24'> </div>
+        <div className='square2' id='square25'> </div>
+        <div className='square2' id='square26'> </div>
+        <div className='square2' id='square27'> </div>
+        <div className='square3'> </div>
+      </div>
+    )
+    return (indents2)
+  }
+  
 
   async getDataAxios(){
       
@@ -208,33 +276,17 @@ class SecondPage extends Component {
       <div className = 'lrcontainer2'>
 
 
-	     <div className = 'leftside2'>
+	    <div className = 'leftside2'>
 	      	
 		      	<div className='buttflexrow'>
 			      	<button className='button2' onClick={()=>{this.props.history.push('/');}} > Back </button>
 			      	<div className='instructions'> Click a design to explore!  </div>
-			      	<button className='button2' onClick={()=> {this.props.history.push('/mergepage');}}  >  Transition Mode </button>
+			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Explore Mode' : 'Transition Mode'} </button>
 		      	</div>
 
 
 		      	<div className='posterrows'>
-
-
-				     <div className='row'>
-				      	<Poster id='poster0' handleSVGClick={this.handleSVGClick } />
-				      	<Poster id='poster1' handleSVGClick={this.handleSVGClick } />
-				      	<Poster id='poster2' handleSVGClick={this.handleSVGClick } />
-				      	<Poster id='poster3' handleSVGClick={this.handleSVGClick } />
-				     </div>
-
-				     <div className='row'>
-				      	<Poster id='poster4' handleSVGClick={this.handleSVGClick } />
-				      	<Poster id='poster5' handleSVGClick={this.handleSVGClick } />
-				      	<Poster id='poster6' handleSVGClick={this.handleSVGClick } />
-				      	<Poster id='poster7' handleSVGClick={this.handleSVGClick } />
-				     </div>
-
-
+					{this.dynamicallyRenderPosters()}
 		      	</div>
 
 		    <div className='history'>
@@ -245,175 +297,244 @@ class SecondPage extends Component {
 	      		<Poster importedposter = {this.state.historyarray[3]} handleSelection={this.handleSelection}  />	
 		    </div>
 
-	     </div>
+	    </div>
+
+	    { !this.state.transitionmodeclicked &&
+			    <div className = 'rightside2'>
+			      	<div className='exploreconditional'>
+
+				      <div className = 'conditionalpopupdiv'>
+				          {this.state.isGreyClicked && !this.state.xout && 
+
+					            <div className='popup'> 
+					            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
+					            	
+					            	<img src={ii2} className='popupimage'/>  
+					            	
+					            	<div className='popuprow'>
+						            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
+					            </div>
+				          }
+			          </div>
 
 
-	      <div className = 'rightside2'>
 
-		      <div className = 'conditionalpopupdiv'>
-		          {this.state.isGreyClicked && !this.state.xout && 
+				      <div className='sideflex'> 
 
-			            <div className='popup'> 
-			            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
-			            	
-			            	<img src={ii2} className='popupimage'/>  
-			            	
-			            	<div className='popuprow'>
-				            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
-			            </div>
-		          }
-	          </div>
+				     
 
-		      <div className='sideflex'> 
+					      <div className='simple'> Simple </div>
 
-			      <div className='simple'> Simple </div>
+					      <div>
 
-			      <div>
+					      	<div className = 'topflex'>
+						      	<div> Disorder</div> 
+						      	<div> Sharp </div> 
+						      	<div> Bright </div> 
+					      	</div>
 
-			      	<div className = 'topflex'>
-				      	<div> Disorder</div> 
-				      	<div> Sharp </div> 
-				      	<div> Bright </div> 
-			      	</div>
+					      	<div className = 'row'>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square0' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square1' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square2'></div>
+					      	</div>
+					      	
 
-			      	<div className = 'row'>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square0' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square1' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square2'></div>
-			      	</div>
-			      	
+					      	<div className = 'row'>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square3' ></div>			   
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square4' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square5' ></div>
+					      		<div className="square3" id='null'></div>
+					      	</div>
 
-			      	<div className = 'row'>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square3' ></div>			   
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square4' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square5' ></div>
-			      		<div className="square3" id='null'></div>
-			      	</div>
+					      	<div className = 'row'>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square6' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square7' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square8' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>
 
-			      	<div className = 'row'>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square6' ></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square7' ></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square8' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square3" id='null'></div>
+					      	</div>
 
-			      	</div>
+					      	<div className = 'row'>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square9' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square10' ></div>			      
+					      		<div className="square2" onClick={this.handleGreyClick} id='square11' ></div>
 
-			      	<div className = 'row'>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square9' ></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square10' ></div>			      
-			      		<div className="square2" onClick={this.handleGreyClick} id='square11' ></div>
+					      		<svg className='square2' > </svg>
 
-			      		<Poster id={this.state.clickedid} id='selectedPoster' />
+					      		<div className="square2" onClick={this.handleGreyClick} id='square12' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
+					      	</div>
 
-			      		<div className="square2" onClick={this.handleGreyClick} id='square12' ></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
-			      	</div>
+					      	<div className = 'row'>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>			      	
+					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square17' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>
+					      	</div>
 
-			      	<div className = 'row'>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square3" id='null'></div>			      	
-			      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square17' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square3" id='null'></div>
-			      	</div>
+					      	<div className = 'row'>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square18' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square19' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square20' ></div>
+					      		<div className="square3" id='null'></div>
+					      	</div>
 
-			      	<div className = 'row'>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square18' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square19' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square20' ></div>
-			      		<div className="square3" id='null'></div>
-			      	</div>
+					      	<div className = 'row'>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square21' ></div>
+					      		<div className="square3" id='null'></div>			      	
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square22' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square23' ></div>
+					      	</div>			      				      
 
-			      	<div className = 'row'>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square21' ></div>
-			      		<div className="square3" id='null'></div>			      	
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square22' ></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square3" id='null'></div>
-			      		<div className="square2" onClick={this.handleGreyClick} id='square23' ></div>
-			      	</div>			      				      
+					      	<div className = 'bottomflex'>
+						      	<div> Dark </div> 
+						      	<div> Soft </div> 
+						      	<div> In order </div> 
+					      	</div>
 
-			      	<div className = 'bottomflex'>
-				      	<div> Dark </div> 
-				      	<div> Soft </div> 
-				      	<div> In order </div> 
-			      	</div>
+
+					      </div>
+
+					      <div className='complex'> Complex </div>
+
+				      </div>
+
+				      <div className = 'toplefttriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>
+
+
+				      <div className = 'toptriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>
+
+				      <div className = 'toprighttriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>		      
+
+				      <div className = 'midlefttriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>	
+
+				      <div className = 'midrighttriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>
+
+				      <div className = 'leftbottriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>	
+
+				      <div className = 'midbottriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>	
+
+				      <div className = 'rightbottriangle'>
+				      	<Triangle width={10} height={10} fill={{color:'black'}} />
+				      </div>	
+
+				      <div className='line'>
+			      	  	<Line x1={44} x2={960} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  </div>
+
+			      	  <div className='line2'> 
+			      	  	<Line x1={40} x2={965} y1={485} y2={485}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  </div>
+
+			      	  <div className='line3'> 
+			      	  	<Line x1={505} x2={505} y1={22} y2={948}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  </div>
+
+			      	  <div className='line4'> 
+			      	  	<Line x1={962} x2={45} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  </div>
+
 
 
 			      </div>
-
-			      <div className='complex'> Complex </div>
-
-		      </div>
-
-		      <div className = 'toplefttriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>
+			    </div> 
+			} 
 
 
-		      <div className = 'toptriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>
+			
+			{
+				this.state.transitionmodeclicked &&
 
-		      <div className = 'toprighttriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>		      
+				<div className='rightside2'>
+					<div className='row'> 
+				        <div className='square3'> </div>
+				        <div className='square2' id='square0'> </div>
+				        <div className='square2' id='square1'> </div>
+				        <div className='square2' id='square2'> </div>
+				        <div className='square2' id='square3'> </div>
+				    </div>
 
-		      <div className = 'midlefttriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>	
+				    <div className='row'> 
+				       
+				        <div className='square2' id='square4'> </div>
+				        <div className='square2' id='square5'> </div>
+				        <div className='square2' id='square6'> </div>
+				        <div className='square2' id='square7'> </div>
+				        <div className='square2' id='square8'> </div>
+				    </div>
 
-		      <div className = 'midrighttriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>
+				    <div className='row'> 
+				    	<div className='square2' id='square9'> </div>
+				        <div className='square2' id='square10'> </div>
+				        <div className='square2' id='square11'> </div>
+				        <div className='square2' id='square12'> </div>
+				        <div className='square2' id='square13'> </div>
+				    </div>
+				    <div className='row'> 
+				    	<div className='square2' id='square14'> </div>
+				        <div className='square2' id='square15'> </div>
+				        <div className='square2' id='square16'> </div>
+				        <div className='square2' id='square17'> </div>
+				        <div className='square2' id='square18'> </div>
+				    </div>
+				    <div className='row'> 
+				    	<div className='square2' id='square19'> </div>
+				        <div className='square2' id='square20'> </div>
+				        <div className='square2' id='square21'> </div>
+				        <div className='square2' id='square22'> </div>
+				        <div className='square2' id='square23'> </div>
+				    </div>			
+		    	    
+				    <div className='row'> 
+				      
+				        <div className='square2' id='square24'> </div>
+				        <div className='square2' id='square25'> </div>
+				        <div className='square2' id='square26'> </div>
+				        <div className='square2' id='square27'> </div>
+				        <div className='square3'> </div>
+				    </div>
 
-		      <div className = 'leftbottriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>	
+				</div>
+					
 
-		      <div className = 'midbottriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>	
+			}
 
-		      <div className = 'rightbottriangle'>
-		      	<Triangle width={10} height={10} fill={{color:'black'}} />
-		      </div>	
-
-		      <div className='line'>
-	      	  	<Line x1={44} x2={960} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
-	      	  </div>
-
-	      	  <div className='line2'> 
-	      	  	<Line x1={40} x2={965} y1={485} y2={485}  stroke={{color:'black'}} strokeWidth={1} />
-	      	  </div>
-
-	      	  <div className='line3'> 
-	      	  	<Line x1={505} x2={505} y1={22} y2={948}  stroke={{color:'black'}} strokeWidth={1} />
-	      	  </div>
-
-	      	  <div className='line4'> 
-	      	  	<Line x1={962} x2={45} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
-	      	  </div>
-
-	      </div>
-
+	
       </div>
 
 

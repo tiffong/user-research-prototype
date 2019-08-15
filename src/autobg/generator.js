@@ -438,8 +438,8 @@ var tRotation_1 = [0, 30, 60, 90, 120, 150, 180],
 
 //Layout
 
-var width = 1080 / 4,
-    height = 1080 / 4;
+var width = 240,
+    height = 240;
 var fontSizeSmall = 5,
     fontSizeMid = 8,
     fontSizeLarge = 10;

@@ -147,16 +147,50 @@ class MergePage extends Component {
 
   dynamicallyRenderRows = () => {
 
-  	return (
-		 <div className = 'row3'>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-		</div>
-  	)
+    var indents = []
+
+    indents.push(
+      <div className='row'> 
+        <div className='square3'> </div>
+        <div className='square4' id='square0'> </div>
+        <div className='square4' id='square1'> </div>
+        <div className='square4' id='square2'> </div>
+        <div className='square4' id='square3'> </div>
+      </div>
+    )
+
+    for(var i=4; i<20;  i+=5) {
+      var name = 'square'+i
+      var name2 = 'square'+(i+1)
+      var name3 = 'square'+(i+2)
+      var name4 = 'square'+(i+3)
+      var name5 = 'square'+(i+4)
+
+      indents.push(
+      <div className='row'>
+        <div className='square4' id={name}> </div> 
+        <div className='square4' id={name2}> </div>
+        <div className='square4' id={name3}> </div>
+        <div className='square4' id={name4}> </div>   
+        <div className='square4' id={name5}> </div> 
+      </div>
+        )
+
+    }
+
+
+    indents.push(
+      <div className='row'> 
+        <div className='square4' id='square24'> </div>
+        <div className='square4' id='square25'> </div>
+        <div className='square4' id='square26'> </div>
+        <div className='square4' id='square27'> </div>
+        <div className='square3'> </div>
+      </div>
+    )
+
+
+    return (indents)
 
   }
 
@@ -217,30 +251,12 @@ class MergePage extends Component {
 	          }
           </div>
 
-	      	<div className = 'row3'>
-	      		<PosterSample posterselection={this.state.leftrightarray[0]} />
-	      		<span className="square4" onClick={this.handleGreyClick}></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	      	</div>
+
 
 	      	<div> 
 	      		{this.dynamicallyRenderRows()}
-	      		{this.dynamicallyRenderRows()}
-	      		{this.dynamicallyRenderRows()}
 	      	</div>
 
-
-      		<div className = 'row3'>
-	      		<span className="square4"></span>
-	      		<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<PosterSample posterselection={this.state.leftrightarray[1]} />
-	     	</div>
 
 	      		
 

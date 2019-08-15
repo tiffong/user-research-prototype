@@ -337,9 +337,9 @@ def img_comparison():
 
         n_output = []
         c_output = []
-        num_pic = 24
-        noise_diff = (noise_input_2 - noise_input_1) / 24
-        condition_diff = (condition_input_2 - condition_input_1) / 24
+        num_pic = 29
+        noise_diff = (noise_input_2 - noise_input_1) / num_pic
+        condition_diff = (condition_input_2 - condition_input_1) / num_pic
         for i in range(1, num_pic):
             n = noise_input_1 + noise_diff * i
             c = condition_input_1 + condition_diff * i
