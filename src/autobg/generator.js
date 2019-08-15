@@ -976,6 +976,7 @@ var div;
 
 var features
 var noises=[]
+var noises2=[]
 function getDataCallback(data, containedNoise, isExtended) {
     // $.get("/test.csv",function(data){
     // console.log(data);
@@ -983,19 +984,24 @@ function getDataCallback(data, containedNoise, isExtended) {
     $(".square2").empty()
     features = csv2array(data);
 
-    if(containedNoise){
-        for(var f in features){//
-            for(var g in features[f]){
-                features[f][g] = parseFloat(features[f][g])
-            }
-            noises[f] = features[f].slice(0,39)
-            features[f] =  features[f].slice(39)
+
+    for(var f in features){//
+        for(var g in features[f]){
+            features[f][g] = parseFloat(features[f][g])
+        }
+        if(containedNoise) {
+            if(isExtended)
+                noises2[f] = features[f].slice(0,39)
+            else
+                noises[f] = features[f].slice(0,39)
+            features[f] = features[f].slice(39)
         }
     }
 
 
+
     console.log(features)
-    // console.log(noises)
+    console.log(noises)
 
     for (var i = 0; i < features.length; i++) {
         var element = {
@@ -1109,7 +1115,8 @@ export {
     height,
     width,
     features,
-    noises
+    noises,
+    noises2
 };
 
 export {
