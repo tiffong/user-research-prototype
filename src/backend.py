@@ -69,29 +69,32 @@ def test():
 
 def parse_req_2():
 
+    requestedData = request.get_json()
+    print(requestedData)
+
     result = {}
 
-    result["circle_1"] = float(request.args.get("circle_1"))*2 - 1
-    result["square_1"] = float(request.args.get("square_1"))*2 - 1
-    result["triangle_1"] = float(request.args.get("triangle_1"))*2 - 1
-    result["bright_dark_1"] = float(request.args.get("bright_dark_1"))*2 - 1
-    result["soft_sharp_1"] = float(request.args.get("soft_sharp_1"))*2 - 1
-    result["warm_cool_1"] = float(request.args.get("warm_cool_1"))*2 - 1
-    result["simple_complex_1"] = float(request.args.get("simple_complex_1"))*2 - 1
-    result["disorder_inorder_1"] = float(request.args.get("disorder_inorder_1"))*2 - 1
-    result["high_low_1"] = float(request.args.get("high_low_1"))*2 - 1
-    result["random_noise_1"] = [float(x) for x in request.args.get("random_noise_1")[1:-1].split(",")]
+    result["circle_1"] = requestedData["circle_1"]*2 - 1
+    result["square_1"] = requestedData["square_1"]*2 - 1
+    result["triangle_1"] = requestedData["triangle_1"]*2 - 1
+    result["bright_dark_1"] = requestedData["bright_dark_1"]*2 - 1
+    result["soft_sharp_1"] = requestedData["soft_sharp_1"]*2 - 1
+    result["warm_cool_1"] = requestedData["warm_cool_1"]*2 - 1
+    result["simple_complex_1"] = requestedData["simple_complex_1"]*2 - 1
+    result["disorder_inorder_1"] = requestedData["disorder_inorder_1"]*2 - 1
+    result["high_low_1"] = requestedData["high_low_1"]*2 - 1
+    result["random_noise_1"] = requestedData["random_noise_1"]
 
-    result["circle_2"] = float(request.args.get("circle_2"))*2 - 1
-    result["square_2"] = float(request.args.get("square_2"))*2 - 1
-    result["triangle_2"] = float(request.args.get("triangle_2"))*2 - 1
-    result["bright_dark_2"] = float(request.args.get("bright_dark_2"))*2 - 1
-    result["soft_sharp_2"] = float(request.args.get("soft_sharp_2"))*2 - 1
-    result["warm_cool_2"] = float(request.args.get("warm_cool_2"))*2 - 1
-    result["simple_complex_2"] = float(request.args.get("simple_complex_2"))*2 - 1
-    result["disorder_inorder_2"] = float(request.args.get("disorder_inorder_2"))*2 - 1
-    result["high_low_2"] = float(request.args.get("high_low_2"))*2 - 1
-    result["random_noise_2"] = [float(x) for x in request.args.get("random_noise_2")[1:-1].split(",")]
+    result["circle_2"] = requestedData["circle_2"]*2 - 1
+    result["square_2"] = requestedData["square_2"]*2 - 1
+    result["triangle_2"] = requestedData["triangle_2"]*2 - 1
+    result["bright_dark_2"] = requestedData["bright_dark_2"]*2 - 1
+    result["soft_sharp_2"] = requestedData["soft_sharp_2"]*2 - 1
+    result["warm_cool_2"] = requestedData["warm_cool_2"]*2 - 1
+    result["simple_complex_2"] = requestedData["simple_complex_2"]*2 - 1
+    result["disorder_inorder_2"] = requestedData["disorder_inorder_2"]*2 - 1
+    result["high_low_2"] = requestedData["high_low_2"]*2 - 1
+    result["random_noise_2"] = requestedData["random_noise_2"]
 
     return result
 

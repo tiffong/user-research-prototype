@@ -3,6 +3,10 @@ import './mergepage.css';
 import MergePoster from './mergeposter.js'
 import PosterSample from './postersamples'
 
+import axios  from 'axios'
+import {getDataCallback,noises} from './autobg/generator.js'
+
+
 
 const ii1 = require('./img/sample1.png')
 const ii2 = require('./img/sample2.png')
@@ -15,6 +19,9 @@ const ii8 = require('./img/sample8.png')
 const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
 const white = require('./img/white.png')
+
+var requestBody = {}
+
 
 class MergePage extends Component {
   
@@ -52,6 +59,53 @@ class MergePage extends Component {
   	this.setState(prevState => ({
       leftrightarray: [chosenposter, ...prevState.leftrightarray],
     }))
+
+	//TODO: you need to get the info of two selected posters and pass the info to the path /img_comparison
+
+      //using the ID of the clicked poster, insert DIV
+      // var clickedID = this.state.clickedid.replace(/[^0-9]/ig,"")
+      // console.log(clickedID)
+
+	  var clickedID_1 = 1;
+	  var clickedID_2 = 2;
+
+      console.log(noises)
+
+      requestBody = {
+          circle_1: noises[clickedID_1][0],
+          square_1: noises[clickedID_1][1],
+          triangle_1: noises[clickedID_1][2],
+          bright_dark_1: noises[clickedID_1][3],
+          soft_sharp_1: noises[clickedID_1][4],
+          warm_cool_1: noises[clickedID_1][5],
+          simple_complex_1: noises[clickedID_1][6],
+          disorder_inorder_1: noises[clickedID_1][7],
+          high_low_1: noises[clickedID_1][8],
+          random_noise_1:noises[clickedID_1].slice(9),
+
+          circle_2: noises[clickedID_2][0],
+          square_2: noises[clickedID_2][1],
+          triangle_2: noises[clickedID_2][2],
+          bright_dark_2: noises[clickedID_2][3],
+          soft_sharp_2: noises[clickedID_2][4],
+          warm_cool_2: noises[clickedID_2][5],
+          simple_complex_2: noises[clickedID_2][6],
+          disorder_inorder_2: noises[clickedID_2][7],
+          high_low_2: noises[clickedID_2][8],
+          random_noise_2:noises[clickedID_2].slice(9)
+      }
+
+      console.log(requestBody)
+
+
+      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+          .then(function (response) {
+              getDataCallback(response.data, true, true)
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+
   }
 
   handleCancel() {
