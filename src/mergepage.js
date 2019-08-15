@@ -175,9 +175,7 @@ class MergePage extends Component {
         <div className='square4' id={name5}> </div> 
       </div>
         )
-
     }
-
 
     indents.push(
       <div className='row'> 
@@ -188,10 +186,7 @@ class MergePage extends Component {
         <div className='square3'> </div>
       </div>
     )
-
-
     return (indents)
-
   }
 
   dynamicallyRenderPosters = () => {

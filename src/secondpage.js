@@ -39,6 +39,7 @@ class SecondPage extends Component {
   		favorites: [],
   		clickedid: 'poster8',
   		transitionmodeclicked: false,
+  		twoclickedposters: [],
   	}
 
   	this.handleSelection = this.handleSelection.bind(this)
@@ -47,7 +48,7 @@ class SecondPage extends Component {
 // sets up the posters that are displayed by putting them in an array
   componentDidMount() {
     this.setState(prevState => ({
-      parray: [...prevState.parray],
+      twoclickedposters: [...prevState.parray, 'poster0', 'poster1'],
     }))
 
 //initially set the historyarray to white spaces
@@ -68,8 +69,10 @@ class SecondPage extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
+  	console.log('state of transition mode', this.state.transitionmodeclicked)
+  	console.log('first of the clicked posters', this.state.twoclickedposters[0])
 
-  }
+  }	
 
 
 // once you click a poster, this function handles the selection, 
@@ -91,40 +94,112 @@ class SecondPage extends Component {
   	// set clicked id to clicked poster
   	var id_of_clicked_poster = e.currentTarget.id
 
+  	//add to array fortwo clicked posters
+  	this.setState(prevState => ({
+      twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
+    }))
   	//console.log("currenttarget", e.currentTarget.id)
   	// this.setState({
    //    clickedid: id_of_clicked_poster
    //  });
 
-    // console.log('ss', this.state.clickedid)
 
-  	//using the number ID of the clicked poster, insert DIV
-  	var clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
-  	console.log('ID of the poster you clicked: ', clickedID)
-  	console.log('noises', noises)
+ //using the number ID of the clicked poster, insert DIV
+  	
+  	if(!this.state.transitionmodeclicked) {
+	   	var clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
+	  	console.log('ID of the poster you clicked: ', clickedID)
+	  	console.log('noises', noises)
 
-	requestBody = {
-        circle: noises[clickedID][30],
-        square: noises[clickedID][31],
-        triangle: noises[clickedID][32],
-        bright_dark: noises[clickedID][33],
-        soft_sharp: noises[clickedID][34],
-        warm_cool: noises[clickedID][35],
-        simple_complex: noises[clickedID][36],
-        disorder_inorder: noises[clickedID][37],
-        high_low: noises[clickedID][38],
-        random_noise:noises[clickedID].slice(0,30)
-    }
 
-    console.log('request body', requestBody)
+		requestBody = {
+	        circle: noises[clickedID][30],
+	        square: noises[clickedID][31],
+	        triangle: noises[clickedID][32],
+	        bright_dark: noises[clickedID][33],
+	        soft_sharp: noises[clickedID][34],
+	        warm_cool: noises[clickedID][35],
+	        simple_complex: noises[clickedID][36],
+	        disorder_inorder: noises[clickedID][37],
+	        high_low: noises[clickedID][38],
+	        random_noise:noises[clickedID].slice(0,30)
+	    }
 
-	axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
-	  .then(function (response) {
-		  getDataCallback(response.data, true, true)
-	  })
-	  .catch(function (error) {
-		  console.log(error);
-	  });
+	    console.log('request body', requestBody)
+
+		axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
+		  .then(function (response) {
+			  getDataCallback(response.data, true, true)
+		  })
+		  .catch(function (error) {
+			  console.log(error);
+		  }); 		
+  	} else {
+
+ //if you are in tranistion  mode, you  must  click two
+  	  console.log('CLICK TWO HAHAHAHA')
+  	 
+  	  var clickedID_1 = this.state.twoclickedposters[0];
+	  var clickedID_2 = this.state.twoclickedposters[1];
+
+      console.log(noises)
+
+      requestBody = {
+          circle_1: noises[clickedID_1][0],
+          square_1: noises[clickedID_1][1],
+          triangle_1: noises[clickedID_1][2],
+          bright_dark_1: noises[clickedID_1][3],
+          soft_sharp_1: noises[clickedID_1][4],
+          warm_cool_1: noises[clickedID_1][5],
+          simple_complex_1: noises[clickedID_1][6],
+          disorder_inorder_1: noises[clickedID_1][7],
+          high_low_1: noises[clickedID_1][8],
+          random_noise_1:noises[clickedID_1].slice(9),
+
+          circle_2: noises[clickedID_2][0],
+          square_2: noises[clickedID_2][1],
+          triangle_2: noises[clickedID_2][2],
+          bright_dark_2: noises[clickedID_2][3],
+          soft_sharp_2: noises[clickedID_2][4],
+          warm_cool_2: noises[clickedID_2][5],
+          simple_complex_2: noises[clickedID_2][6],
+          disorder_inorder_2: noises[clickedID_2][7],
+          high_low_2: noises[clickedID_2][8],
+          random_noise_2:noises[clickedID_2].slice(9)
+      }
+
+      console.log(requestBody)
+
+
+      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+          .then(function (response) {
+              getDataCallback(response.data, true, true)
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+  	}
+
+
+  }
+
+  handleBackButton = () => {
+
+ //if we are NOT in transition mode, then we set transition mode to true, and render the transition m ode
+ //if we are in  explore mode, THEN back should take us back to the first page
+  	if (!this.state.transitionmodeclicked) {
+
+  		this.props.history.push('/');
+ 
+  	} else if (this.state.transitionmodeclicked) {
+  		
+
+  		this.setState(prevState => ({
+	      transitionmodeclicked: false
+	    })) 
+  	}
+
+
   }
 
   handleGreyClick =() => {
@@ -158,11 +233,14 @@ class SecondPage extends Component {
 
 //if you click transition mode then the state will be changed to transition mode clicked
   handleTransitionModeClick = () => {
-  	this.setState(prevState => ({
-      transitionmodeclicked: !prevState.transitionmodeclicked
-    }))   
+  	
 
-  	console.log(this.state.transitionmodeclicked)
+  	this.setState(prevState => ({
+      transitionmodeclicked: true
+    })) 
+
+    //should do something else if it is supposed to be a "CANCEL" button
+
   }
 
   dynamicallyRenderPosters = () => {
@@ -279,9 +357,9 @@ class SecondPage extends Component {
 	    <div className = 'leftside2'>
 	      	
 		      	<div className='buttflexrow'>
-			      	<button className='button2' onClick={()=>{this.props.history.push('/');}} > Back </button>
-			      	<div className='instructions'> Click a design to explore!  </div>
-			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Explore Mode' : 'Transition Mode'} </button>
+			      	<button className='button2' onClick={this.handleBackButton} > Back </button>
+			      	<div className='instructions'> {this.state.transitionmodeclicked ? 'Click two to see the transition!' : 'Click a design to explore!'}   </div>
+			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Cancel' : 'Transition Mode'} </button>
 		      	</div>
 
 
@@ -480,7 +558,7 @@ class SecondPage extends Component {
 			{
 				this.state.transitionmodeclicked &&
 
-				<div className='rightside2'>
+				<div className='rightsidetransition'>
 					<div className='row'> 
 				        <div className='square3'> </div>
 				        <div className='square2' id='square0'> </div>

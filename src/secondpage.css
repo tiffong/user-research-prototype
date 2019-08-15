@@ -167,6 +167,14 @@
 
 }
 
+.rightsidetransition {
+
+  background-color: white;
+  padding-left: 160px;
+  padding-top: 100px;
+
+}
+
 .simple {
 	transform: rotate(-90deg);
   position: relative;
