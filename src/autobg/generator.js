@@ -9,6 +9,7 @@ import * as SVG from 'svg.js'
 import $ from 'jquery'
 
 
+
 function csv2array(data, delimeter) {
     // Retrieve the delimeter
     if (delimeter === undefined)
@@ -974,138 +975,163 @@ var posterList = [];
 var div;
 // 获取到服务器返回的csv文件后的回调函数
 
-var features
-var noises=[]
-var noises2=[]
-function getDataCallback(data, containedNoise, isExtended) {
+var features = []
+var features2 = []
+var noises= []
+var noises2 = []
+
+function getDataCallback(data, containedNoise, isExtended, selectedID) {
     // $.get("/test.csv",function(data){
     // console.log(data);
-    $(".postersamples").empty()
-    $(".square2").empty()
-    features = csv2array(data);
+    if(isExtended){
+        $(".square2").empty()
+        features2 = csv2array(data);
 
-
-    for(var f in features){//
-        for(var g in features[f]){
-            features[f][g] = parseFloat(features[f][g])
+        for(var f in features2){//
+            for(var g in features2[f]){
+                features2[f][g] = parseFloat(features2[f][g])
+            }
+            noises2[f] = features2[f].slice(0,39)
+            features2[f] = features2[f].slice(39)
         }
-        if(containedNoise) {
-            if(isExtended)
-                noises2[f] = features[f].slice(0,39)
-            else
+
+        if(selectedID)
+            features2.push(features[selectedID])
+        constructPoster(features2)
+
+    }else{
+        $(".postersamples").empty()
+        features = csv2array(data);
+        if(containedNoise){
+            for(var f in features){//
+                for(var g in features[f]){
+                    features[f][g] = parseFloat(features[f][g])
+                }
                 noises[f] = features[f].slice(0,39)
-            features[f] = features[f].slice(39)
+                features[f] = features[f].slice(39)
+            }
         }
+        else{
+            for(var f in features){//
+                for(var g in features[f]){
+                    features[f][g] = parseFloat(features[f][g])
+                }
+            }
+
+        }
+        constructPoster(features)
+    }
+
+    function constructPoster(featureData){
+        for (var i = 0; i < featureData.length; i++) {
+            var element = {
+                    "data": featureData[i].slice(0, 15),
+                    "index": featureData[i][14],
+                    "name": "element"
+                },
+                element2 = {
+                    "data": featureData[i].slice(15, 30),
+                    "index": featureData[i][29],
+                    "name": "element"
+                },
+                element3 = {
+                    "data": featureData[i].slice(30, 45),
+                    "index": featureData[i][44],
+                    "name": "element"
+                },
+                element4 = {
+                    "data": featureData[i].slice(45, 60),
+                    "index": featureData[i][59],
+                    "name": "element"
+                },
+                element5 = {
+                    "data": featureData[i].slice(60, 75),
+                    "index": featureData[i][74],
+                    "name": "element"
+                },
+                element6 = {
+                    "data": featureData[i].slice(75, 90),
+                    "index": featureData[i][89],
+                    "name": "element"
+                },
+                element7 = {
+                    "data": featureData[i].slice(90, 105),
+                    "index": featureData[i][104],
+                    "name": "element"
+                },
+                element8 = {
+                    "data": featureData[i].slice(105, 120),
+                    "index": featureData[i][119],
+                    "name": "element"
+                },
+                element9 = {
+                    "data": featureData[i].slice(120, 135),
+                    "index": featureData[i][134],
+                    "name": "element"
+                },
+                element10 = {
+                    "data": featureData[i].slice(135, 150),
+                    "index": featureData[i][149],
+                    "name": "element"
+                },
+                element11 = {
+                    "data": featureData[i].slice(150, 165),
+                    "index": featureData[i][164],
+                    "name": "element"
+                },
+                element12 = {
+                    "data": featureData[i].slice(165, 180),
+                    "index": featureData[i][179],
+                    "name": "element"
+                },
+                element13 = {
+                    "data": featureData[i].slice(180, 195),
+                    "index": featureData[i][194],
+                    "name": "element"
+                },
+                element14 = {
+                    "data": featureData[i].slice(195, 210),
+                    "index": featureData[i][209],
+                    "name": "element"
+                },
+                element15 = {
+                    "data": featureData[i].slice(210, 225),
+                    "index": featureData[i][224],
+                    "name": "element"
+                },
+                element16 = {
+                    "data": featureData[i].slice(225, 240),
+                    "index": featureData[i][239],
+                    "name": "element"
+                },
+                element17 = {
+                    "data": featureData[i].slice(240, 255),
+                    "index": featureData[i][254],
+                    "name": "element"
+                },
+                element18 = {
+                    "data": featureData[i].slice(255, 270),
+                    "index": featureData[i][269],
+                    "name": "element"
+                },
+                bg = {
+                    "data": featureData[i].slice(270, 276),
+                    "name": "bg"
+                };
+
+            var poster = [element, element2, element3, element4, element5, element6, element7, element8, element9, element10, element11,
+                element12, element13, element14, element15, element16, element17, element18, bg]
+
+            createPoster(poster, i, isExtended)
+
+            posterList.push(poster);
+        }
+
     }
 
 
 
-    console.log(features)
-    console.log(noises)
 
-    for (var i = 0; i < features.length; i++) {
-        var element = {
-                "data": features[i].slice(0, 15),
-                "index": features[i][14],
-                "name": "element"
-            },
-            element2 = {
-                "data": features[i].slice(15, 30),
-                "index": features[i][29],
-                "name": "element"
-            },
-            element3 = {
-                "data": features[i].slice(30, 45),
-                "index": features[i][44],
-                "name": "element"
-            },
-            element4 = {
-                "data": features[i].slice(45, 60),
-                "index": features[i][59],
-                "name": "element"
-            },
-            element5 = {
-                "data": features[i].slice(60, 75),
-                "index": features[i][74],
-                "name": "element"
-            },
-            element6 = {
-                "data": features[i].slice(75, 90),
-                "index": features[i][89],
-                "name": "element"
-            },
-            element7 = {
-                "data": features[i].slice(90, 105),
-                "index": features[i][104],
-                "name": "element"
-            },
-            element8 = {
-                "data": features[i].slice(105, 120),
-                "index": features[i][119],
-                "name": "element"
-            },
-            element9 = {
-                "data": features[i].slice(120, 135),
-                "index": features[i][134],
-                "name": "element"
-            },
-            element10 = {
-                "data": features[i].slice(135, 150),
-                "index": features[i][149],
-                "name": "element"
-            },
-            element11 = {
-                "data": features[i].slice(150, 165),
-                "index": features[i][164],
-                "name": "element"
-            },
-            element12 = {
-                "data": features[i].slice(165, 180),
-                "index": features[i][179],
-                "name": "element"
-            },
-            element13 = {
-                "data": features[i].slice(180, 195),
-                "index": features[i][194],
-                "name": "element"
-            },
-            element14 = {
-                "data": features[i].slice(195, 210),
-                "index": features[i][209],
-                "name": "element"
-            },
-            element15 = {
-                "data": features[i].slice(210, 225),
-                "index": features[i][224],
-                "name": "element"
-            },
-            element16 = {
-                "data": features[i].slice(225, 240),
-                "index": features[i][239],
-                "name": "element"
-            },
-            element17 = {
-                "data": features[i].slice(240, 255),
-                "index": features[i][254],
-                "name": "element"
-            },
-            element18 = {
-                "data": features[i].slice(255, 270),
-                "index": features[i][269],
-                "name": "element"
-            },
-            bg = {
-                "data": features[i].slice(270, 276),
-                "name": "bg"
-            };
-
-        var poster = [element, element2, element3, element4, element5, element6, element7, element8, element9, element10, element11,
-            element12, element13, element14, element15, element16, element17, element18, bg]
-
-        createPoster(poster, i, isExtended)
-
-        posterList.push(poster);
-    }
 }
 
 export {
@@ -1115,6 +1141,7 @@ export {
     height,
     width,
     features,
+    features2,
     noises,
     noises2
 };
