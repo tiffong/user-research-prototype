@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import './secondpage.css';
 import Poster from './poster.js'
 import PosterSample from './postersamples.js'
@@ -9,9 +9,11 @@ import {Line, Triangle} from 'react-shapes';
 import { ReactDOM, render } from 'react-dom'
 import $ from 'jquery'
 
-const ii2 = require('./img/poster1.jpg')
+
+const ii2 = require('./img/sample2.png')
 
 var requestBody = {}
+var leftsideposters = []
 
 class SecondPage extends Component {
   constructor(props) {
@@ -49,7 +51,8 @@ class SecondPage extends Component {
   	console.log('first of the clicked posters', this.state.twoclickedposters[0])
   	console.log('second of the clicked posters', this.state.twoclickedposters[1])
   	console.log('length of clicked posters array', this.state.twoclickedposters.length)
-  	console.log('image that is clicked', this.state.popupimage)
+  	console.log('ID of POPUP that was just clicked: ', this.state.popupimage)
+  	console.log('ID of left side poster that was clicked:', this.state.clickedid)
 
 //if the length of posters clicked is greater than 2, then will send a request to load the merge page
   	if(this.state.transitionmodeclicked) {
@@ -117,26 +120,25 @@ class SecondPage extends Component {
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
+  	//e.persist()
   	// set clicked id to clicked poster
   	var id_of_clicked_poster = e.currentTarget.id
+  	
+  	//highlight when clicked
+  	e.currentTarget.className = 'posterclicked'
+
+  	//TODO: unhighlight the last SVGs that was clicked
 
   	this.setState(prevState => ({
 	      twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
+	      clickedid: id_of_clicked_poster
 	}))
-
-  	//add to array fortwo clicked posters
-
-  	//console.log("currenttarget", e.currentTarget.id)
-  	// this.setState({
-   //    clickedid: id_of_clicked_poster
-   //  });
-
 
  //using the number ID of the clicked poster, insert DIV
  //if you are in explore mode
   	if(!this.state.transitionmodeclicked)  {
 	   	var clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
-	  	console.log('ID of the poster you clicked: ', clickedID)
+	  	//console.log('ID of the poster you clicked: ', clickedID)
 	  	console.log('noises', noises)
 
 
@@ -260,7 +262,7 @@ class SecondPage extends Component {
   }
 
 //this will allow the image to be rendered larger when clicked
-//CURRENTLY UNFUNCTIONAL
+//CURRENTLY NOT FUNCTIONAL
   handlePopupClick = () => {
 
   	var indents = []
@@ -355,6 +357,7 @@ class SecondPage extends Component {
 
   }
 
+//posters on the left side will be dynamically rendered
   dynamicallyRenderPosters = () => {
  
   	var indents = []
@@ -367,19 +370,21 @@ class SecondPage extends Component {
   		var name4 = 'poster'+(i+3)
 
   		indents.push(
-  			<div className='row'>
-	  			<div className='poster' id={name} onClick={ this.handleSVGClick }  > </div>
-	  			<div className='poster' id={name2} onClick={ this.handleSVGClick }  > </div>
-	  			<div className='poster' id={name3} onClick={ this.handleSVGClick }  > </div>
-	  			<div className='poster' id={name4} onClick={ this.handleSVGClick }  > </div>
+  			<div className='row' key={'poster'+(i+100)}>
+	  			<div className='poster' key={name} id={name} onClick={ this.handleSVGClick }  > </div>
+	  			<div className='poster' key={name2} id={name2} onClick={ this.handleSVGClick }  > </div>
+	  			<div className='poster' key={name3} id={name3} onClick={ this.handleSVGClick }  > </div>
+	  			<div className='poster' key={name4} id={name4} onClick={ this.handleSVGClick }  > </div>
   			</div>
-  		)
+  		) 
 
   	}
-
+//set the variable of posters to indents
+  	leftsideposters = indents
   	return (indents)
   }
 
+//dynamically renders the Rows that appaer on the right side
   dynamicallyRenderTransitionRows = () => {
 
     var indents2 = []
@@ -486,7 +491,11 @@ class SecondPage extends Component {
 		      	</div>
 
 		      	<div className='posterrows'>
+
+
 					{this.dynamicallyRenderPosters()}
+
+
 		      	</div>
 
 		    <div className='history'>
@@ -518,12 +527,7 @@ class SecondPage extends Component {
 				          }
 			          </div>
 
-
-
-				      <div className='sideflex'> 
-
-				     
-
+				      <div className='sideflex'> 				  
 					      <div className='simple'> Simple </div>
 
 					      <div>
@@ -722,23 +726,15 @@ class SecondPage extends Component {
 				    </div>			
 		    	    
 				    <div className='row'> 
-				      
 				        <div className='square2' id='square24'> </div>
 				        <div className='square2' id='square25'> </div>
 				        <div className='square2' id='square26'> </div>
 				        <div className='square2' id='square27'> </div>
 				        <div className='square2'>  </div>
 				    </div>
-
-				</div>
-					
-
+				</div>	
 			}
-
-	
       </div>
-
-
     );
   }
 }

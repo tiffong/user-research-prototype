@@ -4,6 +4,27 @@
 
 }
 
+.poster {
+  height: 120px;
+  width: 120px;
+  margin: 5px;
+
+}
+
+.posterclicked {
+  height: 120px;
+  width: 120px;
+  margin: 5px;
+  border: solid 3px black;
+
+}
+
+.poster:hover {
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+
+
 .line {
   position: absolute;
   z-index: 1;
