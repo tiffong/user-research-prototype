@@ -101,7 +101,7 @@ class SecondPage extends Component {
 
 			      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
 			          .then(function (response) {
-			          	  var clickedArrays= [clickedID_2,clickedID_1] 
+			          	  var clickedArrays= [clickedID_1,clickedID_2]
 			              getDataCallback(response.data, true, true, clickedArrays)
 			              
 			          })
