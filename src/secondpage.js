@@ -6,26 +6,10 @@ import axios  from 'axios'
 import {getDataCallback,noises,features} from './autobg/generator.js'
 import {Line, Triangle} from 'react-shapes';
 //reactsvg stuff
-import { render } from 'react-dom'
+import { ReactDOM, render } from 'react-dom'
 import $ from 'jquery'
 
-
-// import ReactSVG from 'react-svg'
-
-// assume these real posters that have been imported imported from the code
-const ii1 = require('./img/sample1.png')
-const ii2 = require('./img/sample2.png')
-const ii3 = require('./img/sample3.png')
-const ii4 = require('./img/sample4.png')
-const ii5 = require('./img/sample5.png')
-const ii6 = require('./img/sample6.png')
-const ii7 = require('./img/sample7.png')
-const ii8 = require('./img/sample8.png')
-const ii9 = require('./img/sample9.png')
-const ii10 = require('./img/sample10.png')
-const white = require('./img/white.png')
-var hello = null
-
+const ii2 = require('./img/poster1.jpg')
 
 var requestBody = {}
 
@@ -35,7 +19,7 @@ class SecondPage extends Component {
 
   	this.state = {
   		parray: [],
-  		clickedposter: null,
+  		//clickedposter: null,
   		historyarray: [],
   		isGreyClicked: false,
   		xout: false,
@@ -53,19 +37,9 @@ class SecondPage extends Component {
   componentDidMount() {
 
 
-//initially set the historyarray to white spaces
-    this.setState(prevState => ({
-      historyarray: [...prevState.historyarray, white, white, white, white],
-    }))
-
-// theoretically the intial state of the center poster should be the very first one in parray
-    this.setState({
-      clickedposter: ii1
-    })
-
    this.getDataAxios()
-   console.log('requestbody')
-   console.log(requestBody)
+   // console.log('requestbody')
+   // console.log(requestBody)
 
   }
 
@@ -75,20 +49,15 @@ class SecondPage extends Component {
   	console.log('first of the clicked posters', this.state.twoclickedposters[0])
   	console.log('second of the clicked posters', this.state.twoclickedposters[1])
   	console.log('length of clicked posters array', this.state.twoclickedposters.length)
-
   	console.log('image that is clicked', this.state.popupimage)
-//if the length of posters clicked is greater than 2, then will send a request
+
+//if the length of posters clicked is greater than 2, then will send a request to load the merge page
   	if(this.state.transitionmodeclicked) {
 
-
   		  	 if(this.state.twoclickedposters.length > 1) {
-
-
 		  	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
 			  var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
 			  console.log('from x to y',  clickedID_2, clickedID_1)
-
-
 		      console.log(noises)
 
 		      requestBody = {
@@ -134,6 +103,7 @@ class SecondPage extends Component {
 // once you click a poster, this function handles the selection, 
 // setting the clicked poster image to the one that was clicked
 // chosenposter is found from within the poster component
+//CURRENTLY UNUSED
   handleSelection(chosenposter) {
   	this.setState({
       clickedposter: chosenposter
@@ -417,7 +387,7 @@ class SecondPage extends Component {
     indents2.push(
       <div className='row'> 
         <div className='square3'> </div>
-        <div className='square2' id='square0'> </div>
+        <div className='square2' id='square0' ref='tryref'> </div>
         <div className='square2' id='square1'> </div>
         <div className='square2' id='square2'> </div>
         <div className='square2' id='square3'> </div>
@@ -457,25 +427,27 @@ class SecondPage extends Component {
 
   async getDataAxios(){
       
-    var hueVar = 0
-    var satVar = 0
-    var valVar = 0
-    var cirVar = 0
-    var squareVar = 0
-    var triVar = 0
+    var hueVar = Number(localStorage.getItem('wc_pg1'))
+    var satVar = Number(localStorage.getItem('hl_pg1'))
+    var valVar = Number(localStorage.getItem('bd_pg1'))
+    var cirVar = Number(localStorage.getItem('circle_pg1'))
+    var squareVar = Number(localStorage.getItem('square_pg1'))
+    var triVar = Number(localStorage.getItem('tri_pg1'))
+
+   	console.log('variables from first page', hueVar, satVar, valVar, cirVar, squareVar, triVar)
 
     //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
 
       requestBody = {
-          circle : 0.3,
-          square : 0.3,
-          triangle : 0.3,
-          bright_dark : 0.5,
+          circle : cirVar,
+          square :  squareVar,
+          triangle : triVar,
+          bright_dark : valVar,
           soft_sharp : 0.5,
-          warm_cool : 0.5,
+          warm_cool : hueVar,
           simple_complex : 0.5,
           disorder_inorder : 0.5,
-          high_low : 0.5
+          high_low : satVar
       }
 
 
@@ -488,6 +460,11 @@ class SecondPage extends Component {
       .catch(function (error) {
           console.log(error);
       });
+  }
+
+  handleRefresh = () => {
+  	$(".poster").empty()
+  	this.getDataAxios()
   }
 
   render() {
@@ -504,6 +481,9 @@ class SecondPage extends Component {
 			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Cancel' : 'Transition Mode'} </button>
 		      	</div>
 
+		      	<div className='refreshbuttoncontainer'>
+		      		<button className='refreshbutton' onClick={this.handleRefresh}> Refresh </button>
+		      	</div>
 
 		      	<div className='posterrows'>
 					{this.dynamicallyRenderPosters()}

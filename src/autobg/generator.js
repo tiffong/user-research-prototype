@@ -1095,7 +1095,7 @@ function getDataCallback(data, containedNoise, isExtended) {
                 "name": "element"
             },
             bg = {
-                "data": features[i].slice(270, 275),
+                "data": features[i].slice(270, 276),
                 "name": "bg"
             };
 

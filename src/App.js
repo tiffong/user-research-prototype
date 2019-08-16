@@ -9,18 +9,6 @@ import {getDataCallback} from './autobg/generator.js'
 import axios  from 'axios'
 
 
-const i1 = require('./img/sample1.png')
-const i2 = require('./img/sample2.png')
-const i3 = require('./img/sample3.png')
-const i4 = require('./img/sample4.png')
-const i5 = require('./img/sample5.png')
-const i6 = require('./img/sample6.png')
-const i7 = require('./img/sample7.png')
-const i8 = require('./img/sample8.png')
-const i9 = require('./img/sample9.png')
-const i10 = require('./img/sample10.png')
-
-
 var requestBody = {}
 
 class App extends React.Component{
@@ -65,16 +53,8 @@ class App extends React.Component{
   }
 
   componentDidMount() {
-    
-    this.setState(prevState => ({
-      posters: [...prevState.posters, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10]
-
-    }))
 
       this.getDataAxios()
-
-    // var fileDownload = require('js-file-download');
-    // fileDownload(require('./img/sample10.png'), 'hellothere');
 
   } 
 
@@ -94,7 +74,6 @@ class App extends React.Component{
     var cirVar = 0
     var squareVar = 0
     var triVar = 0
-
 
     if(this.state.CoolClicked) {
       hueVar = 0.3
@@ -120,28 +99,35 @@ class App extends React.Component{
       valVar = 0.7
     }    
 
-    if(this.state.circle) {
-        cirVar = 1
-      if(this.state.square && !this.state.triangle) { //circle square
-        cirVar = 0.5
-        triVar = 0.5
-      } else if (!this.state.square && this.state.triangle) { //circle triangle 
-        cirVar = 0.5
-        triVar = 0.5
-      } else { //all 3 shapes
-        cirVar = 0.3
-        triVar = 0.3
-        squareVar = 0.3
-      }
-    }
+    if(this.state.circle && !this.state.square && ! this.state.triangle) { //circle
+      cirVar = 1
+      squareVar = 0
+      triVar = 0
+    } else if (!this.state.circle && this.state.square && !this.state.triangle) {//square
+      cirVar = 0
+      squareVar = 1
+      triVar = 0
 
-    if (this.state.square && this.state.triangle) {
+    } else if (!this.state.circle && !this.state.square && this.state.triangle) { //triangle
+      cirVar = 0
+      squareVar = 0
+      triVar = 1
+    } else if (this.state.circle && this.state.square && !this.state.triangle) { //circle square
+      cirVar = 0.5
+      squareVar = 0.5
+      triVar = 0
+    } else if (this.state.circle && !this.state.square && this.state.triangle) { //circle triangle
+      cirVar = 0.5
+      squareVar = 0
+      triVar = 0.5
+    } else if (this.state.circle && !this.state.square && this.state.triangle) { //square triangle
+      cirVar = 0
       squareVar = 0.5
       triVar = 0.5
-    } else if (this.state.square && !this.state.triangle &&  !this.state.circle) { //only the square
-      squareVar= 1
-    } else if (this.state.triangle && !this.state.square && !this.state.circle) { //only the triangle
-      triVar = 1
+    } else {
+      cirVar = 0.3
+      squareVar = 0.3
+      triVar = 0.3    
     }
 
 
@@ -159,6 +145,9 @@ class App extends React.Component{
           high_low : satVar
       }
 
+      //shapes are being funky
+      console.log('HSV', hueVar, satVar, valVar )
+      console.log('CST', cirVar, squareVar, triVar)
 
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
       .then(function (response) {
@@ -170,27 +159,10 @@ class App extends React.Component{
   }
 
 
-//   httprequeststestfxn() {
-
-
-
-//     var fullPath = base+"?hue="+hueVar+"&sat="+satVar+'?val='+valVar+'?shapes='+shapes
-
-// // going to have to figure out the asynchronicity of this
-//     console.log('asdfa', fullPath)
-
-//   }
-
 
 //using arrow function instead of binding the context
   handleCoolClick = () => {
     
-// example for adding new posters upon new click
-    
-    this.setState(prevState => ({
-      posters: [i9, ...prevState.posters]
-    }))
-
     if ((!this.state.CoolClicked && this.state.CoolWarmClicked) || (!this.state.CoolClicked && this.state.WarmClicked)) {
         this.setState( prevState => ({
           CoolClicked: !prevState.CoolClicked
@@ -232,16 +204,6 @@ class App extends React.Component{
       });
     }
 
-  axios.get('https://api.github.com/users/mapbox')
-  .then((response) => {
-    console.log('request verified')
-    console.log(response.data);
-    console.log(response.status);
-    console.log(response.statusText);
-    console.log(response.headers);
-    console.log(response.config);
-    console.log(response.request)
-  });
   }
 
   handleWarmClick() {
@@ -430,6 +392,17 @@ checkItem(e, shape) {
 handleGenerate() {
   
   if(this.state.circle || this.state.square || this.state.triangle) {
+      
+      localStorage.setItem('circle_pg1', requestBody.circle)
+      localStorage.setItem('square_pg1', requestBody.square)
+      localStorage.setItem('tri_pg1', requestBody.triangle)
+      localStorage.setItem('bd_pg1', requestBody.bright_dark)
+      localStorage.setItem('ss_pg1', requestBody.soft_sharp)
+      localStorage.setItem('wc_pg1', requestBody.warm_cool)
+      localStorage.setItem('sc_pg1', requestBody.simple_complex)
+      localStorage.setItem('di_pg1', requestBody.disorder_inorder)
+      localStorage.setItem('hl_pg1', requestBody.high_low)
+
       this.props.history.push('/secondpage');
   } else {
     console.log('Pick at least one shape')
