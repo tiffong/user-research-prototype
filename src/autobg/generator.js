@@ -995,8 +995,11 @@ function getDataCallback(data, containedNoise, isExtended, selectedID) {
             features2[f] = features2[f].slice(39)
         }
 
-        if(selectedID)
-            features2.push(features[selectedID])
+        if(selectedID){
+            for(var index in selectedID){
+                features2.push(features[selectedID[index]])
+            }   
+        }
         constructPoster(features2)
 
     }else{

@@ -15,6 +15,11 @@ const ii2 = require('./img/sample2.png')
 var requestBody = {}
 var leftsideposters = []
 
+var clickedID;
+
+var clickedID_1;
+var clickedID_2;
+
 class SecondPage extends Component {
   constructor(props) {
   	super(props)
@@ -54,51 +59,64 @@ class SecondPage extends Component {
   	console.log('ID of POPUP that was just clicked: ', this.state.popupimage)
   	console.log('ID of left side poster that was clicked:', this.state.clickedid)
 
+
+
 //if the length of posters clicked is greater than 2, then will send a request to load the merge page
   	if(this.state.transitionmodeclicked) {
 
-  		  	 if(this.state.twoclickedposters.length > 1) {
-		  	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
-			  var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
-			  console.log('from x to y',  clickedID_2, clickedID_1)
-		      console.log(noises)
-
-		      requestBody = {
-		          circle_1: noises[clickedID_1][0],
-		          square_1: noises[clickedID_1][1],
-		          triangle_1: noises[clickedID_1][2],
-		          bright_dark_1: noises[clickedID_1][3],
-		          soft_sharp_1: noises[clickedID_1][4],
-		          warm_cool_1: noises[clickedID_1][5],
-		          simple_complex_1: noises[clickedID_1][6],
-		          disorder_inorder_1: noises[clickedID_1][7],
-		          high_low_1: noises[clickedID_1][8],
-		          random_noise_1:noises[clickedID_1].slice(9),
-
-		          circle_2: noises[clickedID_2][0],
-		          square_2: noises[clickedID_2][1],
-		          triangle_2: noises[clickedID_2][2],
-		          bright_dark_2: noises[clickedID_2][3],
-		          soft_sharp_2: noises[clickedID_2][4],
-		          warm_cool_2: noises[clickedID_2][5],
-		          simple_complex_2: noises[clickedID_2][6],
-		          disorder_inorder_2: noises[clickedID_2][7],
-		          high_low_2: noises[clickedID_2][8],
-		          random_noise_2:noises[clickedID_2].slice(9)
-		      }
-
-		      console.log(requestBody)
+  		  	 if(this.state.twoclickedposters.length>1 &&  this.state.twoclickedposters.length%2 == 0) {
+			  	  clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+				  clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
 
 
-		      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
-		          .then(function (response) {
-		              getDataCallback(response.data, true, true)
-		          })
-		          .catch(function (error) {
-		              console.log(error);
-		          });
+				  console.log('from x to y',  clickedID_2, clickedID_1)
+			      console.log(noises)
+
+			      requestBody = {
+			          circle_1: noises[clickedID_1][0],
+			          square_1: noises[clickedID_1][1],
+			          triangle_1: noises[clickedID_1][2],
+			          bright_dark_1: noises[clickedID_1][3],
+			          soft_sharp_1: noises[clickedID_1][4],
+			          warm_cool_1: noises[clickedID_1][5],
+			          simple_complex_1: noises[clickedID_1][6],
+			          disorder_inorder_1: noises[clickedID_1][7],
+			          high_low_1: noises[clickedID_1][8],
+			          random_noise_1:noises[clickedID_1].slice(9),
+
+			          circle_2: noises[clickedID_2][0],
+			          square_2: noises[clickedID_2][1],
+			          triangle_2: noises[clickedID_2][2],
+			          bright_dark_2: noises[clickedID_2][3],
+			          soft_sharp_2: noises[clickedID_2][4],
+			          warm_cool_2: noises[clickedID_2][5],
+			          simple_complex_2: noises[clickedID_2][6],
+			          disorder_inorder_2: noises[clickedID_2][7],
+			          high_low_2: noises[clickedID_2][8],
+			          random_noise_2:noises[clickedID_2].slice(9)
+			      }
+
+			      console.log(requestBody)
+
+
+			      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+			          .then(function (response) {
+			          	  var clickedArrays= [clickedID_2,clickedID_1] 
+			              getDataCallback(response.data, true, true, clickedArrays)
+			              
+			          })
+			          .catch(function (error) {
+			              console.log(error);
+			          });
+			}
+
+			
+		
+
+
 		}
-		}
+
+
 
   }	
 
@@ -120,6 +138,10 @@ class SecondPage extends Component {
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
+  	$("#poster"+clickedID).removeClass('posterclicked')
+	$("#poster"+clickedID).addClass('poster')
+
+
   	//e.persist()
   	// set clicked id to clicked poster
   	var id_of_clicked_poster = e.currentTarget.id
@@ -137,9 +159,10 @@ class SecondPage extends Component {
  //using the number ID of the clicked poster, insert DIV
  //if you are in explore mode
   	if(!this.state.transitionmodeclicked)  {
-	   	var clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
+	   	clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
 	  	//console.log('ID of the poster you clicked: ', clickedID)
 	  	console.log('noises', noises)
+
 
 
 		requestBody = {
@@ -159,13 +182,24 @@ class SecondPage extends Component {
 
 		axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
 		  .then(function (response) {
-			  getDataCallback(response.data, true, true)
+		  		var clickedArrays= [clickedID] 
+			  getDataCallback(response.data, true, true, clickedArrays)
 		  })
 		  .catch(function (error) {
 			  console.log(error);
 		  }); 		
   	} else {
   		console.log('moved')
+  		if(clickedID_1 && clickedID_2){
+  			$("#poster"+clickedID_1).removeClass('posterclicked')
+			$("#poster"+clickedID_1).addClass('poster')
+
+			$("#poster"+clickedID_2).removeClass('posterclicked')
+			$("#poster"+clickedID_2).addClass('poster')
+
+			clickedID_1 = null
+			clickedID_2 = null
+  		}
  //if you are in transition  mode, you  must  click two
 	 //  	 if(this.state.twoclickedposters.length > 1) {
 
@@ -227,6 +261,14 @@ class SecondPage extends Component {
   	} else if (this.state.transitionmodeclicked) {
   		
 
+  		$("#poster"+clickedID_1).removeClass('posterclicked')
+		$("#poster"+clickedID_1).addClass('poster')
+
+
+  		$("#poster"+clickedID_2).removeClass('posterclicked')
+		$("#poster"+clickedID_2).addClass('poster')
+
+
   		this.setState(prevState => ({
 	      transitionmodeclicked: false
 	    })) 
@@ -274,17 +316,30 @@ class SecondPage extends Component {
 
   }
 
+
+
 //if you click transition mode then the state will be changed to transition mode clicked
   handleTransitionModeClick = () => {
   	
+  	$("#poster"+clickedID).removeClass('posterclicked')
+	$("#poster"+clickedID).addClass('poster')
+
   	//if youare in transition mode, then you should have the CANCEL functionality
   	//when you cancel, the squares should turn grey
   	if(this.state.transitionmodeclicked) {
 	  	
 
+	  		$("#poster"+clickedID_1).removeClass('posterclicked')
+			$("#poster"+clickedID_1).addClass('poster')
+
+
+	  		$("#poster"+clickedID_2).removeClass('posterclicked')
+			$("#poster"+clickedID_2).addClass('poster')
+
 	  	this.setState(prevState => ({
 		      twoclickedposters: []
 		}))
+
 
 		$(".square2").empty()
 
@@ -575,7 +630,7 @@ class SecondPage extends Component {
 					      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>			      
 					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
 
-					      		<svg className='square2' > </svg>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square24' ></div>
 
 					      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
@@ -687,7 +742,7 @@ class SecondPage extends Component {
 
 				<div className='rightsidetransition'>
 					<div className='row'> 
-				        <div className='square2'>  </div>
+				        <div className='square2' id='square28'>  </div>
 				        <div className='square2' id='square0'> </div>
 				        <div className='square2' id='square1'> </div>
 				        <div className='square2' id='square2'> </div>
@@ -730,7 +785,7 @@ class SecondPage extends Component {
 				        <div className='square2' id='square25'> </div>
 				        <div className='square2' id='square26'> </div>
 				        <div className='square2' id='square27'> </div>
-				        <div className='square2'>  </div>
+				        <div className='square2' id='square29'>  </div>
 				    </div>
 				</div>	
 			}
