@@ -103,6 +103,7 @@
   overflow-y: scroll;
 }
 
+
 .history {
   margin-top: 10px;
   padding-top: 15px;
@@ -163,6 +164,14 @@
   background-color: white;
 	padding-left: 10px;
 	padding-top: 20px;
+
+}
+
+.rightsidetransition {
+
+  background-color: white;
+  padding-left: 160px;
+  padding-top: 100px;
 
 }
 
@@ -232,7 +241,8 @@
 
 }
 
-/*
-.row{
-	padding: 2px;
-}*/
+
+/*.row{
+	padding-top: 5px;
+}
+*/

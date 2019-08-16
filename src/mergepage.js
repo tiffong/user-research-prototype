@@ -3,6 +3,10 @@ import './mergepage.css';
 import MergePoster from './mergeposter.js'
 import PosterSample from './postersamples'
 
+import axios  from 'axios'
+import {getDataCallback,noises} from './autobg/generator.js'
+
+
 
 const ii1 = require('./img/sample1.png')
 const ii2 = require('./img/sample2.png')
@@ -15,6 +19,9 @@ const ii8 = require('./img/sample8.png')
 const ii9 = require('./img/sample9.png')
 const ii10 = require('./img/sample10.png')
 const white = require('./img/white.png')
+
+var requestBody = {}
+
 
 class MergePage extends Component {
   
@@ -52,6 +59,53 @@ class MergePage extends Component {
   	this.setState(prevState => ({
       leftrightarray: [chosenposter, ...prevState.leftrightarray],
     }))
+
+	//TODO: you need to get the info of two selected posters and pass the info to the path /img_comparison
+
+      //using the ID of the clicked poster, insert DIV
+      // var clickedID = this.state.clickedid.replace(/[^0-9]/ig,"")
+      // console.log(clickedID)
+
+	  var clickedID_1 = 1;
+	  var clickedID_2 = 2;
+
+      console.log(noises)
+
+      requestBody = {
+          circle_1: noises[clickedID_1][0],
+          square_1: noises[clickedID_1][1],
+          triangle_1: noises[clickedID_1][2],
+          bright_dark_1: noises[clickedID_1][3],
+          soft_sharp_1: noises[clickedID_1][4],
+          warm_cool_1: noises[clickedID_1][5],
+          simple_complex_1: noises[clickedID_1][6],
+          disorder_inorder_1: noises[clickedID_1][7],
+          high_low_1: noises[clickedID_1][8],
+          random_noise_1:noises[clickedID_1].slice(9),
+
+          circle_2: noises[clickedID_2][0],
+          square_2: noises[clickedID_2][1],
+          triangle_2: noises[clickedID_2][2],
+          bright_dark_2: noises[clickedID_2][3],
+          soft_sharp_2: noises[clickedID_2][4],
+          warm_cool_2: noises[clickedID_2][5],
+          simple_complex_2: noises[clickedID_2][6],
+          disorder_inorder_2: noises[clickedID_2][7],
+          high_low_2: noises[clickedID_2][8],
+          random_noise_2:noises[clickedID_2].slice(9)
+      }
+
+      console.log(requestBody)
+
+
+      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+          .then(function (response) {
+              getDataCallback(response.data, true, true)
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+
   }
 
   handleCancel() {
@@ -93,17 +147,46 @@ class MergePage extends Component {
 
   dynamicallyRenderRows = () => {
 
-  	return (
-		 <div className = 'row3'>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-			<span className="square4"></span>
-		</div>
-  	)
+    var indents = []
 
+    indents.push(
+      <div className='row'> 
+        <div className='square3'> </div>
+        <div className='square4' id='square0'> </div>
+        <div className='square4' id='square1'> </div>
+        <div className='square4' id='square2'> </div>
+        <div className='square4' id='square3'> </div>
+      </div>
+    )
+
+    for(var i=4; i<20;  i+=5) {
+      var name = 'square'+i
+      var name2 = 'square'+(i+1)
+      var name3 = 'square'+(i+2)
+      var name4 = 'square'+(i+3)
+      var name5 = 'square'+(i+4)
+
+      indents.push(
+      <div className='row'>
+        <div className='square4' id={name}> </div> 
+        <div className='square4' id={name2}> </div>
+        <div className='square4' id={name3}> </div>
+        <div className='square4' id={name4}> </div>   
+        <div className='square4' id={name5}> </div> 
+      </div>
+        )
+    }
+
+    indents.push(
+      <div className='row'> 
+        <div className='square4' id='square24'> </div>
+        <div className='square4' id='square25'> </div>
+        <div className='square4' id='square26'> </div>
+        <div className='square4' id='square27'> </div>
+        <div className='square3'> </div>
+      </div>
+    )
+    return (indents)
   }
 
   dynamicallyRenderPosters = () => {
@@ -163,30 +246,12 @@ class MergePage extends Component {
 	          }
           </div>
 
-	      	<div className = 'row3'>
-	      		<PosterSample posterselection={this.state.leftrightarray[0]} />
-	      		<span className="square4" onClick={this.handleGreyClick}></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	      	</div>
+
 
 	      	<div> 
 	      		{this.dynamicallyRenderRows()}
-	      		{this.dynamicallyRenderRows()}
-	      		{this.dynamicallyRenderRows()}
 	      	</div>
 
-
-      		<div className = 'row3'>
-	      		<span className="square4"></span>
-	      		<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<span className="square4"></span>
-	  			<PosterSample posterselection={this.state.leftrightarray[1]} />
-	     	</div>
 
 	      		
 

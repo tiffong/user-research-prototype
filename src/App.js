@@ -4,7 +4,8 @@ import './App.css';
 
 // this was used to test the functionality of exporting things from page to page
 import PosterSamples from './postersamples.js'
-import SVGPosterSamples from './SVGpostersamples.js'
+
+import {getDataCallback} from './autobg/generator.js'
 import axios  from 'axios'
 
 
@@ -18,11 +19,9 @@ const i7 = require('./img/sample7.png')
 const i8 = require('./img/sample8.png')
 const i9 = require('./img/sample9.png')
 const i10 = require('./img/sample10.png')
-const svgexample = <svg width ={'100'} height ={'200'}id= "Ebene_1" style={{"enableBackground":"new 0 0 32 32"}} version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" xmlSpace="preserve">
-              <path d="M17.1,27h-10v-0.5c2.3,0,2.3-1,2.3-3.5h5.5c0,2.5,0,3.5,2.3,3.5V27z M30,6v20c0,0.6-0.4,1-1,1H18c-0.6,0-1-0.4-1-1v-4H3&#xD;&#xA;&#x9;c-0.6,0-1-0.4-1-1V9c0-0.6,0.4-1,1-1l14,0V6c0-0.6,0.4-1,1-1l11,0C29.6,5,30,5.4,30,6z M17,20h3v-9v-1h-1h-2H4v10H17z M24.8,22.5&#xD;&#xA;&#x9;c0-0.7-0.6-1.2-1.2-1.2s-1.2,0.6-1.2,1.2s0.6,1.2,1.2,1.2S24.8,23.2,24.8,22.5z M28,10h-6v1h6V10z M28,8h-7c0.6,0,1,0.4,1,1h6V8z"/>
-                </svg>
 
-var exportedposters = 100;
+
+var requestBody = {}
 
 class App extends React.Component{
    
@@ -60,9 +59,8 @@ class App extends React.Component{
       triangle: false,
 
       posters: []
+
     }
-
-
 
   }
 
@@ -73,6 +71,8 @@ class App extends React.Component{
 
     }))
 
+      this.getDataAxios()
+
     // var fileDownload = require('js-file-download');
     // fileDownload(require('./img/sample10.png'), 'hellothere');
 
@@ -80,6 +80,9 @@ class App extends React.Component{
 
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state)
+
+    this.getDataAxios()
+
   }
 
 
@@ -88,50 +91,82 @@ class App extends React.Component{
     var hueVar = 0
     var satVar = 0
     var valVar = 0
-    var shapes = ''
+    var cirVar = 0
+    var squareVar = 0
+    var triVar = 0
+
 
     if(this.state.CoolClicked) {
-      hueVar = 1
+      hueVar = 0.3
     } else if (this.state.CoolWarmClicked) {
-      hueVar =2
+      hueVar = 0.5
     } else {
-      hueVar = 3
+      hueVar = 0.7
     }
 
     if(this.state.HighClicked) {
-      satVar = 1
+      satVar = 0.3
     } else if (this.state.HighLowClicked) {
-      satVar =2
+      satVar = 0.5
     } else {
-      satVar = 3
+      satVar = 0.7
     }   
 
     if(this.state.BrightClicked) {
-      valVar = 1
+      valVar = 0.3
     } else if (this.state.BrightDarkClicked) {
-      valVar =2
+      valVar = 0.5
     } else {
-      valVar = 3
+      valVar = 0.7
     }    
 
     if(this.state.circle) {
-      shapes = shapes+ 'circle'
-    } 
-    if(this.state.square) {
-      shapes = shapes+'square'
-    } 
-    if(this.state.triangle) {
-      shapes = shapes+ 'square'
-    } 
+        cirVar = 1
+      if(this.state.square && !this.state.triangle) { //circle square
+        cirVar = 0.5
+        triVar = 0.5
+      } else if (!this.state.square && this.state.triangle) { //circle triangle 
+        cirVar = 0.5
+        triVar = 0.5
+      } else { //all 3 shapes
+        cirVar = 0.3
+        triVar = 0.3
+        squareVar = 0.3
+      }
+    }
+
+    if (this.state.square && this.state.triangle) {
+      squareVar = 0.5
+      triVar = 0.5
+    } else if (this.state.square && !this.state.triangle &&  !this.state.circle) { //only the square
+      squareVar= 1
+    } else if (this.state.triangle && !this.state.square && !this.state.circle) { //only the triangle
+      triVar = 1
+    }
 
 
-    var base = "https://api.example.com/items"
+    //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
 
-    const response =
-      await axios.get( base,
-          { params: {name: 'bruno'}}
-      )
-    console.log(response.data)
+      requestBody = {
+          circle : cirVar,
+          square : squareVar,
+          triangle : triVar,
+          bright_dark : valVar,
+          soft_sharp : 0.5,
+          warm_cool : hueVar,
+          simple_complex : 0.5,
+          disorder_inorder : 0.5,
+          high_low : satVar
+      }
+
+
+      axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
+      .then(function (response) {
+          getDataCallback(response.data, false, false)
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
   }
 
 
@@ -408,8 +443,6 @@ handleGenerate() {
     return <div className="App">
 
       <header className="leftside">
-
-
         <poster/>
         <h2 className='title'> DesignFinder: Automated Design </h2>
 
@@ -481,45 +514,38 @@ handleGenerate() {
 
       <header className = 'rightside'>
         
-        <div className='rightsideflex'> 
+        <div className='rightsideflex'>
           <h2 id="samples"> Samples </h2>
 
           <div className ='row'>
-            <PosterSamples posterselection={this.state.posters[0]} />
-            <PosterSamples posterselection={this.state.posters[1]} />
+            <PosterSamples id="poster0" />
+            <PosterSamples id="poster1" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[2]}/>
-          <PosterSamples posterselection={this.state.posters[3]}/>
+            <PosterSamples id="poster2" />
+            <PosterSamples id="poster3" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[4]}/>
-          <PosterSamples posterselection={this.state.posters[5]}/>
+            <PosterSamples id="poster4" />
+            <PosterSamples id="poster5" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[6]}/>
-          <PosterSamples posterselection={this.state.posters[7]}/>
+            <PosterSamples id="poster6" />
+            <PosterSamples id="poster7" />
           </div>
 
           <div className ='row'>
-          <PosterSamples posterselection={this.state.posters[8]}/>
-          <PosterSamples posterselection={this.state.posters[9]}/>
+            <PosterSamples id="poster8" />
+            <PosterSamples id="poster9" />
           </div>
 
           <button className='genbutton' onClick={this.handleGenerate}> See More Designs > </button>
-          
 
         </div>
-
-
-
-
       </header>
-
-
 
     </div>
   } 
@@ -527,5 +553,4 @@ handleGenerate() {
 
 
 export {App};
-export default exportedposters;
-
+export default requestBody;
