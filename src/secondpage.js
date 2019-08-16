@@ -3,7 +3,7 @@ import './secondpage.css';
 import Poster from './poster.js'
 import PosterSample from './postersamples.js'
 import axios  from 'axios'
-import {getDataCallback,noises,features} from './autobg/generator.js'
+import {getDataCallback,noises,features2} from './autobg/generator.js'
 import {Line, Triangle} from 'react-shapes';
 //reactsvg stuff
 import { ReactDOM, render } from 'react-dom'
@@ -73,27 +73,27 @@ class SecondPage extends Component {
 			      console.log(noises)
 
 			      requestBody = {
-			          circle_1: noises[clickedID_1][0],
-			          square_1: noises[clickedID_1][1],
-			          triangle_1: noises[clickedID_1][2],
-			          bright_dark_1: noises[clickedID_1][3],
-			          soft_sharp_1: noises[clickedID_1][4],
-			          warm_cool_1: noises[clickedID_1][5],
-			          simple_complex_1: noises[clickedID_1][6],
-			          disorder_inorder_1: noises[clickedID_1][7],
-			          high_low_1: noises[clickedID_1][8],
-			          random_noise_1:noises[clickedID_1].slice(9),
+			          circle_1: noises[clickedID_1][30],
+			          square_1: noises[clickedID_1][31],
+			          triangle_1: noises[clickedID_1][32],
+			          bright_dark_1: noises[clickedID_1][33],
+			          soft_sharp_1: noises[clickedID_1][34],
+			          warm_cool_1: noises[clickedID_1][35],
+			          simple_complex_1: noises[clickedID_1][36],
+			          disorder_inorder_1: noises[clickedID_1][37],
+			          high_low_1: noises[clickedID_1][38],
+			          random_noise_1:noises[clickedID_1].slice(0,30),
 
-			          circle_2: noises[clickedID_2][0],
-			          square_2: noises[clickedID_2][1],
-			          triangle_2: noises[clickedID_2][2],
-			          bright_dark_2: noises[clickedID_2][3],
-			          soft_sharp_2: noises[clickedID_2][4],
-			          warm_cool_2: noises[clickedID_2][5],
-			          simple_complex_2: noises[clickedID_2][6],
-			          disorder_inorder_2: noises[clickedID_2][7],
-			          high_low_2: noises[clickedID_2][8],
-			          random_noise_2:noises[clickedID_2].slice(9)
+			          circle_2: noises[clickedID_2][30],
+			          square_2: noises[clickedID_2][31],
+			          triangle_2: noises[clickedID_2][32],
+			          bright_dark_2: noises[clickedID_2][33],
+			          soft_sharp_2: noises[clickedID_2][34],
+			          warm_cool_2: noises[clickedID_2][35],
+			          simple_complex_2: noises[clickedID_2][36],
+			          disorder_inorder_2: noises[clickedID_2][37],
+			          high_low_2: noises[clickedID_2][38],
+			          random_noise_2:noises[clickedID_2].slice(0,30)
 			      }
 
 			      console.log(requestBody)
@@ -109,15 +109,7 @@ class SecondPage extends Component {
 			              console.log(error);
 			          });
 			}
-
-			
-		
-
-
 		}
-
-
-
   }	
 
 
@@ -182,8 +174,9 @@ class SecondPage extends Component {
 
 		axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
 		  .then(function (response) {
-		  		var clickedArrays= [clickedID] 
+              var clickedArrays= [clickedID]
 			  getDataCallback(response.data, true, true, clickedArrays)
+              console.log("features2", features2)
 		  })
 		  .catch(function (error) {
 			  console.log(error);
@@ -509,6 +502,8 @@ class SecondPage extends Component {
           disorder_inorder : 0.5,
           high_low : satVar
       }
+
+      console.log(requestBody)
 
 
       axios.post('http://127.0.0.1:5000/img_generator', requestBody)

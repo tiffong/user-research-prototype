@@ -91,9 +91,9 @@ class App extends React.Component{
     var hueVar = 0
     var satVar = 0
     var valVar = 0
-    var cirVar = 0
-    var squareVar = 0
-    var triVar = 0
+    var cirVar = 0.33
+    var squareVar = 0.33
+    var triVar = 0.33
 
 
     if(this.state.CoolClicked) {
@@ -129,9 +129,9 @@ class App extends React.Component{
         cirVar = 0.5
         triVar = 0.5
       } else { //all 3 shapes
-        cirVar = 0.3
-        triVar = 0.3
-        squareVar = 0.3
+        cirVar = 0.33
+        triVar = 0.33
+        squareVar = 0.33
       }
     }
 
@@ -159,7 +159,14 @@ class App extends React.Component{
           high_low : satVar
       }
 
+      localStorage.setItem('wc_pg1',hueVar)
+      localStorage.setItem('hl_pg1',satVar)
+      localStorage.setItem('bd_pg1',valVar)
+      localStorage.setItem('circle_pg1',cirVar)
+      localStorage.setItem('square_pg1',squareVar)
+      localStorage.setItem('tri_pg1',triVar)
 
+      console.log(requestBody)
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
       .then(function (response) {
           getDataCallback(response.data, false, false)
