@@ -137,11 +137,8 @@ class SecondPage extends Component {
 		  }); 		
   	} else {
 
- //if you are in tranistion  mode, you  must  click two
-  	  console.log('CLICK TWO HAHAHAHA')
-
-
-	  	 if(this.state.twoclickedposters.length > 1) {
+ //if you are in transition  mode, you  must  click two
+	  	 if(this.state.twoclickedposters.length > 2) {
 
 
 		  	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
@@ -254,13 +251,15 @@ class SecondPage extends Component {
   	} else {
 	  	
 
-	  	this.setState(prevState => ({
-	      transitionmodeclicked: true
-	    })) 
+
 
 	   	this.setState(prevState => ({
 		      twoclickedposters: ['poster0', 'poster1', ...prevState.twoclickedposters]
 		}))
+
+		this.setState(prevState => ({
+	      transitionmodeclicked: true
+	    })) 
 
 	   	//get  initial request
 	   	var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
@@ -476,31 +475,31 @@ class SecondPage extends Component {
 					      	</div>
 
 					      	<div className = 'row'>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square23' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square3" id='null'></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square0' ></div>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square1' ></div>
-					      		<div className="square3" id='null'></div>
-					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square2'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square6'></div>
 					      	</div>
 					      	
 
 					      	<div className = 'row'>
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square3' ></div>			   
+					      		<div className="square2" onClick={this.handleGreyClick} id='square22' ></div>			   
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square4' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square1' ></div>
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square5' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square7' ></div>
 					      		<div className="square3" id='null'></div>
 					      	</div>
 
 					      	<div className = 'row'>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square6' ></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square7' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square21' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square2' ></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square8' ></div>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square3" id='null'></div>
@@ -508,45 +507,45 @@ class SecondPage extends Component {
 					      	</div>
 
 					      	<div className = 'row'>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square9' ></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square10' ></div>			      
-					      		<div className="square2" onClick={this.handleGreyClick} id='square11' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square17' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>			      
+					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
 
 					      		<svg className='square2' > </svg>
 
-					      		<div className="square2" onClick={this.handleGreyClick} id='square12' ></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square12' ></div>
 					      	</div>
 
 					      	<div className = 'row'>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square3" id='null'></div>			      	
-					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square17' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square9' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square3' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square20' ></div>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square3" id='null'></div>
 					      	</div>
 
 					      	<div className = 'row'>
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square18' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square10' ></div>
+					      		<div className="square3" id='null'></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square4' ></div>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square19' ></div>
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square20' ></div>
-					      		<div className="square3" id='null'></div>
 					      	</div>
 
 					      	<div className = 'row'>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square21' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square11' ></div>
 					      		<div className="square3" id='null'></div>			      	
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square22' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square5' ></div>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square3" id='null'></div>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square23' ></div>
+					      		<div className="square2" onClick={this.handleGreyClick} id='square18' ></div>
 					      	</div>			      				      
 
 					      	<div className = 'bottomflex'>
@@ -624,7 +623,7 @@ class SecondPage extends Component {
 
 				<div className='rightsidetransition'>
 					<div className='row'> 
-				        <div className='square2'> Pic 1 </div>
+				        <div className='square2'> {this.twoclickedposters[0]} </div>
 				        <div className='square2' id='square0'> </div>
 				        <div className='square2' id='square1'> </div>
 				        <div className='square2' id='square2'> </div>
@@ -668,7 +667,7 @@ class SecondPage extends Component {
 				        <div className='square2' id='square25'> </div>
 				        <div className='square2' id='square26'> </div>
 				        <div className='square2' id='square27'> </div>
-				        <div className='square2'> Pic 2 </div>
+				        <div className='square2'> {this.twoclickedposters[0]} </div>
 				    </div>
 
 				</div>
