@@ -10,8 +10,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-meta_path = "model 0807/generator.ckpt.meta"
-model_path = "./model 0807/"
+meta_path = "model0815a/model.meta"
+model_path = "./model0815a/"
 
 row_num = 100
 random_dim = 30
@@ -120,9 +120,9 @@ def sample_generator():
         model_file = tf.train.latest_checkpoint(model_path)
         saver.restore(sess, model_file)
         graph = tf.get_default_graph()
-        g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-        noise_img = graph.get_tensor_by_name("random_X:0")
-        condition_img = graph.get_tensor_by_name("condition_X:0")
+        g_output = graph.get_tensor_by_name("generator/outputs:0")
+        noise_img = graph.get_tensor_by_name("noise_img:0")
+        condition_img = graph.get_tensor_by_name("real_img_digit:0")
 
         img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
         np.savetxt("output_1.csv", img[:10], delimiter = ",", fmt = "%.10f")
@@ -152,9 +152,9 @@ def img_generator():
         model_file = tf.train.latest_checkpoint(model_path)
         saver.restore(sess, model_file)
         graph = tf.get_default_graph()
-        g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-        noise_img = graph.get_tensor_by_name("random_X:0")
-        condition_img = graph.get_tensor_by_name("condition_X:0")
+        g_output = graph.get_tensor_by_name("generator/outputs:0")
+        noise_img = graph.get_tensor_by_name("noise_img:0")
+        condition_img = graph.get_tensor_by_name("real_img_digit:0")
 
         img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
         #np.savetxt("output_2.csv", img, delimiter = ",")
@@ -194,9 +194,9 @@ def img_augmentation():
         model_file = tf.train.latest_checkpoint(model_path)
         saver.restore(sess, model_file)
         graph = tf.get_default_graph()
-        g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-        noise_img = graph.get_tensor_by_name("random_X:0")
-        condition_img = graph.get_tensor_by_name("condition_X:0")
+        g_output = graph.get_tensor_by_name("generator/outputs:0")
+        noise_img = graph.get_tensor_by_name("noise_img:0")
+        condition_img = graph.get_tensor_by_name("real_img_digit:0")
         img = sess.run(g_output, feed_dict = {noise_img: noise_input, condition_img: condition_input})
         img = [img[0]]
 
@@ -325,9 +325,9 @@ def img_comparison():
         model_file = tf.train.latest_checkpoint(model_path)
         saver.restore(sess, model_file)
         graph = tf.get_default_graph()
-        g_output = graph.get_tensor_by_name("generator/Sigmoid:0")
-        noise_img = graph.get_tensor_by_name("random_X:0")
-        condition_img = graph.get_tensor_by_name("condition_X:0")
+        g_output = graph.get_tensor_by_name("generator/outputs:0")
+        noise_img = graph.get_tensor_by_name("noise_img:0")
+        condition_img = graph.get_tensor_by_name("real_img_digit:0")
 
         img_1 = sess.run(g_output, feed_dict = {noise_img: noise_input_1, condition_img: condition_input_1})
         img_1 = [img_1[0]]
