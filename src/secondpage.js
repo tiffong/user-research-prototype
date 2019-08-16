@@ -7,6 +7,9 @@ import {getDataCallback,noises,features} from './autobg/generator.js'
 import {Line, Triangle} from 'react-shapes';
 //reactsvg stuff
 import { render } from 'react-dom'
+import $ from 'jquery'
+
+
 // import ReactSVG from 'react-svg'
 
 // assume these real posters that have been imported imported from the code
@@ -40,6 +43,7 @@ class SecondPage extends Component {
   		clickedid: 'poster8',
   		transitionmodeclicked: false,
   		twoclickedposters: [],
+  		popupimage: null,
   	}
 
   	this.handleSelection = this.handleSelection.bind(this)
@@ -71,6 +75,59 @@ class SecondPage extends Component {
   	console.log('first of the clicked posters', this.state.twoclickedposters[0])
   	console.log('second of the clicked posters', this.state.twoclickedposters[1])
   	console.log('length of clicked posters array', this.state.twoclickedposters.length)
+
+  	console.log('image that is clicked', this.state.popupimage)
+//if the length of posters clicked is greater than 2, then will send a request
+  	if(this.state.transitionmodeclicked) {
+
+
+  		  	 if(this.state.twoclickedposters.length > 1) {
+
+
+		  	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+			  var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
+			  console.log('from x to y',  clickedID_2, clickedID_1)
+
+
+		      console.log(noises)
+
+		      requestBody = {
+		          circle_1: noises[clickedID_1][0],
+		          square_1: noises[clickedID_1][1],
+		          triangle_1: noises[clickedID_1][2],
+		          bright_dark_1: noises[clickedID_1][3],
+		          soft_sharp_1: noises[clickedID_1][4],
+		          warm_cool_1: noises[clickedID_1][5],
+		          simple_complex_1: noises[clickedID_1][6],
+		          disorder_inorder_1: noises[clickedID_1][7],
+		          high_low_1: noises[clickedID_1][8],
+		          random_noise_1:noises[clickedID_1].slice(9),
+
+		          circle_2: noises[clickedID_2][0],
+		          square_2: noises[clickedID_2][1],
+		          triangle_2: noises[clickedID_2][2],
+		          bright_dark_2: noises[clickedID_2][3],
+		          soft_sharp_2: noises[clickedID_2][4],
+		          warm_cool_2: noises[clickedID_2][5],
+		          simple_complex_2: noises[clickedID_2][6],
+		          disorder_inorder_2: noises[clickedID_2][7],
+		          high_low_2: noises[clickedID_2][8],
+		          random_noise_2:noises[clickedID_2].slice(9)
+		      }
+
+		      console.log(requestBody)
+
+
+		      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+		          .then(function (response) {
+		              getDataCallback(response.data, true, true)
+		          })
+		          .catch(function (error) {
+		              console.log(error);
+		          });
+		}
+		}
+
   }	
 
 
@@ -136,53 +193,53 @@ class SecondPage extends Component {
 			  console.log(error);
 		  }); 		
   	} else {
-
+  		console.log('moved')
  //if you are in transition  mode, you  must  click two
-	  	 if(this.state.twoclickedposters.length > 2) {
+	 //  	 if(this.state.twoclickedposters.length > 1) {
 
 
-		  	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
-			  var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
+		//   	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+		// 	  var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
 
 
 
-		      console.log(noises)
+		//       console.log(noises)
 
-		      requestBody = {
-		          circle_1: noises[clickedID_1][0],
-		          square_1: noises[clickedID_1][1],
-		          triangle_1: noises[clickedID_1][2],
-		          bright_dark_1: noises[clickedID_1][3],
-		          soft_sharp_1: noises[clickedID_1][4],
-		          warm_cool_1: noises[clickedID_1][5],
-		          simple_complex_1: noises[clickedID_1][6],
-		          disorder_inorder_1: noises[clickedID_1][7],
-		          high_low_1: noises[clickedID_1][8],
-		          random_noise_1:noises[clickedID_1].slice(9),
+		//       requestBody = {
+		//           circle_1: noises[clickedID_1][0],
+		//           square_1: noises[clickedID_1][1],
+		//           triangle_1: noises[clickedID_1][2],
+		//           bright_dark_1: noises[clickedID_1][3],
+		//           soft_sharp_1: noises[clickedID_1][4],
+		//           warm_cool_1: noises[clickedID_1][5],
+		//           simple_complex_1: noises[clickedID_1][6],
+		//           disorder_inorder_1: noises[clickedID_1][7],
+		//           high_low_1: noises[clickedID_1][8],
+		//           random_noise_1:noises[clickedID_1].slice(9),
 
-		          circle_2: noises[clickedID_2][0],
-		          square_2: noises[clickedID_2][1],
-		          triangle_2: noises[clickedID_2][2],
-		          bright_dark_2: noises[clickedID_2][3],
-		          soft_sharp_2: noises[clickedID_2][4],
-		          warm_cool_2: noises[clickedID_2][5],
-		          simple_complex_2: noises[clickedID_2][6],
-		          disorder_inorder_2: noises[clickedID_2][7],
-		          high_low_2: noises[clickedID_2][8],
-		          random_noise_2:noises[clickedID_2].slice(9)
-		      }
+		//           circle_2: noises[clickedID_2][0],
+		//           square_2: noises[clickedID_2][1],
+		//           triangle_2: noises[clickedID_2][2],
+		//           bright_dark_2: noises[clickedID_2][3],
+		//           soft_sharp_2: noises[clickedID_2][4],
+		//           warm_cool_2: noises[clickedID_2][5],
+		//           simple_complex_2: noises[clickedID_2][6],
+		//           disorder_inorder_2: noises[clickedID_2][7],
+		//           high_low_2: noises[clickedID_2][8],
+		//           random_noise_2:noises[clickedID_2].slice(9)
+		//       }
 
-		      console.log(requestBody)
+		//       console.log(requestBody)
 
 
-		      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
-		          .then(function (response) {
-		              getDataCallback(response.data, true, true)
-		          })
-		          .catch(function (error) {
-		              console.log(error);
-		          });
-		}
+		//       axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+		//           .then(function (response) {
+		//               getDataCallback(response.data, true, true)
+		//           })
+		//           .catch(function (error) {
+		//               console.log(error);
+		//           });
+		// }
   	}
 
   }
@@ -206,96 +263,118 @@ class SecondPage extends Component {
 
   }
 
-  handleGreyClick =() => {
-  	console.log('a grey square was clicked')
+  handleGreyClick = (e) => {
+
+  	///TODO: make it so the image they clicked shows up larger
+
+  	e.persist() //removes the event from the pool allowing references to the event to be retained asynchronously
 
   	this.setState(prevState => ({
-      isGreyClicked: true
+      isGreyClicked: true,
+      xout: false,
+      popupimage: e.target
     }))
-
-  	this.setState(prevState => ({
-      xout: false
-    }))
-
 
   }
 
   handleXout = () =>  {
   	this.setState(prevState => ({
-      xout: true
-    }))
-
-
-    this.setState(prevState => ({
+      xout: true,
       isGreyClicked: false
     }))
+
   }
 
   handleFavorite = () => {
   	this.handleXout()
   }
 
+//this will allow the image to be rendered larger when clicked
+//CURRENTLY UNFUNCTIONAL
+  handlePopupClick = () => {
+
+  	var indents = []
+  	indents.push(<div>)
+  	indents.push(this.popupimage)
+  	indents.push(</div>)
+
+  	return (indents)
+
+  }
+
 //if you click transition mode then the state will be changed to transition mode clicked
   handleTransitionModeClick = () => {
   	
-  	//if   youare in transition mode, then you should  have the cancel functionality
-  	//when you cancel, the squares should be grey
-
-
+  	//if youare in transition mode, then you should have the CANCEL functionality
+  	//when you cancel, the squares should turn grey
   	if(this.state.transitionmodeclicked) {
+	  	
+
 	  	this.setState(prevState => ({
 		      twoclickedposters: []
 		}))
 
-//if you arein explore mode, you go the default setting of first two
+		$(".square2").empty()
+
+		//somehow  make it so that the squares rerender
+
+//if you are in EXPLORE mode, you go the default setting of first two
   	} else {
 	  	
-
-
-
-	   	this.setState(prevState => ({
-		      twoclickedposters: ['poster0', 'poster1', ...prevState.twoclickedposters]
-		}))
-
+	  	//set transitionmodeclicked to true because you just clicked it
 		this.setState(prevState => ({
-	      transitionmodeclicked: true
+	      transitionmodeclicked: true,
+	      twoclickedposters: []
 	    })) 
 
-	   	//get  initial request
-	   	var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
-		var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
 
-		      requestBody = {
-		          circle_1: noises[clickedID_1][0],
-		          square_1: noises[clickedID_1][1],
-		          triangle_1: noises[clickedID_1][2],
-		          bright_dark_1: noises[clickedID_1][3],
-		          soft_sharp_1: noises[clickedID_1][4],
-		          warm_cool_1: noises[clickedID_1][5],
-		          simple_complex_1: noises[clickedID_1][6],
-		          disorder_inorder_1: noises[clickedID_1][7],
-		          high_low_1: noises[clickedID_1][8],
-		          random_noise_1:noises[clickedID_1].slice(9),
+	 //   	this.setState(prevState => ({
+		//       twoclickedposters: ['poster1', ...prevState.twoclickedposters]
+		// }))
 
-		          circle_2: noises[clickedID_2][0],
-		          square_2: noises[clickedID_2][1],
-		          triangle_2: noises[clickedID_2][2],
-		          bright_dark_2: noises[clickedID_2][3],
-		          soft_sharp_2: noises[clickedID_2][4],
-		          warm_cool_2: noises[clickedID_2][5],
-		          simple_complex_2: noises[clickedID_2][6],
-		          disorder_inorder_2: noises[clickedID_2][7],
-		          high_low_2: noises[clickedID_2][8],
-		          random_noise_2:noises[clickedID_2].slice(9)
-		      }
-		      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
-		          .then(function (response) {
-		              getDataCallback(response.data, true, true)
-		          })
-		          .catch(function (error) {
-		              console.log(error);
-		          });
-		
+		// this.setState(prevState => ({
+		//       twoclickedposters: ['poster0', ...prevState.twoclickedposters]
+		// }))
+
+	   	console.log('lengththt', this.state.twoclickedposters.length)
+
+	  //  if(this.state.twoclickedposters.length >=2) {
+
+	  //  	//get  initial request of the first two
+		 //   	var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+			// var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
+
+			//       requestBody = {
+			//           circle_1: noises[clickedID_1][0],
+			//           square_1: noises[clickedID_1][1],
+			//           triangle_1: noises[clickedID_1][2],
+			//           bright_dark_1: noises[clickedID_1][3],
+			//           soft_sharp_1: noises[clickedID_1][4],
+			//           warm_cool_1: noises[clickedID_1][5],
+			//           simple_complex_1: noises[clickedID_1][6],
+			//           disorder_inorder_1: noises[clickedID_1][7],
+			//           high_low_1: noises[clickedID_1][8],
+			//           random_noise_1:noises[clickedID_1].slice(9),
+
+			//           circle_2: noises[clickedID_2][0],
+			//           square_2: noises[clickedID_2][1],
+			//           triangle_2: noises[clickedID_2][2],
+			//           bright_dark_2: noises[clickedID_2][3],
+			//           soft_sharp_2: noises[clickedID_2][4],
+			//           warm_cool_2: noises[clickedID_2][5],
+			//           simple_complex_2: noises[clickedID_2][6],
+			//           disorder_inorder_2: noises[clickedID_2][7],
+			//           high_low_2: noises[clickedID_2][8],
+			//           random_noise_2:noises[clickedID_2].slice(9)
+			//       }
+			//       axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
+			//           .then(function (response) {
+			//               getDataCallback(response.data, true, true)
+			//           })
+			//           .catch(function (error) {
+			//               console.log(error);
+			//           });
+		 // }
 
 
   	}
@@ -450,7 +529,8 @@ class SecondPage extends Component {
 					            <div className='popup'> 
 					            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
 					            	
-					            	<img src={ii2} className='popupimage'/>  
+					            	<img src={ii2} className='popupimage'/>
+
 					            	
 					            	<div className='popuprow'>
 						            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
@@ -475,7 +555,7 @@ class SecondPage extends Component {
 					      	</div>
 
 					      	<div className = 'row'>
-					      		<div className="square2" onClick={this.handleGreyClick} id='square23' ></div>
+					      		<div className='square2' onClick={this.handleGreyClick} id='square23' ></div>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square3" id='null'></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square0' ></div>
@@ -623,7 +703,7 @@ class SecondPage extends Component {
 
 				<div className='rightsidetransition'>
 					<div className='row'> 
-				        <div className='square2'> {this.twoclickedposters[0]} </div>
+				        <div className='square2'>  </div>
 				        <div className='square2' id='square0'> </div>
 				        <div className='square2' id='square1'> </div>
 				        <div className='square2' id='square2'> </div>
@@ -667,7 +747,7 @@ class SecondPage extends Component {
 				        <div className='square2' id='square25'> </div>
 				        <div className='square2' id='square26'> </div>
 				        <div className='square2' id='square27'> </div>
-				        <div className='square2'> {this.twoclickedposters[0]} </div>
+				        <div className='square2'>  </div>
 				    </div>
 
 				</div>

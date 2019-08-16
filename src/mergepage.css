@@ -53,7 +53,8 @@
 	z-index: 9;
 	position: absolute;
 	align-items: center;
-	right: 550px;
+	right: 200px;
+	top:100px;
 	border: .8px solid grey;
 }
 
