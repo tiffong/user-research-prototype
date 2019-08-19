@@ -29,7 +29,6 @@ class SecondPage extends Component {
 
   	this.state = {
   		parray: [],
-  		//clickedposter: null,
   		historyarray: [], // currently not in use
   		isGreyClicked: false, //is a grey square clicked on the right side -- triggerspopup
   		xout: false,//for pop up -- do we need to x out the popup
@@ -212,12 +211,13 @@ class SecondPage extends Component {
   	///TODO: make it so the image they clicked shows up larger
   	e.persist() //removes the event from the pool allowing references to the event to be retained asynchronously
 
-	var id_of_clicked_grey =e.currentTarget.id
+	var id_of_clicked_grey = e.currentTarget.id
+
 
   	this.setState(prevState => ({
       isGreyClicked: true,
       xout: false,
-      popupimage: id_of_clicked_grey,
+      popupid: id_of_clicked_grey,
     }))
 
   }
@@ -435,13 +435,12 @@ class SecondPage extends Component {
 	    <div className = 'leftside2'>
 	      	
 		      	<div className='buttflexrow'>
-			      	<button className='button2' onClick={this.handleBackButton} > Back </button>
-			      	<div className='instructions'> {this.state.transitionmodeclicked ? 'Click two to see the transition!' : 'Click a design to explore!'}   </div>
+			      	<button className='button2' onClick={this.handleBackButton} > Back  </button>
+			      	
 			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Cancel' : 'Transition Mode'} </button>
 		      	</div>
 
 		      	<div className='refreshbuttoncontainer'>
-		      		<button className='refreshbutton' onClick={this.handleRefresh}> Refresh </button>
 		      	</div>
 
 		      	<div className='posterrows'>
@@ -452,29 +451,31 @@ class SecondPage extends Component {
 
 		      	</div>
 
+			<button className='refreshbutton' onClick={this.handleRefresh}>  More ☟ </button>
+
 		    <div className='favorites'>
 		    	<div className='favoritestitle' > Favorites </div>
 
 		    	<div className='downloadbuttonsrow'>
 		    		<div className='colly'>
 				    	<div className='square2' id='favorite1'> </div>
-				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
 			    	</div>
 		    	
 		    		<div className='colly'>
 				    	<div className='square2' id='favorite2'> </div>
-				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
 			    	</div>
 
 		    	
 		    		<div className='colly'>
 				    	<div className='square2' id='favorite3'> </div>
-				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
 			    	</div>			    
 		    	
 		    		<div className='colly'>
 				    	<div className='square2' id='favorite4'> </div>
-				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
 			    	</div>
 			
 				</div>
@@ -494,14 +495,13 @@ class SecondPage extends Component {
 					            <div className='popup' > 
 					            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
 					            	
+					            	<div className='popupimage' id={this.state.popupid}> </div>
 
-					            	<img src={ii2} className='popupimage' id={this.state.popupid}/>
 
 					            	
 					            	<div className='popuprow'>
 						            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
-					            </div>
-				          }
+					            </div> }
 			          </div>
 
 				      <div className='sideflex'> 				  

@@ -65,21 +65,11 @@ class App extends React.Component{
   }
 
   componentDidMount() {
-    
-    this.setState(prevState => ({
-      posters: [...prevState.posters, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10]
-
-    }))
-
-      this.getDataAxios()
-
-    // var fileDownload = require('js-file-download');
-    // fileDownload(require('./img/sample10.png'), 'hellothere');
-
+  
+    this.getDataAxios()
   } 
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state)
 
     this.getDataAxios()
 
@@ -145,7 +135,7 @@ class App extends React.Component{
     }
 
 
-    //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
+    //you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
 
       requestBody = {
           circle : cirVar,
@@ -177,26 +167,9 @@ class App extends React.Component{
   }
 
 
-//   httprequeststestfxn() {
-
-
-
-//     var fullPath = base+"?hue="+hueVar+"&sat="+satVar+'?val='+valVar+'?shapes='+shapes
-
-// // going to have to figure out the asynchronicity of this
-//     console.log('asdfa', fullPath)
-
-//   }
-
-
 //using arrow function instead of binding the context
   handleCoolClick = () => {
     
-// example for adding new posters upon new click
-    
-    this.setState(prevState => ({
-      posters: [i9, ...prevState.posters]
-    }))
 
     if ((!this.state.CoolClicked && this.state.CoolWarmClicked) || (!this.state.CoolClicked && this.state.WarmClicked)) {
         this.setState( prevState => ({
@@ -238,17 +211,6 @@ class App extends React.Component{
         WarmClicked: false
       });
     }
-
-  axios.get('https://api.github.com/users/mapbox')
-  .then((response) => {
-    console.log('request verified')
-    console.log(response.data);
-    console.log(response.status);
-    console.log(response.statusText);
-    console.log(response.headers);
-    console.log(response.config);
-    console.log(response.request)
-  });
   }
 
   handleWarmClick() {
@@ -323,8 +285,6 @@ handleLowClick() {
     this.setState({
       LowClicked: !this.state.LowClicked
     });
-
-
 
   }
 
@@ -429,9 +389,6 @@ checkItem(e, shape) {
   })
   }
 
-  // this.httprequeststestfxn()
-
-
 }
 
 handleGenerate() {
@@ -506,11 +463,10 @@ handleGenerate() {
 
         </div>
 
-        <div>
-          
+        <div className='text'>
           {(!this.state.circle && !this.state.square && !this.state.triangle) &&
             <div className='conditionaltext'>
-              *Please click at least one shape
+              *Please choose at least one shape
             </div>
           }
         </div>
