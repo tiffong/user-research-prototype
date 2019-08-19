@@ -9,6 +9,14 @@ import {Line, Triangle} from 'react-shapes';
 import { ReactDOM, render } from 'react-dom'
 import $ from 'jquery'
 
+//for user study recording number of clicks
+localStorage.setItem('disorderInorderClick_times',0) //top left to right bottom
+localStorage.setItem('softSharpClick_times',0) //vertical
+localStorage.setItem('brightDarkClick_times',0) //top right to bottom left
+localStorage.setItem('simpleComplexClick_times',0) //horizontal
+localStorage.setItem('favoritesClick_times',0) //number of favorites saved
+localStorage.setItem('transitionClick_times',0) //number of transition pairs chosen
+
 
 const ii2 = require('./img/sample2.png')
 
@@ -22,6 +30,12 @@ var clickedID_2;
 
 var favorites_filled = 0; //how many images are within the favorites box
 var fileDownload = require('js-file-download');
+
+var start2;
+var end2;
+
+var start3;
+var end3;
 
 class SecondPage extends Component {
   constructor(props) {
@@ -37,7 +51,8 @@ class SecondPage extends Component {
   		transitionmodeclicked: false, //are we in transition  mode?
   		twoclickedposters: [], //the ids of the two clicked posters in transition mode
   		popupimage: null,
-  		popupid: 'square0' //the id of the clicked poster on the right side
+  		popupid: 'square0', //the id of the clicked poster on the right side
+  		canclickpopup: false,
   	}
 
   	this.handleGreyClick = this.handleGreyClick.bind(this) //causes currentTarget to be able to be accessed
@@ -46,6 +61,10 @@ class SecondPage extends Component {
 //initially sets up the posters that are displayed by putting them in an array
   componentDidMount() {
    //TODO: get a loading symbol for 6 seconds as initial posters load
+
+   //set timer here
+   start2 = new Date
+   console.log(start2)
 
    this.getDataAxios()
   }
@@ -61,12 +80,16 @@ class SecondPage extends Component {
   	console.log('ID of left side poster that was clicked:', this.state.clickedid)
   	console.log('ID of right  side poster that was clicked', this.state.popupid)
 
-
 //if the length of posters clicked array is greater than 2 AND is an even number,
 // then will send a request to load the merge page with transition svgs
   	if(this.state.transitionmodeclicked) {
 
   		  	 if(this.state.twoclickedposters.length>1 &&  this.state.twoclickedposters.length%2 == 0) {
+	  	  	    
+  		  	 	//update times that the posters were clicked
+	  	  	    var times = Number(localStorage.getItem('transitionClick_times'))
+				localStorage.setItem('transitionClick_times',(times+2))
+
 			  	  clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
 				  clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
 
@@ -128,7 +151,7 @@ class SecondPage extends Component {
 
   	this.setState(prevState => ({
       twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
-      clickedid: id_of_clicked_poster
+      clickedid: id_of_clicked_poster,
 	}))
 
  //using the number ID of the clicked poster, insert DIV
@@ -212,7 +235,24 @@ class SecondPage extends Component {
   	e.persist() //removes the event from the pool allowing references to the event to be retained asynchronously
 
 	var id_of_clicked_grey = e.currentTarget.id
+	var replace = Number(id_of_clicked_grey.replace('square', ''))
+//recording number of clicks
+	// if(this.state.canclickpopup) {
+	// }
 
+  	if(replace <= 5) {
+	    var times = Number(localStorage.getItem('softSharpClick_times'))
+		localStorage.setItem('softSharpClick_times',(times+1))
+  	} else if (replace <= 11) {
+	    var times = Number(localStorage.getItem('brightDarkClick_times'))
+		localStorage.setItem('brightDarkClick_times',(times+1))
+  	} else if (replace <= 17) {
+	    var times = Number(localStorage.getItem('simpleComplexClick_times'))
+		localStorage.setItem('simpleComplexClick_times',(times+1))
+  	} else {
+	    var times = Number(localStorage.getItem('disorderInorderClick_times'))
+		localStorage.setItem('disorderInorderClick_times',(times+1))
+  	}
 
   	this.setState(prevState => ({
       isGreyClicked: true,
@@ -238,6 +278,11 @@ class SecondPage extends Component {
   		favorites_filled = 0
   	}
 
+  	//record number of clicks for favorite
+	var times = Number(localStorage.getItem('favoritesClick_times'))
+	localStorage.setItem('favoritesClick_times',(times+1))
+
+
   }
 
 //this will allow the image to be rendered larger when clicked
@@ -258,32 +303,39 @@ class SecondPage extends Component {
 //if you click transition mode then the state will be changed to transition mode clicked
   handleTransitionModeClick = () => {
   	
-  	$("#poster"+clickedID).removeClass('posterclicked')
-	$("#poster"+clickedID).addClass('poster')
+    $("#poster"+clickedID).removeClass('posterclicked')
+	 $("#poster"+clickedID).addClass('poster')
 
-  	//if youare in transition mode, then you should have the CANCEL functionality
-  	//when you cancel, the squares should turn grey
+
+//if you are in transition mode, then you should have the CANCEL functionality
+//when you CANCEL: TRANSITION mode --> EXPLORE mode
   	if(this.state.transitionmodeclicked) {
 	  	
+      //user time spent on transition page
+      end3 = new Date
+      localStorage.setItem('transitionPage_time',(end3-start3) ) 
 
-	  		$("#poster"+clickedID_1).removeClass('posterclicked')
+
+	  	$("#poster"+clickedID_1).removeClass('posterclicked')
 			$("#poster"+clickedID_1).addClass('poster')
 
 
-	  		$("#poster"+clickedID_2).removeClass('posterclicked')
+	  	$("#poster"+clickedID_2).removeClass('posterclicked')
 			$("#poster"+clickedID_2).addClass('poster')
 
 	  	this.setState(prevState => ({
 		      twoclickedposters: []
-		}))
+		  }))
 
+		  $(".square2").empty()
 
-		$(".square2").empty()
-
-		//somehow  make it so that the squares rerender
-
-//if you are in EXPLORE mode, you go the default setting of first two
+//if you are in EXPLORE mode --> TRANSITION MODE
   	} else {
+
+      end2 = new Date
+      start3 = end2
+      console.log('explore time', (end2-start2))
+      localStorage.setItem('explore_time',(end2-start2))
 	  	
 	  	//set transitionmodeclicked to true because you just clicked it
 		this.setState(prevState => ({
@@ -421,8 +473,9 @@ class SecondPage extends Component {
 
   	console.log('eeee', e.target)
   	console.log('download clicked')
-  	//fileDownload(data, 'filename.csv');
+  	//download the SVG
 
+  	//fileDownload(data, 'filename.csv');
 
   }
 
@@ -430,7 +483,6 @@ class SecondPage extends Component {
     return (
       
       <div className = 'lrcontainer2'>
-
 
 	    <div className = 'leftside2'>
 	      	

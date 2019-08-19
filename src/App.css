@@ -12,6 +12,48 @@
   pointer-events: none;
 }
 
+.openingPage {
+  text-align: center;
+    height: 100vh; /* For 100% screen height */
+    width:  100vw; /* For 100% screen width */
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  z-index: 5
+
+}
+
+.welcomeText {
+
+  margin-top: 10px;
+  padding-left: 10px;
+  font-size: 90px;
+
+}
+
+.startbuttonstyle {
+  text-align: center; 
+}
+.clickToStart {
+  margin-top: 10vh;
+  height: 100px;
+  width: 400px;
+  border-radius: 30px;
+  background-color: #597EF7;
+  color: white;
+  font-size: 35px;
+
+
+
+
+}
+
+.clickToStart: hover {
+  transform: scale(1.2);
+}
+
+
 .leftside {
   background-color: white;
 /*  min-height: 100vh;*/

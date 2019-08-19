@@ -1,27 +1,27 @@
 import React from 'react';
-// import logo from './logo.svg';
 import './App.css';
-
-// this was used to test the functionality of exporting things from page to page
 import PosterSamples from './postersamples.js'
-
 import {getDataCallback} from './autobg/generator.js'
 import axios  from 'axios'
-
-
-const i1 = require('./img/sample1.png')
-const i2 = require('./img/sample2.png')
-const i3 = require('./img/sample3.png')
-const i4 = require('./img/sample4.png')
-const i5 = require('./img/sample5.png')
-const i6 = require('./img/sample6.png')
-const i7 = require('./img/sample7.png')
-const i8 = require('./img/sample8.png')
-const i9 = require('./img/sample9.png')
-const i10 = require('./img/sample10.png')
-
+//google analytics
+import ReactGA from 'react-ga';
+import moment from 'moment' //for timing user
 
 var requestBody = {}
+var start1;
+var end1;
+
+//for user study -- getting # of clicks
+localStorage.setItem('hueClick_times',0)
+localStorage.setItem('satClick_times',0)
+localStorage.setItem('valClick_times',0)
+localStorage.setItem('shapeClick_times',0)
+
+
+//timer per page attempt
+// ReactGA.initialize('UA-145837746-1');
+// ReactGA.pageview('/');
+
 
 class App extends React.Component{
    
@@ -58,7 +58,9 @@ class App extends React.Component{
       square: false,
       triangle: false,
 
-      posters: []
+      posters: [],
+
+      hasBegun: false,
 
     }
 
@@ -156,7 +158,7 @@ class App extends React.Component{
       localStorage.setItem('square_pg1',squareVar)
       localStorage.setItem('tri_pg1',triVar)
 
-      console.log(requestBody)
+      //console.log(requestBody)
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
       .then(function (response) {
           getDataCallback(response.data, false, false)
@@ -167,9 +169,13 @@ class App extends React.Component{
   }
 
 
+
 //using arrow function instead of binding the context
   handleCoolClick = () => {
     
+    var times = Number(localStorage.getItem('hueClick_times'))
+    localStorage.setItem('hueClick_times',(times+1))
+
 
     if ((!this.state.CoolClicked && this.state.CoolWarmClicked) || (!this.state.CoolClicked && this.state.WarmClicked)) {
         this.setState( prevState => ({
@@ -192,8 +198,10 @@ class App extends React.Component{
   }
 
   handleCoolWarmClick() {
-    
 
+    var times = Number(localStorage.getItem('hueClick_times'))
+    localStorage.setItem('hueClick_times',(times+1))    
+    
     if ((!this.state.CoolWarmClicked && this.state.CoolClicked) || (!this.state.CoolWarmClicked && this.state.WarmClicked)) {
       this.setState( prevState => ({
         CoolWarmClicked: !prevState.CoolWarmClicked
@@ -214,6 +222,9 @@ class App extends React.Component{
   }
 
   handleWarmClick() {
+
+  var times = Number(localStorage.getItem('hueClick_times'))
+  localStorage.setItem('hueClick_times',(times+1))
     
   if ((!this.state.CoolWarm && this.state.CoolClicked) || (!this.state.WarmClicked && this.state.CoolWarmClicked)) {
       this.setState({
@@ -236,6 +247,9 @@ class App extends React.Component{
 
 
   handleHighClick() {
+
+  var times = Number(localStorage.getItem('satClick_times'))
+  localStorage.setItem('satClick_times',(times+1))    
     
   if ((!this.state.HighClicked && this.state.HighLowClicked) || (!this.state.HighClicked && this.state.LowClicked)) {
     this.setState({
@@ -258,7 +272,10 @@ class App extends React.Component{
   }
 
 handleHighLowClick() {
-    
+
+  var times = Number(localStorage.getItem('satClick_times'))
+  localStorage.setItem('satClick_times',(times+1))  
+
   if ((!this.state.HighLowClicked && this.state.LowClicked) || (!this.state.HighLowClicked && this.state.HighClicked)) {
     this.setState({
       HighLowClicked: !this.state.HighLowClicked
@@ -280,6 +297,9 @@ handleHighLowClick() {
   }
 
 handleLowClick() {
+
+  var times = Number(localStorage.getItem('satClick_times'))
+  localStorage.setItem('satClick_times',(times+1))  
 
   if ((!this.state.LowClicked && this.state.HighLowClicked) || (!this.state.LowClicked && this.state.HighClicked)) {
     this.setState({
@@ -304,6 +324,9 @@ handleLowClick() {
 
 handleBrightClick() {
 
+  var times = Number(localStorage.getItem('valClick_times'))
+  localStorage.setItem('valClick_times',(times+1))  
+
   if ((!this.state.BrightClicked && this.state.BrightDarkClicked) || (!this.state.BrightClicked && this.state.DarkClicked)) {
     this.setState({
       BrightClicked: !this.state.BrightClicked
@@ -326,6 +349,9 @@ handleBrightClick() {
 
 
 handleBrightDarkClick() {
+  
+  var times = Number(localStorage.getItem('valClick_times'))
+  localStorage.setItem('valClick_times',(times+1)) 
 
   if ((!this.state.BrightDarkClicked && this.state.BrightClicked) || (!this.state.BrightDarkClicked && this.state.DarkClicked)) {
  
@@ -349,6 +375,9 @@ handleBrightDarkClick() {
 }
 
 handleDarkClick() {
+  
+  var times = Number(localStorage.getItem('valClick_times'))
+  localStorage.setItem('valClick_times',(times+1)) 
 
   if ((!this.state.DarkClicked && this.state.BrightDarkClicked) || (!this.state.DarkClicked && this.state.BrightClicked)) {
     this.setState({
@@ -371,6 +400,10 @@ handleDarkClick() {
 }
 
 checkItem(e, shape) {
+
+  var times = Number(localStorage.getItem('shapeClick_times'))
+  localStorage.setItem('shapeClick_times',(times+1)) 
+
   if (shape === 'circle') {
       this.setState ({
         circle: !this.state.circle
@@ -384,9 +417,9 @@ checkItem(e, shape) {
   }
 
   if (shape === 'triangle') {
-  this.setState ({
-    triangle: !this.state.triangle
-  })
+    this.setState ({
+      triangle: !this.state.triangle
+    })
   }
 
 }
@@ -399,13 +432,44 @@ handleGenerate() {
     console.log('Pick at least one shape')
   }
 
+  end1 = new Date
+  console.log('end time', end1)
+  console.log('total time on page', (end1-start1) )
+
+  //add time spent on page to local storage
+  localStorage.setItem('page1_time', end1-start1 )
+  
+
+
+}
+
+handleClickToStart = () => {
+  this.setState ({
+    hasBegun: true
+  })
+
+  //start time
+
+  start1 = new Date;
+  console.log('start time', start1)
+
+
 }
 
 
   render(){
-
+ 
     return <div className="App">
 
+    { !this.state.hasBegun &&
+      <div className='openingPage'>  
+        <div className='welcomeText'>Welcome to DesignFinder! </div>
+        
+        <div className='startbuttonstyle'>
+        <button className='clickToStart' onClick={this.handleClickToStart}> Click to Start </button>
+        </div>
+      </div>
+    }
       <header className="leftside">
         <poster/>
         <h2 className='title'> DesignFinder: Automated Design </h2>
