@@ -14,8 +14,8 @@
 .posterclicked {
   height: 120px;
   width: 120px;
-  margin: 5px;
-  border: solid 3px black;
+  margin: 2.8px;
+  border: solid 2.3px black;
 
 }
 
@@ -110,40 +110,61 @@
   padding-left: 40px;
   flex-direction: column;
 
-  height: 1000px;
+  height: 1015px;
   width: 560px;
   background-color: #D8D8D8;
-
-
 
 }
 
 .posterrows{
   padding-bottom: 40px;
-  height:700px;
+  height:650px;
   overflow-y: scroll;
 }
 
 
-.history {
+.favorites {
   margin-top: 10px;
   padding-top: 15px;
   padding-bottom: 10px;
   padding-left: 5px;
   background-color: white;
-  height: 150px;
+  height: 170px;
   width: 530px;
   align-items: center;
   border-radius: 12px;
-
-
 } 
 
-.historytitle {
+.favoritestitle {
   padding-left: 10px;
-  font-size: 16px;
-  font-weight: lighter;
+  font-size: 17px;
+/*  font-weight: lighter;*/
 }
+
+.downloadbuttonsrow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  position: relative;
+  right: 2px;
+
+}
+
+.download {
+  height: 22px;
+  width: 40px;
+  border-radius:  10px;
+  font-weight: lighter;
+  font-size: 15px;
+  position: relative;
+  left: 44.5px;
+}
+
+.colly {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .instructions {
   font-family: arial;

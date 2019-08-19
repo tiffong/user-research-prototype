@@ -20,6 +20,9 @@ var clickedID;
 var clickedID_1;
 var clickedID_2;
 
+var favorites_filled = 0; //how many images are within the favorites box
+var fileDownload = require('js-file-download');
+
 class SecondPage extends Component {
   constructor(props) {
   	super(props)
@@ -27,41 +30,41 @@ class SecondPage extends Component {
   	this.state = {
   		parray: [],
   		//clickedposter: null,
-  		historyarray: [],
-  		isGreyClicked: false,
-  		xout: false,
+  		historyarray: [], // currently not in use
+  		isGreyClicked: false, //is a grey square clicked on the right side -- triggerspopup
+  		xout: false,//for pop up -- do we need to x out the popup
   		favorites: [],
-  		clickedid: 'poster8',
-  		transitionmodeclicked: false,
-  		twoclickedposters: [],
+  		clickedid: 'poster8',//in explore mode, which poster is clicked on left side/
+  		transitionmodeclicked: false, //are we in transition  mode?
+  		twoclickedposters: [], //the ids of the two clicked posters in transition mode
   		popupimage: null,
+  		popupid: 'square0' //the id of the clicked poster on the right side
   	}
 
-  	this.handleSelection = this.handleSelection.bind(this)
+  	this.handleGreyClick = this.handleGreyClick.bind(this) //causes currentTarget to be able to be accessed
   }
 
-// sets up the posters that are displayed by putting them in an array
+//initially sets up the posters that are displayed by putting them in an array
   componentDidMount() {
-
+   //TODO: get a loading symbol for 6 seconds as initial posters load
 
    this.getDataAxios()
-   // console.log('requestbody')
-   // console.log(requestBody)
-
   }
 
 
   componentDidUpdate(prevProps, prevState) {
+  	//printing to see states immediately as they update 
   	console.log('state of transition mode', this.state.transitionmodeclicked)
   	console.log('first of the clicked posters', this.state.twoclickedposters[0])
   	console.log('second of the clicked posters', this.state.twoclickedposters[1])
   	console.log('length of clicked posters array', this.state.twoclickedposters.length)
   	console.log('ID of POPUP that was just clicked: ', this.state.popupimage)
   	console.log('ID of left side poster that was clicked:', this.state.clickedid)
+  	console.log('ID of right  side poster that was clicked', this.state.popupid)
 
 
-
-//if the length of posters clicked is greater than 2, then will send a request to load the merge page
+//if the length of posters clicked array is greater than 2 AND is an even number,
+// then will send a request to load the merge page with transition svgs
   	if(this.state.transitionmodeclicked) {
 
   		  	 if(this.state.twoclickedposters.length>1 &&  this.state.twoclickedposters.length%2 == 0) {
@@ -112,40 +115,21 @@ class SecondPage extends Component {
 		}
   }	
 
-
-// once you click a poster, this function handles the selection, 
-// setting the clicked poster image to the one that was clicked
-// chosenposter is found from within the poster component
-//CURRENTLY UNUSED
-  handleSelection(chosenposter) {
-  	this.setState({
-      clickedposter: chosenposter
-    });
-
-    this.setState(prevState => ({
-      historyarray: [ chosenposter , ...prevState.historyarray],
-    }))
-  }
-
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
   	$("#poster"+clickedID).removeClass('posterclicked')
 	$("#poster"+clickedID).addClass('poster')
 
-
-  	//e.persist()
   	// set clicked id to clicked poster
   	var id_of_clicked_poster = e.currentTarget.id
   	
   	//highlight when clicked
   	e.currentTarget.className = 'posterclicked'
 
-  	//TODO: unhighlight the last SVGs that was clicked
-
   	this.setState(prevState => ({
-	      twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
-	      clickedid: id_of_clicked_poster
+      twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
+      clickedid: id_of_clicked_poster
 	}))
 
  //using the number ID of the clicked poster, insert DIV
@@ -154,8 +138,6 @@ class SecondPage extends Component {
 	   	clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
 	  	//console.log('ID of the poster you clicked: ', clickedID)
 	  	console.log('noises', noises)
-
-
 
 		requestBody = {
 	        circle: noises[clickedID][30],
@@ -193,52 +175,6 @@ class SecondPage extends Component {
 			clickedID_1 = null
 			clickedID_2 = null
   		}
- //if you are in transition  mode, you  must  click two
-	 //  	 if(this.state.twoclickedposters.length > 1) {
-
-
-		//   	  var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
-		// 	  var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
-
-
-
-		//       console.log(noises)
-
-		//       requestBody = {
-		//           circle_1: noises[clickedID_1][0],
-		//           square_1: noises[clickedID_1][1],
-		//           triangle_1: noises[clickedID_1][2],
-		//           bright_dark_1: noises[clickedID_1][3],
-		//           soft_sharp_1: noises[clickedID_1][4],
-		//           warm_cool_1: noises[clickedID_1][5],
-		//           simple_complex_1: noises[clickedID_1][6],
-		//           disorder_inorder_1: noises[clickedID_1][7],
-		//           high_low_1: noises[clickedID_1][8],
-		//           random_noise_1:noises[clickedID_1].slice(9),
-
-		//           circle_2: noises[clickedID_2][0],
-		//           square_2: noises[clickedID_2][1],
-		//           triangle_2: noises[clickedID_2][2],
-		//           bright_dark_2: noises[clickedID_2][3],
-		//           soft_sharp_2: noises[clickedID_2][4],
-		//           warm_cool_2: noises[clickedID_2][5],
-		//           simple_complex_2: noises[clickedID_2][6],
-		//           disorder_inorder_2: noises[clickedID_2][7],
-		//           high_low_2: noises[clickedID_2][8],
-		//           random_noise_2:noises[clickedID_2].slice(9)
-		//       }
-
-		//       console.log(requestBody)
-
-
-		//       axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
-		//           .then(function (response) {
-		//               getDataCallback(response.data, true, true)
-		//           })
-		//           .catch(function (error) {
-		//               console.log(error);
-		//           });
-		// }
   	}
 
   }
@@ -270,16 +206,18 @@ class SecondPage extends Component {
 
   }
 
+//what happens when you click a square on the right side -- it enlarges
   handleGreyClick = (e) => {
 
   	///TODO: make it so the image they clicked shows up larger
-
   	e.persist() //removes the event from the pool allowing references to the event to be retained asynchronously
+
+	var id_of_clicked_grey =e.currentTarget.id
 
   	this.setState(prevState => ({
       isGreyClicked: true,
       xout: false,
-      popupimage: e.target
+      popupimage: id_of_clicked_grey,
     }))
 
   }
@@ -294,6 +232,12 @@ class SecondPage extends Component {
 
   handleFavorite = () => {
   	this.handleXout()
+  	//add 1 to number already in favorites list
+  	favorites_filled = favorites_filled + 1
+  	if (favorites_filled === 4) {
+  		favorites_filled = 0
+  	}
+
   }
 
 //this will allow the image to be rendered larger when clicked
@@ -346,62 +290,8 @@ class SecondPage extends Component {
 	      transitionmodeclicked: true,
 	      twoclickedposters: []
 	    })) 
-
-
-	 //   	this.setState(prevState => ({
-		//       twoclickedposters: ['poster1', ...prevState.twoclickedposters]
-		// }))
-
-		// this.setState(prevState => ({
-		//       twoclickedposters: ['poster0', ...prevState.twoclickedposters]
-		// }))
-
 	   	console.log('lengththt', this.state.twoclickedposters.length)
-
-	  //  if(this.state.twoclickedposters.length >=2) {
-
-	  //  	//get  initial request of the first two
-		 //   	var clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
-			// var clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
-
-			//       requestBody = {
-			//           circle_1: noises[clickedID_1][0],
-			//           square_1: noises[clickedID_1][1],
-			//           triangle_1: noises[clickedID_1][2],
-			//           bright_dark_1: noises[clickedID_1][3],
-			//           soft_sharp_1: noises[clickedID_1][4],
-			//           warm_cool_1: noises[clickedID_1][5],
-			//           simple_complex_1: noises[clickedID_1][6],
-			//           disorder_inorder_1: noises[clickedID_1][7],
-			//           high_low_1: noises[clickedID_1][8],
-			//           random_noise_1:noises[clickedID_1].slice(9),
-
-			//           circle_2: noises[clickedID_2][0],
-			//           square_2: noises[clickedID_2][1],
-			//           triangle_2: noises[clickedID_2][2],
-			//           bright_dark_2: noises[clickedID_2][3],
-			//           soft_sharp_2: noises[clickedID_2][4],
-			//           warm_cool_2: noises[clickedID_2][5],
-			//           simple_complex_2: noises[clickedID_2][6],
-			//           disorder_inorder_2: noises[clickedID_2][7],
-			//           high_low_2: noises[clickedID_2][8],
-			//           random_noise_2:noises[clickedID_2].slice(9)
-			//       }
-			//       axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
-			//           .then(function (response) {
-			//               getDataCallback(response.data, true, true)
-			//           })
-			//           .catch(function (error) {
-			//               console.log(error);
-			//           });
-		 // }
-
-
   	}
-
-
-
-    //should do something else if it is supposed to be a "CANCEL" button
 
   }
 
@@ -517,9 +407,23 @@ class SecondPage extends Component {
       });
   }
 
+//remove clicked poster border then refresh entire page
   handleRefresh = () => {
+  	
+  	$("#poster"+clickedID).removeClass('posterclicked')
+	$("#poster"+clickedID).addClass('poster')
   	$(".poster").empty()
   	this.getDataAxios()
+  }
+
+
+  handledownload= (e) => {
+
+  	console.log('eeee', e.target)
+  	console.log('download clicked')
+  	//fileDownload(data, 'filename.csv');
+
+
   }
 
   render() {
@@ -548,13 +452,35 @@ class SecondPage extends Component {
 
 		      	</div>
 
-		    <div className='history'>
-		    	<div className='historytitle' > Favorites </div>
-	    		<Poster importedposter = {this.state.historyarray[0]} handleSelection={this.handleSelection}  />
-	      		<Poster importedposter = {this.state.historyarray[1]} handleSelection={this.handleSelection}  />
-	      		<Poster importedposter = {this.state.historyarray[2]} handleSelection={this.handleSelection}  />
-	      		<Poster importedposter = {this.state.historyarray[3]} handleSelection={this.handleSelection}  />	
+		    <div className='favorites'>
+		    	<div className='favoritestitle' > Favorites </div>
+
+		    	<div className='downloadbuttonsrow'>
+		    		<div className='colly'>
+				    	<div className='square2' id='favorite1'> </div>
+				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+			    	</div>
+		    	
+		    		<div className='colly'>
+				    	<div className='square2' id='favorite2'> </div>
+				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+			    	</div>
+
+		    	
+		    		<div className='colly'>
+				    	<div className='square2' id='favorite3'> </div>
+				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+			    	</div>			    
+		    	
+		    		<div className='colly'>
+				    	<div className='square2' id='favorite4'> </div>
+				    	<button className='download' onClick={this.handledownload}> ↓ </button>
+			    	</div>
+			
+				</div>
+				
 		    </div>
+
 
 	    </div>
 
@@ -565,10 +491,11 @@ class SecondPage extends Component {
 				      <div className = 'conditionalpopupdiv'>
 				          {this.state.isGreyClicked && !this.state.xout && 
 
-					            <div className='popup'> 
+					            <div className='popup' > 
 					            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
 					            	
-					            	<img src={ii2} className='popupimage'/>
+
+					            	<img src={ii2} className='popupimage' id={this.state.popupid}/>
 
 					            	
 					            	<div className='popuprow'>
