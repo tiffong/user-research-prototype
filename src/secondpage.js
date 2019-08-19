@@ -662,51 +662,70 @@ class SecondPage extends Component {
 			{
 				this.state.transitionmodeclicked &&
 
+
+
 				<div className='rightsidetransition'>
+
+			      <div className = 'conditionalpopupdiv'>
+			          {this.state.isGreyClicked && !this.state.xout && 
+
+				            <div className='popup' > 
+				            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
+				            	
+				            	<div className='popupimage' id={this.state.popupid}> </div>
+
+
+				            	
+				            	<div className='popuprow'>
+					            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
+				            </div> }
+		          </div>
+
+
 					<div className='row'> 
-				        <div className='square2' id='square28'>  </div>
-				        <div className='square2' id='square0'> </div>
-				        <div className='square2' id='square1'> </div>
-				        <div className='square2' id='square2'> </div>
-				        <div className='square2' id='square3'> </div>
+				        <div className='square2' id='square28' >  </div>
+				        <div className='square2' id='square0' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square1' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square2' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square3' onClick={this.handleGreyClick}> </div>
 				    </div>
 
 				    <div className='row'> 
 				       
-				        <div className='square2' id='square4'> </div>
-				        <div className='square2' id='square5'> </div>
-				        <div className='square2' id='square6'> </div>
-				        <div className='square2' id='square7'> </div>
-				        <div className='square2' id='square8'> </div>
+				        <div className='square2' id='square4' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square5' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square6' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square7' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square8' onClick={this.handleGreyClick}> </div>
 				    </div>
 
 				    <div className='row'> 
-				    	<div className='square2' id='square9'> </div>
-				        <div className='square2' id='square10'> </div>
-				        <div className='square2' id='square11'> </div>
-				        <div className='square2' id='square12'> </div>
-				        <div className='square2' id='square13'> </div>
+				    	<div className='square2' id='square9' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square10' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square11' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square12' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square13' onClick={this.handleGreyClick}> </div>
 				    </div>
 				    <div className='row'> 
-				    	<div className='square2' id='square14'> </div>
-				        <div className='square2' id='square15'> </div>
-				        <div className='square2' id='square16'> </div>
-				        <div className='square2' id='square17'> </div>
-				        <div className='square2' id='square18'> </div>
+				    	<div className='square2' id='square14' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square15' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square16' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square17' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square18' onClick={this.handleGreyClick}> </div>
 				    </div>
 				    <div className='row'> 
-				    	<div className='square2' id='square19'> </div>
-				        <div className='square2' id='square20'> </div>
-				        <div className='square2' id='square21'> </div>
-				        <div className='square2' id='square22'> </div>
-				        <div className='square2' id='square23'> </div>
+				    	<div className='square2' id='square19' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square20' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square21' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square22' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square23' onClick={this.handleGreyClick}> </div>
 				    </div>			
 		    	    
 				    <div className='row'> 
-				        <div className='square2' id='square24'> </div>
-				        <div className='square2' id='square25'> </div>
-				        <div className='square2' id='square26'> </div>
-				        <div className='square2' id='square27'> </div>
+				        <div className='square2' id='square24' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square25' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square26' onClick={this.handleGreyClick}> </div>
+				        <div className='square2' id='square27' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square29'>  </div>
 				    </div>
 				</div>	
