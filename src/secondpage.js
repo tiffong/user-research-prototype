@@ -481,7 +481,7 @@ class SecondPage extends Component {
       this.setState( prevState => ({
         needLoadingLogo: false
       }));
-    }, 1500);
+    }, 1400);
 
 
     $("#poster"+clickedID).removeClass('posterclicked')
