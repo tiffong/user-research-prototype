@@ -8,6 +8,8 @@ import {Line, Triangle} from 'react-shapes';
 //reactsvg stuff
 import { ReactDOM, render } from 'react-dom'
 import $ from 'jquery'
+//lazy loading
+import {LazyLoadImage} from 'react-lazy-load-image-component';
 
 //for user study recording number of clicks
 localStorage.setItem('disorderInorderClick_times',0) //top left to right bottom
@@ -295,26 +297,21 @@ class SecondPage extends Component {
   	indents.push(</div>)
 
   	return (indents)
-
   }
-
-
 
 //if you click transition mode then the state will be changed to transition mode clicked
   handleTransitionModeClick = () => {
   	
     $("#poster"+clickedID).removeClass('posterclicked')
-	 $("#poster"+clickedID).addClass('poster')
-
+  	$("#poster"+clickedID).addClass('poster')
 
 //if you are in transition mode, then you should have the CANCEL functionality
-//when you CANCEL: TRANSITION mode --> EXPLORE mode
+//when you click CANCEL: TRANSITION mode --> EXPLORE mode
   	if(this.state.transitionmodeclicked) {
 	  	
       //user time spent on transition page
       end3 = new Date
       localStorage.setItem('transitionPage_time',(end3-start3) ) 
-
 
 	  	$("#poster"+clickedID_1).removeClass('posterclicked')
 			$("#poster"+clickedID_1).addClass('poster')
@@ -462,9 +459,22 @@ class SecondPage extends Component {
 //remove clicked poster border then refresh entire page
   handleRefresh = () => {
   	
-  	$("#poster"+clickedID).removeClass('posterclicked')
-	$("#poster"+clickedID).addClass('poster')
-  	$(".poster").empty()
+    $("#poster"+clickedID).removeClass('posterclicked')
+  	$("#poster"+clickedID).addClass('poster')
+    
+
+    //if you're in transision mode
+    if(this.state.transitionmodeclicked) {
+      $("#poster"+clickedID_1).removeClass('posterclicked')
+      $("#poster"+clickedID_1).addClass('poster')
+      
+      $("#poster"+clickedID_2).removeClass('posterclicked')
+      $("#poster"+clickedID_2).addClass('poster')
+    
+    }
+
+
+    $(".poster").empty()
   	this.getDataAxios()
   }
 
