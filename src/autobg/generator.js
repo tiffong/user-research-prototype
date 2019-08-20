@@ -1129,12 +1129,7 @@ function getDataCallback(data, containedNoise, isExtended, selectedID) {
 
             posterList.push(poster);
         }
-
     }
-
-
-
-
 }
 
 export {

@@ -20,7 +20,7 @@ localStorage.setItem('favoritesClick_times',0) //number of favorites saved
 localStorage.setItem('transitionClick_times',0) //number of transition pairs chosen
 
 
-const ii2 = require('./img/sample2.png')
+const loading = require('./img/loading.gif')
 
 var requestBody = {}
 var leftsideposters = []
@@ -39,6 +39,7 @@ var end2;
 var start3;
 var end3;
 
+
 class SecondPage extends Component {
   constructor(props) {
   	super(props)
@@ -55,6 +56,7 @@ class SecondPage extends Component {
   		popupimage: null,
   		popupid: 'square0', //the id of the clicked poster on the right side
   		canclickpopup: false,
+      needLoadingLogo: true,
   	}
 
   	this.handleGreyClick = this.handleGreyClick.bind(this) //causes currentTarget to be able to be accessed
@@ -63,6 +65,14 @@ class SecondPage extends Component {
 //initially sets up the posters that are displayed by putting them in an array
   componentDidMount() {
    //TODO: get a loading symbol for 6 seconds as initial posters load
+    
+
+  //display loading logo
+  setTimeout( () => {
+  this.setState( prevState => ({
+    needLoadingLogo: false
+  }));
+  }, 1800);
 
    //set timer here
    start2 = new Date
@@ -73,7 +83,7 @@ class SecondPage extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-  	//printing to see states immediately as they update 
+    //printing to see states immediately as they update 
   	console.log('state of transition mode', this.state.transitionmodeclicked)
   	console.log('first of the clicked posters', this.state.twoclickedposters[0])
   	console.log('second of the clicked posters', this.state.twoclickedposters[1])
@@ -128,7 +138,9 @@ class SecondPage extends Component {
 
 			      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
 			          .then(function (response) {
-			          	  var clickedArrays= [clickedID_1,clickedID_2]
+			          	  
+
+                    var clickedArrays= [clickedID_1,clickedID_2]
 			              getDataCallback(response.data, true, true, clickedArrays)
 			              
 			          })
@@ -139,11 +151,12 @@ class SecondPage extends Component {
 		}
   }	
 
+
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
   	$("#poster"+clickedID).removeClass('posterclicked')
-	$("#poster"+clickedID).addClass('poster')
+	  $("#poster"+clickedID).addClass('poster')
 
   	// set clicked id to clicked poster
   	var id_of_clicked_poster = e.currentTarget.id
@@ -154,7 +167,7 @@ class SecondPage extends Component {
   	this.setState(prevState => ({
       twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
       clickedid: id_of_clicked_poster,
-	}))
+	  }))
 
  //using the number ID of the clicked poster, insert DIV
  //if you are in explore mode
@@ -190,7 +203,7 @@ class SecondPage extends Component {
   	} else {
   		console.log('moved')
   		if(clickedID_1 && clickedID_2){
-  			$("#poster"+clickedID_1).removeClass('posterclicked')
+  		$("#poster"+clickedID_1).removeClass('posterclicked')
 			$("#poster"+clickedID_1).addClass('poster')
 
 			$("#poster"+clickedID_2).removeClass('posterclicked')
@@ -214,11 +227,11 @@ class SecondPage extends Component {
   	} else if (this.state.transitionmodeclicked) {
   		
 
-  		$("#poster"+clickedID_1).removeClass('posterclicked')
+  	$("#poster"+clickedID_1).removeClass('posterclicked')
 		$("#poster"+clickedID_1).addClass('poster')
 
 
-  		$("#poster"+clickedID_2).removeClass('posterclicked')
+  	$("#poster"+clickedID_2).removeClass('posterclicked')
 		$("#poster"+clickedID_2).addClass('poster')
 
 
@@ -448,6 +461,7 @@ class SecondPage extends Component {
       axios.post('http://127.0.0.1:5000/img_generator', requestBody)
       .then(function (response) {
 
+          
           getDataCallback(response.data, true, false)
 
       })
@@ -459,6 +473,17 @@ class SecondPage extends Component {
 //remove clicked poster border then refresh entire page
   handleRefresh = () => {
   	
+    this.setState(prevState => ({
+      needLoadingLogo: true
+    }))
+
+    setTimeout( () => {
+      this.setState( prevState => ({
+        needLoadingLogo: false
+      }));
+    }, 1500);
+
+
     $("#poster"+clickedID).removeClass('posterclicked')
   	$("#poster"+clickedID).addClass('poster')
     
@@ -472,7 +497,6 @@ class SecondPage extends Component {
       $("#poster"+clickedID_2).addClass('poster')
     
     }
-
 
     $(".poster").empty()
   	this.getDataAxios()
@@ -491,21 +515,29 @@ class SecondPage extends Component {
 
   render() {
     return (
-      
+
+
       <div className = 'lrcontainer2'>
 
 	    <div className = 'leftside2'>
 	      	
+
 		      	<div className='buttflexrow'>
 			      	<button className='button2' onClick={this.handleBackButton} > Back  </button>
 			      	
 			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Cancel' : 'Transition Mode'} </button>
 		      	</div>
 
-		      	<div className='refreshbuttoncontainer'>
-		      	</div>
+
+            { this.state.needLoadingLogo &&
+              
+              <div className='loading'>
+                <img src={loading}/>
+              </div>
+            }
 
 		      	<div className='posterrows'>
+
 
 
 					{this.dynamicallyRenderPosters()}
