@@ -1,8 +1,18 @@
 .loading {
   position: absolute;
   left:230px;
-  top: 310px;
+  top: 300px;
   z-index: 10
+}
+
+.littleloading {
+  position: absolute;
+  left:432px;
+  top: 410px;
+  z-index: 10;
+
+  max-width: 50%;
+  max-height: 50%;
 }
 
 
@@ -22,8 +32,13 @@
 .posterclicked {
   height: 120px;
   width: 120px;
-  margin: 2.8px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+  margin-right: 2px;
+  margin-left: 4px;
   border: solid 2.3px black;
+  position: relative;
+  right: 1px;
 
 }
 
@@ -61,7 +76,7 @@
 .toptriangle {
   position: absolute;
   z-index: 1;
-  left: 1110px;
+  left: 1112px;
   top: 35px;
 }
 
@@ -93,7 +108,7 @@
   position: absolute;
   z-index: 1;
   transform: rotate(-135deg);
-  left: 645px;
+  left: 651px;
   top: 957px;
 }
 
@@ -101,7 +116,7 @@
   position: absolute;
   z-index: 1;
   transform: rotate(180deg);
-  left: 1110px;
+  left: 1112px;
   top: 959px;
 }
 
@@ -251,7 +266,7 @@
   flex-direction:row;
   justify-content: space-between;
   padding-right:50px;
-  padding-bottom: 0px;
+  padding-bottom:5px;
 }
 
 .rightside2 {
@@ -273,6 +288,7 @@
 .simple {
 	transform: rotate(-90deg);
   position: relative;
+  right: 3px;
   top: 473px;
   height: 20px;
 }
@@ -280,7 +296,7 @@
 .complex {
   transform: rotate(-270deg);
   position: relative;
-  right: 478px;
+  right: 485px;
 }
 
 .sideflex{
@@ -306,6 +322,16 @@
 
 }
 
+.soft {
+  position: relative;
+  left: 14px;
+}
+
+.sharp {
+  position: relative;
+  right: 6px;
+}
+
 .null {
 	visibility: hidden;
 }
@@ -319,6 +345,7 @@
   display: inline-block;
   margin: 5px;
   vertical-align: middle;
+  border: 2px;
 }
 
 
@@ -334,8 +361,21 @@
 }
 
 
+/*experimental zone*/
 
-/*.row{
-	padding-top: 5px;
+/*central squares*/
+.centersquare {
+  height: 120px;
+  width: 120px;
+  background-color: #D8D8D8;
+  display: inline-block;
+
+  vertical-align: middle;
+  margin: 3px;
+  border: solid black 2px;
 }
-*/
+
+/*#square2 {
+  margin-right: 9px;
+}*/
+

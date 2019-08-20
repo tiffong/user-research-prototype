@@ -4,7 +4,7 @@ import Poster from './poster.js'
 import PosterSample from './postersamples.js'
 import axios  from 'axios'
 import {getDataCallback,noises,features2} from './autobg/generator.js'
-import {Line, Triangle} from 'react-shapes';
+import {Line, Triangle, Rectangle} from 'react-shapes';
 //reactsvg stuff
 import { ReactDOM, render } from 'react-dom'
 import $ from 'jquery'
@@ -39,6 +39,8 @@ var end2;
 var start3;
 var end3;
 
+var leetle = false
+
 
 class SecondPage extends Component {
   constructor(props) {
@@ -57,6 +59,7 @@ class SecondPage extends Component {
   		popupid: 'square0', //the id of the clicked poster on the right side
   		canclickpopup: false,
       needLoadingLogo: true,
+      needlittleLoadingLogo: false,
   	}
 
   	this.handleGreyClick = this.handleGreyClick.bind(this) //causes currentTarget to be able to be accessed
@@ -65,7 +68,6 @@ class SecondPage extends Component {
 //initially sets up the posters that are displayed by putting them in an array
   componentDidMount() {
    //TODO: get a loading symbol for 6 seconds as initial posters load
-    
 
   //display loading logo
   setTimeout( () => {
@@ -98,6 +100,7 @@ class SecondPage extends Component {
 
   		  	 if(this.state.twoclickedposters.length>1 &&  this.state.twoclickedposters.length%2 == 0) {
 	  	  	    
+              leetle = true
   		  	 	//update times that the posters were clicked
 	  	  	    var times = Number(localStorage.getItem('transitionClick_times'))
 				localStorage.setItem('transitionClick_times',(times+2))
@@ -154,6 +157,16 @@ class SecondPage extends Component {
 
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
+
+    // this.setState(prevState => ({
+    //   needlittleLoadingLogo: true
+    // }))
+
+    // setTimeout( () => {
+    //   this.setState( prevState => ({
+    //     needlittleLoadingLogo: false
+    //   }));
+    // }, 850);
 
   	$("#poster"+clickedID).removeClass('posterclicked')
 	  $("#poster"+clickedID).addClass('poster')
@@ -605,7 +618,7 @@ class SecondPage extends Component {
 
 					      	<div className = 'topflex'>
 						      	<div> Disorder</div> 
-						      	<div> Sharp </div> 
+						      	<div className='sharp'> Sharp </div> 
 						      	<div> Bright </div> 
 					      	</div>
 
@@ -645,8 +658,13 @@ class SecondPage extends Component {
 					      		<div className="square2" onClick={this.handleGreyClick} id='square17' ></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>			      
 					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
-
-					      		<div className="square2" onClick={this.handleGreyClick} id='square24' ></div>
+					      		
+                    <div className='square2' onClick={this.handleGreyClick} id='square24' ></div>
+                     { this.state.needlittleLoadingLogo &&
+                          <div className='littleloading'>
+                            <img src={loading}/>
+                          </div>
+                      }
 
 					      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
@@ -685,7 +703,7 @@ class SecondPage extends Component {
 
 					      	<div className = 'bottomflex'>
 						      	<div> Dark </div> 
-						      	<div> Soft </div> 
+						      	<div className='soft'> Soft </div> 
 						      	<div> In order </div> 
 					      	</div>
 
@@ -738,11 +756,11 @@ class SecondPage extends Component {
 			      	  </div>
 
 			      	  <div className='line3'> 
-			      	  	<Line x1={505} x2={505} y1={22} y2={948}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  	<Line x1={507} x2={507} y1={22} y2={948}  stroke={{color:'black'}} strokeWidth={1} />
 			      	  </div>
 
 			      	  <div className='line4'> 
-			      	  	<Line x1={962} x2={45} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  	<Line x1={962} x2={50} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
 			      	  </div>
 
 
@@ -801,9 +819,16 @@ class SecondPage extends Component {
 				        <div className='square2' id='square13' onClick={this.handleGreyClick}> </div>
 				    </div>
 				    <div className='row'> 
-				    	<div className='square2' id='square14' onClick={this.handleGreyClick}> </div>
+				    	  <div className='square2' id='square14' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square15' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square16' onClick={this.handleGreyClick}> </div>
+
+                     { this.state.needlittleLoadingLogo &&
+                          <div className='littleloading'>
+                            <img src={loading}/>
+                          </div>
+                      }
+
 				        <div className='square2' id='square17' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square18' onClick={this.handleGreyClick}> </div>
 				    </div>
