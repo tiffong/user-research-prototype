@@ -775,7 +775,7 @@ class SecondPage extends Component {
 			      	  </div>
 
 			      	  <div className='line2'> 
-			      	  	<Line x1={40} x2={965} y1={485} y2={485}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  	<Line x1={40} x2={970} y1={485} y2={485}  stroke={{color:'black'}} strokeWidth={1} />
 			      	  </div>
 
 			      	  <div className='line3'> 

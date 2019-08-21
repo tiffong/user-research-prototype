@@ -7,7 +7,7 @@
 
 .littleloading {
   position: absolute;
-  left:435px;
+  left:440px;
   top: 415px;
   z-index: 10;
 
@@ -106,7 +106,7 @@
   position: absolute;
   z-index: 1;
   transform: rotate(90deg);
-  left: 1592px;
+  left: 1596px;
   top: 496px;
 }
 
