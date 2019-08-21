@@ -1,7 +1,14 @@
 .postersamples {
 	height: 120px;
 	width: 120px;
-	padding: 5px;
+	margin: 15px;
 }
 
+
+.row {
+	display: flex;
+	direction: column;
+	justify-content: space-around;
+
+}
 

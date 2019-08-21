@@ -7,14 +7,20 @@
 
 .littleloading {
   position: absolute;
-  left:432px;
-  top: 410px;
+  left:435px;
+  top: 415px;
   z-index: 10;
 
-  max-width: 50%;
-  max-height: 50%;
 }
 
+
+.littleloading2 {
+  position: absolute;
+  left:1016px;
+  top: 415px;
+  z-index: 10;
+
+}
 
 .lrcontainer2 {
 	display: flex;
