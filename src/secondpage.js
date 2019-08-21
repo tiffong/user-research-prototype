@@ -161,6 +161,7 @@ class SecondPage extends Component {
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
+//handling loading sign
     if(!this.state.transitionmodeclicked) {
       
       this.setState(prevState => ({
@@ -188,6 +189,7 @@ class SecondPage extends Component {
     }
 
 
+//handling removing border
   	$("#poster"+clickedID).removeClass('posterclicked')
 	  $("#poster"+clickedID).addClass('poster')
 
@@ -235,7 +237,6 @@ class SecondPage extends Component {
   		  }); 		
   	} else { //if you're in transitionmode
   		
-  		if(clickedID_1 && clickedID_2){
     		$("#poster"+clickedID_1).removeClass('posterclicked')
   			$("#poster"+clickedID_1).addClass('poster')
 
@@ -244,7 +245,6 @@ class SecondPage extends Component {
 
   			clickedID_1 = null
   			clickedID_2 = null
-  		}
   	}
 
   }
@@ -355,6 +355,7 @@ class SecondPage extends Component {
 //when you click CANCEL: TRANSITION mode --> EXPLORE mode
   	if(this.state.transitionmodeclicked) {
 	  	
+
       //user time spent on transition page
       end3 = new Date
       localStorage.setItem('transitionPage_time',(end3-start3) ) 
