@@ -3,9 +3,7 @@ import './App.css';
 import PosterSamples from './postersamples.js'
 import {getDataCallback} from './autobg/generator.js'
 import axios  from 'axios'
-//google analytics
-import ReactGA from 'react-ga';
-import moment from 'moment' //for timing user
+
 
 var requestBody = {}
 var start1;

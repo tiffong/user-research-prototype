@@ -8,8 +8,7 @@ import {Line, Triangle, Rectangle} from 'react-shapes';
 //reactsvg stuff
 import { ReactDOM, render } from 'react-dom'
 import $ from 'jquery'
-//lazy loading
-import {LazyLoadImage} from 'react-lazy-load-image-component';
+
 
 //for user study recording number of clicks
 localStorage.setItem('disorderInorderClick_times',0) //top left to right bottom
