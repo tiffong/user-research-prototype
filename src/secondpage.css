@@ -296,7 +296,9 @@
 .complex {
   transform: rotate(-270deg);
   position: relative;
-  right: 485px;
+  right: 2px;
+  top: 480px;
+  height: 5px;
 }
 
 .sideflex{
