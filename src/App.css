@@ -55,9 +55,8 @@
   background-color: #597EF7;
   color: white;
   font-size: 35px;
-
-
-
+  outline: none !important;
+  box-shadow: none;
 
 }
 

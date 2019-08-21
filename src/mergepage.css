@@ -53,7 +53,7 @@
 	z-index: 9;
 	position: absolute;
 	align-items: center;
-	right: 232px;
+	right: 652px;
 	top:130px;
 	border: .8px solid grey;
 }
@@ -70,6 +70,8 @@
 	background: none;
 	font-size: 30px;
 	color: grey;
+  	outline: none !important;
+  	box-shadow: none;	
 
 }
 
@@ -89,6 +91,8 @@
 	width:  250px;
 	color: white;
 	border-radius: 30px;
+	outline: none !important;
+  	box-shadow: none;	
 
 }
 
