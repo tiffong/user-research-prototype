@@ -3,13 +3,13 @@ import './secondpage.css';
 import Poster from './poster.js'
 import PosterSample from './postersamples.js'
 import axios  from 'axios'
-import {getDataCallback,noises,features2} from './autobg/generator.js'
+import {getDataCallback,constructPoster2,getfavorite,noises,features2} from './autobg/generator.js'
 import {Line, Triangle, Rectangle} from 'react-shapes';
 //reactsvg stuff
 import { ReactDOM, render } from 'react-dom'
 import $ from 'jquery'
-//lazy loading
-import {LazyLoadImage} from 'react-lazy-load-image-component';
+import download from 'downloadjs'
+
 
 //for user study recording number of clicks
 localStorage.setItem('disorderInorderClick_times',0) //top left to right bottom
@@ -43,6 +43,9 @@ var start3;
 var end3;
 
 var leetle = false
+
+var favoriteList = []
+var favoriteID
 
 
 class SecondPage extends Component {
@@ -284,6 +287,14 @@ class SecondPage extends Component {
 
 	var id_of_clicked_grey = e.currentTarget.id
 	var replace = Number(id_of_clicked_grey.replace('square', ''))
+  	favoriteID = replace
+
+  	setTimeout(function () {
+        constructPoster2(features2[replace])
+    },100)
+
+
+
 //recording number of clicks
 	// if(this.state.canclickpopup) {
 	// }
@@ -325,7 +336,15 @@ class SecondPage extends Component {
   	if (favorites_filled === 4) {
   		favorites_filled = 0
   	}
+	if(favoriteList.length<4){
+  		favoriteList.push(features2[favoriteID])
+	}
+  	else{
+        favoriteList.splice(0,1)
+		favoriteList.push(features2[favoriteID])
+	}
 
+  	getfavorite(favoriteList)
   	//record number of clicks for favorite
 	var times = Number(localStorage.getItem('favoritesClick_times'))
 	localStorage.setItem('favoritesClick_times',(times+1))
@@ -544,6 +563,13 @@ class SecondPage extends Component {
   	//download the SVG
 
   	//fileDownload(data, 'filename.csv');
+  	var downloadID = (e.target.id).replace("download","")
+
+    var downloadContent = $("#favorite"+downloadID).children()[0].outerHTML
+	console.log(downloadContent)
+
+  	download(downloadContent,"sample.svg", "text/html")
+
 
   }
 
@@ -586,24 +612,24 @@ class SecondPage extends Component {
 
 		    	<div className='downloadbuttonsrow'>
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite1'> </div>
-				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
+				    	<div className='square2' id='favorite0'> </div>
+				    	<a className='download' id='download0' onClick={this.handledownload}> ⤓ </a>
 			    	</div>
 		    	
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite2'> </div>
-				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
+				    	<div className='square2' id='favorite1'> </div>
+				    	<a className='download' id='download1' onClick={this.handledownload}> ⤓ </a>
 			    	</div>
 
 		    	
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite3'> </div>
-				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
+				    	<div className='square2' id='favorite2'> </div>
+				    	<a className='download' id='download2' onClick={this.handledownload}> ⤓ </a>
 			    	</div>			    
 		    	
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite4'> </div>
-				    	<button className='download' onClick={this.handledownload}> ⤓ </button>
+				    	<div className='square2' id='favorite3'> </div>
+				    	<a className='download' id='download3' onClick={this.handledownload}> ⤓ </a>
 			    	</div>
 			
 				</div>
@@ -623,7 +649,7 @@ class SecondPage extends Component {
 					            <div className='popup' > 
 					            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
 					            	
-					            	<div className='popupimage' id={this.state.popupid}> </div>
+					            	<div className='popupimage' id="choosed"> </div>
 
 
 					            	
@@ -807,10 +833,10 @@ class SecondPage extends Component {
 				            <div className='popup' > 
 				            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
 				            	
-				            	<div className='popupimage' id={this.state.popupid}> </div>
+				            	<div className='popupimage' id="choosed"> </div>
 
 
-				            	
+
 				            	<div className='popuprow'>
 					            	<button className='favoritebutton' onClick={this.handleFavorite}> Add to Favorites </button>		            	</div> 
 				            </div> }

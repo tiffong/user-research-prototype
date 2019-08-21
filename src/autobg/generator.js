@@ -812,6 +812,123 @@ var _draw = SVG('test').size(width, height)
 var _circleList = [], _rectList = [], _triList = [];
 createShapes(_circleList,_rectList,_triList,_draw)
 
+
+function zoomPoster(csvdata){
+    var draw = SVG("choosed").size(width, height)
+
+    var circleList = _circleList.concat(),
+        rectList = _rectList.concat(),
+        triList = _triList.concat();
+
+    var shapeList = triList.concat(rectList, circleList);
+
+    var bgGradient = draw.gradient('linear', function (stop) {
+        var bgHSV = csvdata[csvdata.length - 1]
+        stop.at(0, createRGBfromHSV(bgHSV.data[0], bgHSV.data[1], bgHSV.data[2]))
+        stop.at(1, createRGBfromHSV(bgHSV.data[3], bgHSV.data[4], bgHSV.data[5]))
+    })
+    bgGradient.from("0%", "0%").to("0%", "100%")
+    draw.rect(width, height).fill(bgGradient)
+    // let start = new Date().getTime();
+    for (var i = 0; i < csvdata.length; i++) {
+        if (csvdata[i].name === "element") {
+            var shapeNormalX = Math.round((NUM_ELEMENT_TYPE - 1) * csvdata[i].data[0]),
+                shapeNormalY = Math.round((NUM_ELEMENT_X - 1) * csvdata[i].data[1]),
+                shapeNormalZ = Math.round((NUM_ELEMENT_Y - 1) * csvdata[i].data[2]);
+
+            var elementColor = draw.gradient('linear', function (stop) {
+                stop.at(0, createRGBfromHSV(csvdata[i].data[7], csvdata[i].data[8], csvdata[i].data[9]))
+                stop.at(1, createRGBfromHSV(csvdata[i].data[10], csvdata[i].data[11], csvdata[i].data[12]))
+            })
+            elementColor.from("0%", "0%").to("0%", "100%")
+
+            var shapeNormal = shapeList[shapeNormalX * NUM_ELEMENT_X * NUM_ELEMENT_Y + NUM_ELEMENT_X * shapeNormalY + shapeNormalZ].clone()
+
+            var shapeScale = Math.sqrt((width * height) * csvdata[i].data[3] / (shapeNormal.width() * shapeNormal.height()))
+
+            draw.use(shapeNormal)
+
+            shapeNormal
+                .dx(width * csvdata[i].data[4])
+                .dy(height * csvdata[i].data[5])
+
+            rotate(shapeNormal, csvdata[i].data[6])
+
+            shapeNormal
+                .scale(shapeScale, shapeScale)
+                .fill(elementColor)
+                .opacity(parseFloat(csvdata[i].data[13]))
+        }
+    }
+    draw.scale(550/120)
+    draw.translate(215,215)
+
+}
+
+function favPoster(csvdata,num) {
+    // var subdiv = document.createElement("div");
+    // subdiv.setAttribute("id", "poster"+num);
+    // subdiv.setAttribute("class", "poster");
+    // div.appendChild(subdiv)
+    // document.body.appendChild(div);
+    // console.log(pnt.state);
+    var draw = SVG('favorite'+num).size(width, height)
+
+
+    var circleList = [],
+        rectList = [],
+        triList = [];
+
+    createShapes(circleList,rectList,triList,draw)
+
+    var shapeList = triList.concat(rectList, circleList);
+
+    var bgGradient = draw.gradient('linear', function (stop) {
+        var bgHSV = csvdata[csvdata.length - 1]
+        stop.at(0, createRGBfromHSV(bgHSV.data[0], bgHSV.data[1], bgHSV.data[2]))
+        stop.at(1, createRGBfromHSV(bgHSV.data[3], bgHSV.data[4], bgHSV.data[5]))
+    })
+    bgGradient.from("0%", "0%").to("0%", "100%")
+    draw.rect(width, height).fill(bgGradient)
+    // let start = new Date().getTime();
+    for (var i = 0; i < csvdata.length; i++) {
+        if (csvdata[i].name === "element") {
+            var shapeNormalX = Math.round((NUM_ELEMENT_TYPE - 1) * csvdata[i].data[0]),
+                shapeNormalY = Math.round((NUM_ELEMENT_X - 1) * csvdata[i].data[1]),
+                shapeNormalZ = Math.round((NUM_ELEMENT_Y - 1) * csvdata[i].data[2]);
+
+            var elementColor = draw.gradient('linear', function (stop) {
+                stop.at(0, createRGBfromHSV(csvdata[i].data[7], csvdata[i].data[8], csvdata[i].data[9]))
+                stop.at(1, createRGBfromHSV(csvdata[i].data[10], csvdata[i].data[11], csvdata[i].data[12]))
+            })
+            elementColor.from("0%", "0%").to("0%", "100%")
+
+            // console.log(shapeList)
+            // console.log(shapeNormalX,shapeNormalY,shapeNormalZ,shapeNormalX*NUM_ELEMENT_X*NUM_ELEMENT_Y+NUM_ELEMENT_X*shapeNormalY+shapeNormalZ)
+
+            var shapeNormal = shapeList[shapeNormalX * NUM_ELEMENT_X * NUM_ELEMENT_Y + NUM_ELEMENT_X * shapeNormalY + shapeNormalZ].clone()
+
+            var shapeScale = Math.sqrt((width * height) * csvdata[i].data[3] / (shapeNormal.width() * shapeNormal.height()))
+
+            draw.use(shapeNormal)
+
+            // console.log(width*csvdata[i].data[4],height*csvdata[i].data[5],shapeScale,parseFloat(csvdata[i].data[13]))
+
+            shapeNormal
+                .dx(width * csvdata[i].data[4])
+                .dy(height * csvdata[i].data[5])
+
+            rotate(shapeNormal, csvdata[i].data[6])
+
+            shapeNormal
+                .scale(shapeScale, shapeScale)
+                .fill(elementColor)
+                .opacity(parseFloat(csvdata[i].data[13]))
+        }
+    }
+
+}
+
 // 生成海报，并为每一张海报添加click函数
 function createPoster(csvdata, num, isExtended) {
 
@@ -877,10 +994,10 @@ function createPoster(csvdata, num, isExtended) {
     }
     // console.log('for:')
     // console.log(new Date().getTime()-start);
-    drawList.push(draw);
-    draw.attr('num', num);
+    // drawList.push(draw);
+    // draw.attr('num', num);
     // draw.click(function () {
-    //     document.getElementById("audio-click").play();
+    //     //document.getElementById("audio-click").play();
     //
     //     // 点击海报则放大显示
     //     document.getElementById('chooseposter').style.display = 'block';
@@ -980,6 +1097,216 @@ var features2 = []
 var noises= []
 var noises2 = []
 
+
+function constructPoster(featureData, isExtended){
+    for (var i = 0; i < featureData.length; i++) {
+        var element = {
+                "data": featureData[i].slice(0, 15),
+                "index": featureData[i][14],
+                "name": "element"
+            },
+            element2 = {
+                "data": featureData[i].slice(15, 30),
+                "index": featureData[i][29],
+                "name": "element"
+            },
+            element3 = {
+                "data": featureData[i].slice(30, 45),
+                "index": featureData[i][44],
+                "name": "element"
+            },
+            element4 = {
+                "data": featureData[i].slice(45, 60),
+                "index": featureData[i][59],
+                "name": "element"
+            },
+            element5 = {
+                "data": featureData[i].slice(60, 75),
+                "index": featureData[i][74],
+                "name": "element"
+            },
+            element6 = {
+                "data": featureData[i].slice(75, 90),
+                "index": featureData[i][89],
+                "name": "element"
+            },
+            element7 = {
+                "data": featureData[i].slice(90, 105),
+                "index": featureData[i][104],
+                "name": "element"
+            },
+            element8 = {
+                "data": featureData[i].slice(105, 120),
+                "index": featureData[i][119],
+                "name": "element"
+            },
+            element9 = {
+                "data": featureData[i].slice(120, 135),
+                "index": featureData[i][134],
+                "name": "element"
+            },
+            element10 = {
+                "data": featureData[i].slice(135, 150),
+                "index": featureData[i][149],
+                "name": "element"
+            },
+            element11 = {
+                "data": featureData[i].slice(150, 165),
+                "index": featureData[i][164],
+                "name": "element"
+            },
+            element12 = {
+                "data": featureData[i].slice(165, 180),
+                "index": featureData[i][179],
+                "name": "element"
+            },
+            element13 = {
+                "data": featureData[i].slice(180, 195),
+                "index": featureData[i][194],
+                "name": "element"
+            },
+            element14 = {
+                "data": featureData[i].slice(195, 210),
+                "index": featureData[i][209],
+                "name": "element"
+            },
+            element15 = {
+                "data": featureData[i].slice(210, 225),
+                "index": featureData[i][224],
+                "name": "element"
+            },
+            element16 = {
+                "data": featureData[i].slice(225, 240),
+                "index": featureData[i][239],
+                "name": "element"
+            },
+            element17 = {
+                "data": featureData[i].slice(240, 255),
+                "index": featureData[i][254],
+                "name": "element"
+            },
+            element18 = {
+                "data": featureData[i].slice(255, 270),
+                "index": featureData[i][269],
+                "name": "element"
+            },
+            bg = {
+                "data": featureData[i].slice(270, 276),
+                "name": "bg"
+            };
+
+        var poster = [element, element2, element3, element4, element5, element6, element7, element8, element9, element10, element11,
+            element12, element13, element14, element15, element16, element17, element18, bg]
+
+        createPoster(poster, i, isExtended)
+
+        posterList.push(poster);
+    }
+}
+
+function constructPoster2(featureData){
+    var element = {
+            "data": featureData.slice(0, 15),
+            "index": featureData[14],
+            "name": "element"
+        },
+        element2 = {
+            "data": featureData.slice(15, 30),
+            "index": featureData[29],
+            "name": "element"
+        },
+        element3 = {
+            "data": featureData.slice(30, 45),
+            "index": featureData[44],
+            "name": "element"
+        },
+        element4 = {
+            "data": featureData.slice(45, 60),
+            "index": featureData[59],
+            "name": "element"
+        },
+        element5 = {
+            "data": featureData.slice(60, 75),
+            "index": featureData[74],
+            "name": "element"
+        },
+        element6 = {
+            "data": featureData.slice(75, 90),
+            "index": featureData[89],
+            "name": "element"
+        },
+        element7 = {
+            "data": featureData.slice(90, 105),
+            "index": featureData[104],
+            "name": "element"
+        },
+        element8 = {
+            "data": featureData.slice(105, 120),
+            "index": featureData[119],
+            "name": "element"
+        },
+        element9 = {
+            "data": featureData.slice(120, 135),
+            "index": featureData[134],
+            "name": "element"
+        },
+        element10 = {
+            "data": featureData.slice(135, 150),
+            "index": featureData[149],
+            "name": "element"
+        },
+        element11 = {
+            "data": featureData.slice(150, 165),
+            "index": featureData[164],
+            "name": "element"
+        },
+        element12 = {
+            "data": featureData.slice(165, 180),
+            "index": featureData[179],
+            "name": "element"
+        },
+        element13 = {
+            "data": featureData.slice(180, 195),
+            "index": featureData[194],
+            "name": "element"
+        },
+        element14 = {
+            "data": featureData.slice(195, 210),
+            "index": featureData[209],
+            "name": "element"
+        },
+        element15 = {
+            "data": featureData.slice(210, 225),
+            "index": featureData[224],
+            "name": "element"
+        },
+        element16 = {
+            "data": featureData.slice(225, 240),
+            "index": featureData[239],
+            "name": "element"
+        },
+        element17 = {
+            "data": featureData.slice(240, 255),
+            "index": featureData[254],
+            "name": "element"
+        },
+        element18 = {
+            "data": featureData.slice(255, 270),
+            "index": featureData[269],
+            "name": "element"
+        },
+        bg = {
+            "data": featureData.slice(270, 276),
+            "name": "bg"
+        };
+
+    var poster = [element, element2, element3, element4, element5, element6, element7, element8, element9, element10, element11,
+        element12, element13, element14, element15, element16, element17, element18, bg]
+
+    zoomPoster(poster)
+
+}
+
 function getDataCallback(data, containedNoise, isExtended, selectedID) {
     // $.get("/test.csv",function(data){
     // console.log(data);
@@ -1000,7 +1327,7 @@ function getDataCallback(data, containedNoise, isExtended, selectedID) {
                 features2.push(features[selectedID[index]])
             }   
         }
-        constructPoster(features2)
+        constructPoster(features2,isExtended)
 
     }else{
         $(".postersamples").empty()
@@ -1022,114 +1349,116 @@ function getDataCallback(data, containedNoise, isExtended, selectedID) {
             }
 
         }
-        constructPoster(features)
+        constructPoster(features,isExtended)
     }
 
-    function constructPoster(featureData){
-        for (var i = 0; i < featureData.length; i++) {
-            var element = {
-                    "data": featureData[i].slice(0, 15),
-                    "index": featureData[i][14],
-                    "name": "element"
-                },
-                element2 = {
-                    "data": featureData[i].slice(15, 30),
-                    "index": featureData[i][29],
-                    "name": "element"
-                },
-                element3 = {
-                    "data": featureData[i].slice(30, 45),
-                    "index": featureData[i][44],
-                    "name": "element"
-                },
-                element4 = {
-                    "data": featureData[i].slice(45, 60),
-                    "index": featureData[i][59],
-                    "name": "element"
-                },
-                element5 = {
-                    "data": featureData[i].slice(60, 75),
-                    "index": featureData[i][74],
-                    "name": "element"
-                },
-                element6 = {
-                    "data": featureData[i].slice(75, 90),
-                    "index": featureData[i][89],
-                    "name": "element"
-                },
-                element7 = {
-                    "data": featureData[i].slice(90, 105),
-                    "index": featureData[i][104],
-                    "name": "element"
-                },
-                element8 = {
-                    "data": featureData[i].slice(105, 120),
-                    "index": featureData[i][119],
-                    "name": "element"
-                },
-                element9 = {
-                    "data": featureData[i].slice(120, 135),
-                    "index": featureData[i][134],
-                    "name": "element"
-                },
-                element10 = {
-                    "data": featureData[i].slice(135, 150),
-                    "index": featureData[i][149],
-                    "name": "element"
-                },
-                element11 = {
-                    "data": featureData[i].slice(150, 165),
-                    "index": featureData[i][164],
-                    "name": "element"
-                },
-                element12 = {
-                    "data": featureData[i].slice(165, 180),
-                    "index": featureData[i][179],
-                    "name": "element"
-                },
-                element13 = {
-                    "data": featureData[i].slice(180, 195),
-                    "index": featureData[i][194],
-                    "name": "element"
-                },
-                element14 = {
-                    "data": featureData[i].slice(195, 210),
-                    "index": featureData[i][209],
-                    "name": "element"
-                },
-                element15 = {
-                    "data": featureData[i].slice(210, 225),
-                    "index": featureData[i][224],
-                    "name": "element"
-                },
-                element16 = {
-                    "data": featureData[i].slice(225, 240),
-                    "index": featureData[i][239],
-                    "name": "element"
-                },
-                element17 = {
-                    "data": featureData[i].slice(240, 255),
-                    "index": featureData[i][254],
-                    "name": "element"
-                },
-                element18 = {
-                    "data": featureData[i].slice(255, 270),
-                    "index": featureData[i][269],
-                    "name": "element"
-                },
-                bg = {
-                    "data": featureData[i].slice(270, 276),
-                    "name": "bg"
-                };
+}
 
-            var poster = [element, element2, element3, element4, element5, element6, element7, element8, element9, element10, element11,
-                element12, element13, element14, element15, element16, element17, element18, bg]
+function getfavorite(featureData) {
+    $("#favorite0, #favorite1, #favorite2, #favorite3").empty()
+    for (var i = 0; i < featureData.length; i++) {
+        var element = {
+                "data": featureData[i].slice(0, 15),
+                "index": featureData[i][14],
+                "name": "element"
+            },
+            element2 = {
+                "data": featureData[i].slice(15, 30),
+                "index": featureData[i][29],
+                "name": "element"
+            },
+            element3 = {
+                "data": featureData[i].slice(30, 45),
+                "index": featureData[i][44],
+                "name": "element"
+            },
+            element4 = {
+                "data": featureData[i].slice(45, 60),
+                "index": featureData[i][59],
+                "name": "element"
+            },
+            element5 = {
+                "data": featureData[i].slice(60, 75),
+                "index": featureData[i][74],
+                "name": "element"
+            },
+            element6 = {
+                "data": featureData[i].slice(75, 90),
+                "index": featureData[i][89],
+                "name": "element"
+            },
+            element7 = {
+                "data": featureData[i].slice(90, 105),
+                "index": featureData[i][104],
+                "name": "element"
+            },
+            element8 = {
+                "data": featureData[i].slice(105, 120),
+                "index": featureData[i][119],
+                "name": "element"
+            },
+            element9 = {
+                "data": featureData[i].slice(120, 135),
+                "index": featureData[i][134],
+                "name": "element"
+            },
+            element10 = {
+                "data": featureData[i].slice(135, 150),
+                "index": featureData[i][149],
+                "name": "element"
+            },
+            element11 = {
+                "data": featureData[i].slice(150, 165),
+                "index": featureData[i][164],
+                "name": "element"
+            },
+            element12 = {
+                "data": featureData[i].slice(165, 180),
+                "index": featureData[i][179],
+                "name": "element"
+            },
+            element13 = {
+                "data": featureData[i].slice(180, 195),
+                "index": featureData[i][194],
+                "name": "element"
+            },
+            element14 = {
+                "data": featureData[i].slice(195, 210),
+                "index": featureData[i][209],
+                "name": "element"
+            },
+            element15 = {
+                "data": featureData[i].slice(210, 225),
+                "index": featureData[i][224],
+                "name": "element"
+            },
+            element16 = {
+                "data": featureData[i].slice(225, 240),
+                "index": featureData[i][239],
+                "name": "element"
+            },
+            element17 = {
+                "data": featureData[i].slice(240, 255),
+                "index": featureData[i][254],
+                "name": "element"
+            },
+            element18 = {
+                "data": featureData[i].slice(255, 270),
+                "index": featureData[i][269],
+                "name": "element"
+            },
+            bg = {
+                "data": featureData[i].slice(270, 276),
+                "name": "bg"
+            };
 
-            createPoster(poster, i, isExtended)
+        var poster = [element, element2, element3, element4, element5, element6, element7, element8, element9, element10, element11,
+            element12, element13, element14, element15, element16, element17, element18, bg]
 
-            posterList.push(poster);
-        }
+        favPoster(poster, i)
+
     }
+
 }
 
 export {
@@ -1153,5 +1482,7 @@ export {
 export {
     createPoster,
     createShapes,
-    getDataCallback
+    getDataCallback,
+    constructPoster2,
+    getfavorite
 };
