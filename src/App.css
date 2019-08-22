@@ -1,29 +1,85 @@
+.format {
+/*
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;*/
+} 
+
+#test {
+  position: absolute;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
+}
+
 .App {
 
   text-align: left;
   display: flex;
   flex-direction: row;
   padding-left: 20px;
+
+
 }
 
 .App-logo {
 /*  animation: App-logo-spin infinite 20s linear;
-*/  height: 40vmin;
+*/ height: 40vmin;
   pointer-events: none;
 }
 
+.openingPage {
+  text-align: center;
+  height: 100vh; /* For 100% screen height */
+  width:  100vw; /* For 100% screen width */
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  z-index: 10
+
+
+}
+
+.welcomeText {
+
+  margin-top: 30vh;
+  font-size: 90px;
+
+}
+
+.startbuttonstyle {
+  text-align: center; 
+}
+.clickToStart {
+  margin-top: 7vh;
+  height: 100px;
+  width: 400px;
+  border-radius: 30px;
+  background-color: #597EF7;
+  color: white;
+  font-size: 35px;
+  outline: none !important;
+  box-shadow: none;
+
+}
+
+.clickToStart: hover {
+  transform: scale(1.2);
+}
+
+
 .leftside {
   background-color: white;
-/*  min-height: 100vh;*/
-/*  display: flex;*/
   flex-direction: column;
-
-
-  align-items: left;
-/*  justify-content: center;*/
-
   color: black;
   padding-right: 200px;
+  margin-top: 5vh;
+  margin-left: 5vw;
+  height: 100vh;
 }
 
 .App-link {
@@ -33,13 +89,14 @@
 .title {
 
  font-family: arial;
-  font-size: 40px;
+  font-size: 50px;
   color: #000000;
   letter-spacing: 0;
   align-items: left;
   justify-content: left;
   font-weight:  bold;
   margin-top: 20px;
+  margin-bottom: 5vh;
 }
 
 @keyframes App-logo-spin {
@@ -52,23 +109,21 @@
 }
 
 .colshape {
-  font-size: 25px;
+  font-size: 30px;
   font-weight: bold;
   font-family: arial;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
-  justify-content: left;
-  align-items: left;
 }
 
 
 .buttonClicked {
   background-color: #597EF7;
   color: white;
-  height:  45px;
-  width: 150px;
-  font-size: 15px;
+  height:  50px;
+  width: 170px;
+  font-size: 17px;
   font-weight: lighter;
   text-align: center;
   outline: none !important;
@@ -80,9 +135,9 @@
 .buttonUnclicked {
   background-color: #D8D8D8;
   color: black;
-  height:  45px;
-  width: 150px;
-  font-size: 15px;
+  height:  50px;
+  width: 170px;
+  font-size: 17px;
   font-weight: lighter;
   text-align: center;
   outline: none !important;
@@ -112,8 +167,24 @@
 
   display: flex;
   flex-direction: row;
-  position: absolute;
-  left: 140px;
+  position: relative;
+  left: 100px;
+}
+
+.buttongroup2 {
+
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  left: 51px;
+}
+
+.buttongroup3 {
+
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  left: 88px;
 }
 
 .buttonflex{
@@ -125,66 +196,66 @@
 
 .hsv{
   font-weight: lighter;
-  font-size: 13.5pt;
+  font-size: 15pt;
   font-family: arial;
   margin-right: 0px;
 
 
 }
 .checkboxes {
-  padding-left: 20px;
+  padding-left: 140px;
   padding-top:30px;
   flex-direction: row;
 
 }
 
 .shapecheck {
-  transform: scale(1.2);
+  transform: scale(1.4);
   color: black;
   vertical-align: middle;
 
 }
 
 .circleClicked {
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   background-color: #597EF7;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 30px;
+  margin-right: 40px;
   vertical-align: middle;
   margin-left: 6px;
 
 }
 
 .circleUnclicked {
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   background-color: #D8D8D8;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 30px;
+  margin-right: 40px;
   vertical-align: middle;
   margin-left: 6px;
 
 }
 
 .squareClicked {
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   background-color: #597EF7;
   display: inline-block;
-  margin-right: 30px;
+  margin-right: 40px;
   vertical-align: middle;
   margin-left: 6px;
 }
 
 .squareUnclicked {
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   background-color: #D8D8D8;
   display: inline-block;
-  margin-right: 30px;
+  margin-right: 40px;
   vertical-align: middle;
   margin-left: 6px;
 }
@@ -192,9 +263,9 @@
 .triangleClicked {
   width: 0;
   height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 50px solid #597EF7;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 80px solid #597EF7;
   display: inline-block;
   vertical-align: middle;
 
@@ -204,9 +275,9 @@
 .triangleUnclicked {
   width: 0;
   height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 50px solid #D8D8D8;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 80px solid #D8D8D8;
   display: inline-block;
   vertical-align: middle;
 
@@ -214,41 +285,52 @@
 
 
 .conditionaltext {
-  padding-left:25px;
+  padding-left:180px;
   padding-top: 10px;
   padding-bottom: 0px;
 
 }
 
+.text{
+  position: absolute;
+
+}
+
 .genbutton {
-          color: white;
-          height: 60px;
-          width: 250px;
-          background-color: #597EF7;
-          border-radius: 75px;
-          margin-top: 15px;
-/*          position: absolute;
-          left: 580px;*/
-          font-size: 20px;
-          outline: none !important;
-          box-shadow: none;
+  color: white;
+  height: 65px;
+  width: 300px;
+  background-color: #597EF7;
+  border-radius: 75px;
+  margin-top: 5px;
+  font-size: 23px;
+  outline: none !important;
+  box-shadow: none;
 
 }
 
 .genbutton:hover {
   transform: scale(1.1);
   transition: all 0.3s;
-          outline: none !important;
-          box-shadow: none;
+  outline: none !important;
+  box-shadow: none;
 }
 
 .rightside {
   display: flex;
-  padding-left: 40px;
-  margin-right: 40px;
-  height: 825px;
-  width: 300px;
+/*  padding-left: 50px;*/
+/*  margin-right: 40px;*/
+  height: 100vh;
+  width: 400px;
   background-color: #D8D8D8;
+  justify-content: center;
+
+}
+
+.rowp1 {
+  display: flex;
+  direction: row;
+  justify-content: space-around;
 
 
 }
@@ -257,18 +339,21 @@
 .rightsideflex{
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   
 
 }
 
 #samples {
   text-align: 'center';
-  display: flex;
   font-family: arial;
   font-weight: bold;
-  padding-top: 15px;
-  margin-bottom: 10px;
-  font-size: 17pt;
+  margin-bottom: 2vh;
+  margin-top: 0px;
+  font-size: 25pt;
+  position: relative;
+  right: 75px;
 
 }
 

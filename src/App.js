@@ -1,27 +1,25 @@
 import React from 'react';
-// import logo from './logo.svg';
 import './App.css';
-
-// this was used to test the functionality of exporting things from page to page
 import PosterSamples from './postersamples.js'
-
 import {getDataCallback} from './autobg/generator.js'
 import axios  from 'axios'
 
 
-const i1 = require('./img/sample1.png')
-const i2 = require('./img/sample2.png')
-const i3 = require('./img/sample3.png')
-const i4 = require('./img/sample4.png')
-const i5 = require('./img/sample5.png')
-const i6 = require('./img/sample6.png')
-const i7 = require('./img/sample7.png')
-const i8 = require('./img/sample8.png')
-const i9 = require('./img/sample9.png')
-const i10 = require('./img/sample10.png')
-
-
 var requestBody = {}
+var start1;
+var end1;
+
+//for user study -- getting # of clicks
+localStorage.setItem('hueClick_times',0)
+localStorage.setItem('satClick_times',0)
+localStorage.setItem('valClick_times',0)
+localStorage.setItem('shapeClick_times',0)
+
+
+//timer per page attempt
+// ReactGA.initialize('UA-145837746-1');
+// ReactGA.pageview('/');
+
 
 class App extends React.Component{
    
@@ -58,28 +56,20 @@ class App extends React.Component{
       square: false,
       triangle: false,
 
-      posters: []
+      posters: [],
+
+      hasBegun: false,
 
     }
 
   }
 
   componentDidMount() {
-    
-    this.setState(prevState => ({
-      posters: [...prevState.posters, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10]
-
-    }))
-
-      this.getDataAxios()
-
-    // var fileDownload = require('js-file-download');
-    // fileDownload(require('./img/sample10.png'), 'hellothere');
-
+  
+    this.getDataAxios()
   } 
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state)
 
     this.getDataAxios()
 
@@ -91,9 +81,9 @@ class App extends React.Component{
     var hueVar = 0
     var satVar = 0
     var valVar = 0
-    var cirVar = 0
-    var squareVar = 0
-    var triVar = 0
+    var cirVar = 0.33
+    var squareVar = 0.33
+    var triVar = 0.33
 
 
     if(this.state.CoolClicked) {
@@ -129,9 +119,9 @@ class App extends React.Component{
         cirVar = 0.5
         triVar = 0.5
       } else { //all 3 shapes
-        cirVar = 0.3
-        triVar = 0.3
-        squareVar = 0.3
+        cirVar = 0.33
+        triVar = 0.33
+        squareVar = 0.33
       }
     }
 
@@ -145,7 +135,7 @@ class App extends React.Component{
     }
 
 
-    //TODO: you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
+    //you can send POST request in this way and get the returned CSV data, then you just pass response.data to getDataCallback() and render the images on the page
 
       requestBody = {
           circle : cirVar,
@@ -159,7 +149,14 @@ class App extends React.Component{
           high_low : satVar
       }
 
+      localStorage.setItem('wc_pg1',hueVar)
+      localStorage.setItem('hl_pg1',satVar)
+      localStorage.setItem('bd_pg1',valVar)
+      localStorage.setItem('circle_pg1',cirVar)
+      localStorage.setItem('square_pg1',squareVar)
+      localStorage.setItem('tri_pg1',triVar)
 
+      //console.log(requestBody)
       axios.post('http://127.0.0.1:5000/sample_generator', requestBody)
       .then(function (response) {
           getDataCallback(response.data, false, false)
@@ -170,26 +167,13 @@ class App extends React.Component{
   }
 
 
-//   httprequeststestfxn() {
-
-
-
-//     var fullPath = base+"?hue="+hueVar+"&sat="+satVar+'?val='+valVar+'?shapes='+shapes
-
-// // going to have to figure out the asynchronicity of this
-//     console.log('asdfa', fullPath)
-
-//   }
-
 
 //using arrow function instead of binding the context
   handleCoolClick = () => {
     
-// example for adding new posters upon new click
-    
-    this.setState(prevState => ({
-      posters: [i9, ...prevState.posters]
-    }))
+    var times = Number(localStorage.getItem('hueClick_times'))
+    localStorage.setItem('hueClick_times',(times+1))
+
 
     if ((!this.state.CoolClicked && this.state.CoolWarmClicked) || (!this.state.CoolClicked && this.state.WarmClicked)) {
         this.setState( prevState => ({
@@ -212,8 +196,10 @@ class App extends React.Component{
   }
 
   handleCoolWarmClick() {
-    
 
+    var times = Number(localStorage.getItem('hueClick_times'))
+    localStorage.setItem('hueClick_times',(times+1))    
+    
     if ((!this.state.CoolWarmClicked && this.state.CoolClicked) || (!this.state.CoolWarmClicked && this.state.WarmClicked)) {
       this.setState( prevState => ({
         CoolWarmClicked: !prevState.CoolWarmClicked
@@ -231,20 +217,12 @@ class App extends React.Component{
         WarmClicked: false
       });
     }
-
-  axios.get('https://api.github.com/users/mapbox')
-  .then((response) => {
-    console.log('request verified')
-    console.log(response.data);
-    console.log(response.status);
-    console.log(response.statusText);
-    console.log(response.headers);
-    console.log(response.config);
-    console.log(response.request)
-  });
   }
 
   handleWarmClick() {
+
+  var times = Number(localStorage.getItem('hueClick_times'))
+  localStorage.setItem('hueClick_times',(times+1))
     
   if ((!this.state.CoolWarm && this.state.CoolClicked) || (!this.state.WarmClicked && this.state.CoolWarmClicked)) {
       this.setState({
@@ -267,6 +245,9 @@ class App extends React.Component{
 
 
   handleHighClick() {
+
+  var times = Number(localStorage.getItem('satClick_times'))
+  localStorage.setItem('satClick_times',(times+1))    
     
   if ((!this.state.HighClicked && this.state.HighLowClicked) || (!this.state.HighClicked && this.state.LowClicked)) {
     this.setState({
@@ -289,7 +270,10 @@ class App extends React.Component{
   }
 
 handleHighLowClick() {
-    
+
+  var times = Number(localStorage.getItem('satClick_times'))
+  localStorage.setItem('satClick_times',(times+1))  
+
   if ((!this.state.HighLowClicked && this.state.LowClicked) || (!this.state.HighLowClicked && this.state.HighClicked)) {
     this.setState({
       HighLowClicked: !this.state.HighLowClicked
@@ -312,12 +296,13 @@ handleHighLowClick() {
 
 handleLowClick() {
 
+  var times = Number(localStorage.getItem('satClick_times'))
+  localStorage.setItem('satClick_times',(times+1))  
+
   if ((!this.state.LowClicked && this.state.HighLowClicked) || (!this.state.LowClicked && this.state.HighClicked)) {
     this.setState({
       LowClicked: !this.state.LowClicked
     });
-
-
 
   }
 
@@ -336,6 +321,9 @@ handleLowClick() {
 }
 
 handleBrightClick() {
+
+  var times = Number(localStorage.getItem('valClick_times'))
+  localStorage.setItem('valClick_times',(times+1))  
 
   if ((!this.state.BrightClicked && this.state.BrightDarkClicked) || (!this.state.BrightClicked && this.state.DarkClicked)) {
     this.setState({
@@ -359,6 +347,9 @@ handleBrightClick() {
 
 
 handleBrightDarkClick() {
+  
+  var times = Number(localStorage.getItem('valClick_times'))
+  localStorage.setItem('valClick_times',(times+1)) 
 
   if ((!this.state.BrightDarkClicked && this.state.BrightClicked) || (!this.state.BrightDarkClicked && this.state.DarkClicked)) {
  
@@ -382,6 +373,9 @@ handleBrightDarkClick() {
 }
 
 handleDarkClick() {
+  
+  var times = Number(localStorage.getItem('valClick_times'))
+  localStorage.setItem('valClick_times',(times+1)) 
 
   if ((!this.state.DarkClicked && this.state.BrightDarkClicked) || (!this.state.DarkClicked && this.state.BrightClicked)) {
     this.setState({
@@ -404,6 +398,10 @@ handleDarkClick() {
 }
 
 checkItem(e, shape) {
+
+  var times = Number(localStorage.getItem('shapeClick_times'))
+  localStorage.setItem('shapeClick_times',(times+1)) 
+
   if (shape === 'circle') {
       this.setState ({
         circle: !this.state.circle
@@ -417,13 +415,10 @@ checkItem(e, shape) {
   }
 
   if (shape === 'triangle') {
-  this.setState ({
-    triangle: !this.state.triangle
-  })
+    this.setState ({
+      triangle: !this.state.triangle
+    })
   }
-
-  // this.httprequeststestfxn()
-
 
 }
 
@@ -435,16 +430,51 @@ handleGenerate() {
     console.log('Pick at least one shape')
   }
 
+  end1 = new Date
+  console.log('end time', end1)
+  console.log('total time on page', (end1-start1) )
+
+  //add time spent on page to local storage
+  localStorage.setItem('page1_time', end1-start1 )
+  
+
+
+}
+
+handleClickToStart = () => {
+  this.setState ({
+    hasBegun: true
+  })
+
+  //start time
+
+  start1 = new Date;
+  console.log('start time', start1)
+
+
 }
 
 
   render(){
+ 
+    return <div className='format'>
 
-    return <div className="App">
 
+    <div className="App">
+
+    { !this.state.hasBegun &&
+      <div className='openingPage'>  
+        <div className='welcomeText'>Welcome to DesignFinder! </div>
+        
+        <div className='startbuttonstyle'>
+        <button className='clickToStart' onClick={this.handleClickToStart}> Click to Start </button>
+        </div>
+      </div>
+    }
+    
       <header className="leftside">
         <poster/>
-        <h2 className='title'> DesignFinder: Automated Design </h2>
+        <h2 className='title'>  DesignFinder: Automated Design </h2>
 
         <div className='colshape'> Color Range </div>
 
@@ -463,7 +493,7 @@ handleGenerate() {
          <div className = 'buttonflex'>
           <p className='hsv'> Saturation:  </p>
 
-          <div className = 'buttongroup'> 
+          <div className = 'buttongroup2'> 
             <button className={this.state.HighClicked ? "buttonClicked": "buttonUnclicked"} id='left' onClick={this.handleHighClick}> High </button>
             <button className={this.state.HighLowClicked ? "buttonClicked": "buttonUnclicked"} onClick={this.handleHighLowClick}> Low & High </button>
             <button className={this.state.LowClicked ? "buttonClicked": "buttonUnclicked"} id='right' onClick={this.handleLowClick}> Low </button>
@@ -472,7 +502,7 @@ handleGenerate() {
         </div>
          <div className = 'buttonflex'>
           <p className='hsv'> Value:  </p>
-          <div className ='buttongroup'>
+          <div className ='buttongroup3'>
             <button className={this.state.BrightClicked ? "buttonClicked": "buttonUnclicked"} id='left' onClick={this.handleBrightClick} id='left'> Bright </button>
             <button className={this.state.BrightDarkClicked ? "buttonClicked": "buttonUnclicked"} onClick={this.handleBrightDarkClick}> Dark & Bright</button>
             <button className={this.state.DarkClicked ? "buttonClicked": "buttonUnclicked"} id='right' onClick={this.handleDarkClick}> Dark </button>
@@ -499,11 +529,10 @@ handleGenerate() {
 
         </div>
 
-        <div>
-          
+        <div className='text'>
           {(!this.state.circle && !this.state.square && !this.state.triangle) &&
             <div className='conditionaltext'>
-              *Please click at least one shape
+              *Please choose at least one shape
             </div>
           }
         </div>
@@ -517,27 +546,27 @@ handleGenerate() {
         <div className='rightsideflex'>
           <h2 id="samples"> Samples </h2>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster0" />
             <PosterSamples id="poster1" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster2" />
             <PosterSamples id="poster3" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster4" />
             <PosterSamples id="poster5" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster6" />
             <PosterSamples id="poster7" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster8" />
             <PosterSamples id="poster9" />
           </div>
@@ -548,6 +577,9 @@ handleGenerate() {
       </header>
 
     </div>
+
+
+  </div>
   } 
 }
 

@@ -45,15 +45,16 @@
 
 
 .popup {
-	height: 650px;
-	width:  550px;
+	height: 770px;
+	width:  647px;
 	background-color: white;
 	display: flex;
 	flex-direction: column;
 	z-index: 9;
 	position: absolute;
 	align-items: center;
-	right: 550px;
+	right: 670px;
+	top:130px;
 	border: .8px solid grey;
 }
 
@@ -62,20 +63,22 @@
 	width: 30px;
 	border-radius: 30px;
 	position: absolute;
-	right: 0px;
+	right: 2px;
 	margin: 4px;
 	top: 2px;
 	border: none;
 	background: none;
-	font-size: 23px;
+	font-size: 30px;
 	color: grey;
+  	outline: none !important;
+  	box-shadow: none;	
 
 }
 
 .popupimage {
 	margin-top: 35px;
-	height: 550px;
-	width: 550px;
+	height: 650px;
+	width: 650px;
 	padding: 5px;
 
 }
@@ -83,11 +86,13 @@
 
 .favoritebutton {
     background-color: #597EF7;
-    font-size: 13px;
-	height: 40px;	
-	width:  180px;
+    font-size: 19px;
+	height: 60px;	
+	width:  250px;
 	color: white;
-	border-radius: 20px;
+	border-radius: 30px;
+	outline: none !important;
+  	box-shadow: none;	
 
 }
 
