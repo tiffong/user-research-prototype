@@ -622,7 +622,6 @@ function createShapes(cList, rList, tList, draw) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
 
-            draw.defs().add(shape)
             tList[index] = shape
 
 
@@ -674,7 +673,6 @@ function createShapes(cList, rList, tList, draw) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
 
-            draw.defs().add(shape)
             rList[index] = shape
 
 
@@ -736,7 +734,6 @@ function createShapes(cList, rList, tList, draw) {
                 }))
             }
 
-            draw.defs().add(shape)
             cList[index] = shape
 
         }
@@ -860,8 +857,8 @@ function zoomPoster(csvdata){
                 .opacity(parseFloat(csvdata[i].data[13]))
         }
     }
-    draw.scale(550/120)
-    draw.translate(215,215)
+    draw.scale(650/120)
+    draw.translate(266,266)
 
 }
 
@@ -931,7 +928,7 @@ function favPoster(csvdata,num) {
 
 // 生成海报，并为每一张海报添加click函数
 function createPoster(csvdata, num, isExtended) {
-
+    
     // var subdiv = document.createElement("div");
     // subdiv.setAttribute("id", "poster"+num);
     // subdiv.setAttribute("class", "poster");

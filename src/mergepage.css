@@ -46,14 +46,14 @@
 
 .popup {
 	height: 770px;
-	width:  650px;
+	width:  647px;
 	background-color: white;
 	display: flex;
 	flex-direction: column;
 	z-index: 9;
 	position: absolute;
 	align-items: center;
-	right: 652px;
+	right: 670px;
 	top:130px;
 	border: .8px solid grey;
 }

@@ -42,10 +42,11 @@ var end2;
 var start3;
 var end3;
 
-var leetle = false
-
 var favoriteList = []
 var favoriteID
+
+
+var hasEmptied = false;
 
 
 class SecondPage extends Component {
@@ -62,7 +63,7 @@ class SecondPage extends Component {
   		transitionmodeclicked: false, //are we in transition  mode?
   		twoclickedposters: [], //the ids of the two clicked posters in transition mode
   		popupimage: null,
-  		popupid: 'square0', //the id of the clicked poster on the right side
+  		popupid: '', //the id of the clicked poster on the right side
   		canclickpopup: false,
       needLoadingLogo: true,
       needlittleLoadingLogo: false,
@@ -75,16 +76,19 @@ class SecondPage extends Component {
   componentDidMount() {
    //TODO: get a loading symbol for 6 seconds as initial posters load
 
-  //display loading logo
-  setTimeout( () => {
-  this.setState( prevState => ({
-    needLoadingLogo: false
-  }));
-  }, 1800);
+  // display loading logo
+  // setTimeout( () => {
+  // this.setState( prevState => ({
+  //   needLoadingLogo: false
+  // }));
+  // }, 1800);
 
    //set timer here
    start2 = new Date
    console.log(start2)
+
+   $('.littleloading').hide()
+   $('.littleloading2').hide()
 
    this.getDataAxios()
   }
@@ -92,31 +96,39 @@ class SecondPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     //printing to see states immediately as they update 
+    // console.log('-------------------')
   	console.log('state of transition mode', this.state.transitionmodeclicked)
-  	console.log('first of the clicked posters', this.state.twoclickedposters[0])
-  	console.log('second of the clicked posters', this.state.twoclickedposters[1])
-  	console.log('length of clicked posters array', this.state.twoclickedposters.length)
+    console.log('length of clicked posters array: ', this.state.twoclickedposters.length) 
+  	console.log('first of the clicked posters: ', this.state.twoclickedposters[0])
+  	console.log('second of the clicked posters: ', this.state.twoclickedposters[1])
   	console.log('ID of POPUP that was just clicked: ', this.state.popupimage)
   	console.log('ID of left side poster that was clicked:', this.state.clickedid)
-  	console.log('ID of right  side poster that was clicked', this.state.popupid)
+  	console.log('ID of right  side poster that was clicked: ', this.state.popupid)
+    console.log('clickedID: ', clickedID, "clicked id1", clickedID_1,  "clickedid2", clickedID_2)
+    console.log('--------------------')
+
+
+
+    //if(this.state.transitionmodeclicked)
 
 //if the length of posters clicked array is greater than 2 AND is an even number,
 // then will send a request to load the merge page with transition svgs
   	if(this.state.transitionmodeclicked) {
 
-  		  	 if(this.state.twoclickedposters.length>1 &&  this.state.twoclickedposters.length%2 == 0) {
+           if (this.state.twoclickedposters.length === 1) {
+              clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+
+           } else if(this.state.twoclickedposters.length>1) {
 	  	  	    
-              leetle = true
   		  	 	//update times that the posters were clicked
 	  	  	    var times = Number(localStorage.getItem('transitionClick_times'))
 				      localStorage.setItem('transitionClick_times',(times+2))
 
-			  	  clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
-				    clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
+  			  	  clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
+  				    clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
 
-
-				    console.log('from x to y',  clickedID_2, clickedID_1)
-			      console.log(noises)
+				    //console.log('from x to y',  clickedID_2, clickedID_1)
+			      //console.log(noises)
 
 			      requestBody = {
 			          circle_1: noises[clickedID_1][30],
@@ -142,12 +154,11 @@ class SecondPage extends Component {
 			          random_noise_2:noises[clickedID_2].slice(0,30)
 			      }
 
-			      console.log(requestBody)
-
-
+			      //console.log(requestBody)
 			      axios.post('http://127.0.0.1:5000/img_comparison', requestBody)
 			          .then(function (response) {
 			          	  
+                    $(".littleloading2").hide()
 
                     var clickedArrays= [clickedID_1,clickedID_2]
 			              getDataCallback(response.data, true, true, clickedArrays)
@@ -156,6 +167,14 @@ class SecondPage extends Component {
 			          .catch(function (error) {
 			              console.log(error);
 			          });
+
+
+                this.setState(prevState => ({
+                  twoclickedposters: [],
+                }))
+
+                hasEmptied = true   
+
 			}
 		}
   }	
@@ -164,51 +183,29 @@ class SecondPage extends Component {
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
-//handling loading sign
+//handling loading symbol in both explore and transition modes 
     if(!this.state.transitionmodeclicked) {
-      
-      this.setState(prevState => ({
-        needlittleLoadingLogo: true
-      }))
-
-      setTimeout( () => {
-        this.setState( prevState => ({
-          needlittleLoadingLogo: false
-        }));
-      }, 300);
-
+      $('.littleloading').show()
     } else if (this.state.transitionmodeclicked && (this.state.twoclickedposters.length+1)%2 === 0) {
-      
-      this.setState(prevState => ({
-        needlittleLoadingLogo: true
-      }))
-
-      setTimeout( () => {
-        this.setState( prevState => ({
-          needlittleLoadingLogo: false
-        }));
-      }, 300);
-
+      $('.littleloading2').show()
     }
 
-
-//handling removing border
+//remove border of last clicked image
   	$("#poster"+clickedID).removeClass('posterclicked')
-	  $("#poster"+clickedID).addClass('poster')
-
-  	// set clicked id to clicked poster
+    $("#poster"+clickedID).addClass('poster')
+  	// set clicked id to the poster you have currently clicked clicked poster
+    //highlight this current clicked  image 
   	var id_of_clicked_poster = e.currentTarget.id
-  	
-  	//highlight when clicked
   	e.currentTarget.className = 'posterclicked'
 
+//add clicked image to front of 'twoclicked posters' and clickedid state
   	this.setState(prevState => ({
       twoclickedposters: [id_of_clicked_poster ,...prevState.twoclickedposters],
       clickedid: id_of_clicked_poster,
 	  }))
 
- //using the number ID of the clicked poster, insert DIV
- //if you are in explore mode
+//using the number ID of the clicked poster, insert DIV
+//if you are in explore mode, then senda request
   	if(!this.state.transitionmodeclicked)  {
 	   	clickedID = id_of_clicked_poster.replace(/[^0-9]/ig,"")
 	  	//console.log('ID of the poster you clicked: ', clickedID)
@@ -234,20 +231,28 @@ class SecondPage extends Component {
                 var clickedArrays= [clickedID]
   			  getDataCallback(response.data, true, true, clickedArrays)
                 console.log("features2", features2)
+
+          $(".littleloading").hide()
   		  })
   		  .catch(function (error) {
   			  console.log(error);
   		  }); 		
-  	} else { //if you're in transitionmode
-  		
-    		$("#poster"+clickedID_1).removeClass('posterclicked')
-  			$("#poster"+clickedID_1).addClass('poster')
+  	} else { //if you're in transitionmode and you click an SVG, 
+  		//still a little confused on what this does
 
-  			$("#poster"+clickedID_2).removeClass('posterclicked')
-  			$("#poster"+clickedID_2).addClass('poster')
 
-  			clickedID_1 = null
-  			clickedID_2 = null
+
+      if(this.state.twoclickedposters.length == 2 || hasEmptied) {
+        $("#poster"+clickedID_1).removeClass('posterclicked')
+        $("#poster"+clickedID_1).addClass('poster')        
+        $("#poster"+clickedID_2).removeClass('posterclicked')
+        $("#poster"+clickedID_2).addClass('poster')   
+        hasEmptied = false      
+      }
+
+
+  			// clickedID_1 = null
+  			// clickedID_2 = null
   	}
 
   }
@@ -256,20 +261,17 @@ class SecondPage extends Component {
 
  //if we are NOT in transition mode, then we set transition mode to true, and render the transition m ode
  //if we are in  explore mode, THEN back should take us back to the first page
-  	if (!this.state.transitionmodeclicked) {
-
+    
+    if (!this.state.transitionmodeclicked) {
   		this.props.history.push('/');
- 
+      
   	} else if (this.state.transitionmodeclicked) {
   		
 
   	$("#poster"+clickedID_1).removeClass('posterclicked')
-		$("#poster"+clickedID_1).addClass('poster')
-
-
+    $("#poster"+clickedID_1).addClass('poster')   
   	$("#poster"+clickedID_2).removeClass('posterclicked')
-		$("#poster"+clickedID_2).addClass('poster')
-
+    $("#poster"+clickedID_2).addClass('poster')
 
   		this.setState(prevState => ({
 	      transitionmodeclicked: false
@@ -367,24 +369,33 @@ class SecondPage extends Component {
 //if you click transition mode then the state will be changed to transition mode clicked
   handleTransitionModeClick = () => {
   	
-    $("#poster"+clickedID).removeClass('posterclicked')
-  	$("#poster"+clickedID).addClass('poster')
+
+//remove last clicked poster if you're coming from explore mode
+    if(clickedID) {
+     $("#poster"+clickedID).removeClass('posterclicked')
+     
+    }
 
 //if you are in transition mode, then you should have the CANCEL functionality
-//when you click CANCEL: TRANSITION mode --> EXPLORE mode
+//when you click CANCEL: GETS RID OF borders of poster
   	if(this.state.transitionmodeclicked) {
 	  	
-
       //user time spent on transition page
       end3 = new Date
       localStorage.setItem('transitionPage_time',(end3-start3) ) 
 
+      //TODO: remove border from current clicked poster if there is just one currently clicked
+      // if ()
+
+
+//remove border from last two clicked posters
+      //remove border of last clicked poster 1
 	  	$("#poster"+clickedID_1).removeClass('posterclicked')
-			$("#poster"+clickedID_1).addClass('poster')
-
-
+      $("#poster"+clickedID_1).addClass('poster')
+      //remove border of last clicked poster 2
 	  	$("#poster"+clickedID_2).removeClass('posterclicked')
-			$("#poster"+clickedID_2).addClass('poster')
+      $("#poster"+clickedID_2).addClass('poster')
+
 
 	  	this.setState(prevState => ({
 		      twoclickedposters: []
@@ -405,7 +416,7 @@ class SecondPage extends Component {
 	      transitionmodeclicked: true,
 	      twoclickedposters: []
 	    })) 
-	   	console.log('lengththt', this.state.twoclickedposters.length)
+	   	
   	}
 
   }
@@ -514,6 +525,7 @@ class SecondPage extends Component {
       axios.post('http://127.0.0.1:5000/img_generator', requestBody)
       .then(function (response) {
 
+          $(".loading").hide()
           
           getDataCallback(response.data, true, false)
 
@@ -526,19 +538,12 @@ class SecondPage extends Component {
 //remove clicked poster border then refresh entire page
   handleRefresh = () => {
   	
-    this.setState(prevState => ({
-      needLoadingLogo: true
-    }))
 
-    setTimeout( () => {
-      this.setState( prevState => ({
-        needLoadingLogo: false
-      }));
-    }, 400);
+    $(".loading").show()
 
 
     $("#poster"+clickedID).removeClass('posterclicked')
-  	$("#poster"+clickedID).addClass('poster')
+    $("#poster"+clickedID).addClass('poster')
     
 
     //if you're in transision mode
@@ -558,17 +563,15 @@ class SecondPage extends Component {
 
   handledownload= (e) => {
 
-  	console.log('eeee', e.target)
-  	console.log('download clicked')
-  	//download the SVG
 
-  	//fileDownload(data, 'filename.csv');
   	var downloadID = (e.target.id).replace("download","")
+    if(favoriteList[downloadID]) { //only download if square has content
+       var downloadContent = $("#favorite"+downloadID).children()[0].outerHTML
+      console.log(downloadContent)
 
-    var downloadContent = $("#favorite"+downloadID).children()[0].outerHTML
-	console.log(downloadContent)
+      download(downloadContent,"sample.svg", "text/html")     
+    }
 
-  	download(downloadContent,"sample.svg", "text/html")
 
 
   }
@@ -588,13 +591,11 @@ class SecondPage extends Component {
 			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Cancel' : 'Transition Mode'} </button>
 		      	</div>
 
-
-            { this.state.needLoadingLogo &&
               
               <div className='loading'>
                 <img src={loading}/>
               </div>
-            }
+            
 
 		      	<div className='posterrows'>
 
@@ -612,23 +613,23 @@ class SecondPage extends Component {
 
 		    	<div className='downloadbuttonsrow'>
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite0'> </div>
+				    	<div className='favsquare' id='favorite0'> </div>
 				    	<a className='download' id='download0' onClick={this.handledownload}> ⤓ </a>
 			    	</div>
 		    	
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite1'> </div>
+				    	<div className='favsquare' id='favorite1'> </div>
 				    	<a className='download' id='download1' onClick={this.handledownload}> ⤓ </a>
 			    	</div>
 
 		    	
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite2'> </div>
+				    	<div className='favsquare' id='favorite2'> </div>
 				    	<a className='download' id='download2' onClick={this.handledownload}> ⤓ </a>
 			    	</div>			    
 		    	
 		    		<div className='colly'>
-				    	<div className='square2' id='favorite3'> </div>
+				    	<div className='favsquare' id='favorite3'> </div>
 				    	<a className='download' id='download3' onClick={this.handledownload}> ⤓ </a>
 			    	</div>
 			
@@ -708,11 +709,11 @@ class SecondPage extends Component {
 					      		
                     <div className='square2' onClick={this.handleGreyClick} id='square24' ></div>
                      
-                     { this.state.needlittleLoadingLogo &&
-                          <div className='littleloading'>
-                             <img src={loading3} />  
-                          </div>
-                      }
+                   
+                    <div className='littleloading'>
+                       <img src={loading3} />  
+                    </div>
+                      
 
 
 					      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
@@ -844,7 +845,7 @@ class SecondPage extends Component {
 
 
 					<div className='row'> 
-				        <div className='square2' id='square28' >  </div>
+				        <div className='square2' id='square29' >  </div>
 				        <div className='square2' id='square0' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square1' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square2' onClick={this.handleGreyClick}> </div>
@@ -872,11 +873,11 @@ class SecondPage extends Component {
 				        <div className='square2' id='square15' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square16' onClick={this.handleGreyClick}> </div>
 
-                     { this.state.needlittleLoadingLogo &&
-                          <div className='littleloading2'>
-                            <img src={loading3}/>
-                          </div>
-                      }
+                     
+                  <div className='littleloading2'>
+                    <img src={loading3}/>
+                  </div>
+                    
 
 				        <div className='square2' id='square17' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square18' onClick={this.handleGreyClick}> </div>
@@ -894,7 +895,7 @@ class SecondPage extends Component {
 				        <div className='square2' id='square25' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square26' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square27' onClick={this.handleGreyClick}> </div>
-				        <div className='square2' id='square29'>  </div>
+				        <div className='square2' id='square28'>  </div>
 				    </div>
 				</div>	
 			}
