@@ -8,6 +8,13 @@
   min-height: 100vh;*/
 } 
 
+#test {
+  position: absolute;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
+}
+
 .App {
 
   text-align: left;
@@ -32,7 +39,7 @@
   flex-direction: column;
   position: absolute;
   background-color: white;
-  z-index: 5
+  z-index: 10
 
 
 }

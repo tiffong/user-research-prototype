@@ -621,8 +621,7 @@ function createShapes(cList, rList, tList, draw) {
             } else if (svg[i].getElementsByTagName('polygon')[0]) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
-
-            //draw.defs().add(shape)
+            draw.symbol().add(shape)
             tList[index] = shape
 
 
@@ -673,8 +672,7 @@ function createShapes(cList, rList, tList, draw) {
             } else if (svg[i].getElementsByTagName('polygon')[0]) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
-
-            //draw.defs().add(shape)
+            draw.symbol().add(shape)
             rList[index] = shape
 
 
@@ -735,8 +733,7 @@ function createShapes(cList, rList, tList, draw) {
                     "r": svg[i].getElementsByTagName('circle')[0].getAttribute("r")
                 }))
             }
-
-            //draw.defs().add(shape)
+            draw.symbol().add(shape)
             cList[index] = shape
 
         }
@@ -744,12 +741,6 @@ function createShapes(cList, rList, tList, draw) {
 
 }
 
-//Define the number of deatures for each shape
-// const NUM_SHAPE_FEATURES=15,
-// 	  MAX_ELEMENTS = 18,
-// 	  NUM_PEOPLE_FEATURES = 17,
-// 	  NUM_TEXT_FEATURES =1,
-// 	  NUM_BG_FEATURES = 6;
 const NUM_ELEMENT_TYPE = 3,
     NUM_ELEMENT_X = 9,
     NUM_ELEMENT_Y = 9;
@@ -856,13 +847,12 @@ function zoomPoster(csvdata){
                 .opacity(parseFloat(csvdata[i].data[13]))
         }
     }
-    draw.scale(550/120)
-    draw.translate(215,215)
+    draw.scale(650/120)
+    draw.translate(266,266)
 
 }
 
 function favPoster(csvdata,num) {
-
     var draw = SVG('favorite'+num).size(width, height)
 
 
@@ -922,6 +912,7 @@ function favPoster(csvdata,num) {
 
 // 生成海报，并为每一张海报添加click函数
 function createPoster(csvdata, num, isExtended) {
+
     if(isExtended)
         var draw = SVG('square'+num).size(width, height)
     else
@@ -976,97 +967,8 @@ function createPoster(csvdata, num, isExtended) {
                 .opacity(parseFloat(csvdata[i].data[13]))
         }
     }
-    // console.log('for:')
-    // console.log(new Date().getTime()-start);
-    // drawList.push(draw);
-    // draw.attr('num', num);
-    // draw.click(function () {
-    //     //document.getElementById("audio-click").play();
-    //
-    //     // 点击海报则放大显示
-    //     document.getElementById('chooseposter').style.display = 'block';
-    //     document.getElementById('overlay0').style.display = 'block';
-    //     if (choosed === null)
-    //         choosed = SVG("choosed").fill('#0f4');
-    //     choosed.svg(draw.svg());
-    //     choosed.attr({
-    //         'num': num
-    //     });
-    //     choosed.scale(4.92);
-    //     choosed.translate(1294, 1559);
-    //     // pnt.setState({
-    //     //     num: draw.attr('num')
-    //     // });
-    //
-    //     // 添加放大动画
-    //     $("#chooseposter").addClass("choose-poster-ani");
-    // })
 }
 
-
-// // 生成“输入名字”页面的卡片上的海报
-// function createCardPoster(csvdata) {
-//     width *= 4.92;
-//     height *= 4.92;
-//     fontSizeSmall *= 4.92;
-//     fontSizeMid *= 4.92;
-//     fontSizeLarge *= 4.92;
-//     var draw = SVG('cardPoster').size(width, height);
-//
-//     // var circleList = _circleList.concat(), rectList = _rectList.concat(), triList = _triList.concat(), peopleList = _peopleList.concat()
-//     var circleList = [],
-//         rectList = [],
-//         triList = [];
-//
-//     createShapes(circleList, rectList, triList, draw)
-//
-//     var shapeList = triList.concat(rectList, circleList)
-//
-//     var bgGradient = draw.gradient('linear', function (stop) {
-//         var bgHSV = csvdata[csvdata.length - 1]
-//         stop.at(0, createRGBfromHSV(bgHSV.data[0], bgHSV.data[1], bgHSV.data[2]))
-//         stop.at(1, createRGBfromHSV(bgHSV.data[3], bgHSV.data[4], bgHSV.data[5]))
-//     })
-//     bgGradient.from("0%", "0%").to("0%", "100%")
-//     draw.rect(width, height).fill(bgGradient)
-//     // let start = new Date().getTime();
-//     for (var i = 0; i < csvdata.length; i++) {
-//         if (csvdata[i].name === "element") {
-//             var shapeNormalX = Math.round((NUM_ELEMENT_TYPE - 1) * csvdata[i].data[0]),
-//                 shapeNormalY = Math.round((NUM_ELEMENT_X - 1) * csvdata[i].data[1]),
-//                 shapeNormalZ = Math.round((NUM_ELEMENT_Y - 1) * csvdata[i].data[2]);
-//
-//             var elementColor = draw.gradient('linear', function (stop) {
-//                 stop.at(0, createRGBfromHSV(csvdata[i].data[7], csvdata[i].data[8], csvdata[i].data[9]))
-//                 stop.at(1, createRGBfromHSV(csvdata[i].data[10], csvdata[i].data[11], csvdata[i].data[12]))
-//             })
-//             elementColor.from("0%", "0%").to("0%", "100%")
-//
-//             // console.log(shapeList)
-//             //console.log(shapeNormalX,shapeNormalY,shapeNormalZ,shapeNormalX*NUM_ELEMENT_X*NUM_ELEMENT_Y+NUM_ELEMENT_X*shapeNormalY+shapeNormalZ)
-//
-//             var shapeNormal = shapeList[shapeNormalX * NUM_ELEMENT_X * NUM_ELEMENT_Y + NUM_ELEMENT_X * shapeNormalY + shapeNormalZ].clone()
-//
-//             var shapeScale = Math.sqrt((width * height) * csvdata[i].data[3] / (shapeNormal.width() * shapeNormal.height()))
-//
-//             draw.use(shapeNormal)
-//
-//             // console.log(width*csvdata[i].data[4],height*csvdata[i].data[5],shapeScale,parseFloat(csvdata[i].data[13]))
-//
-//             shapeNormal
-//                 .dx(width * csvdata[i].data[4])
-//                 .dy(height * csvdata[i].data[5])
-//
-//             rotate(shapeNormal, csvdata[i].data[6])
-//
-//             shapeNormal
-//                 .scale(shapeScale, shapeScale)
-//                 .fill(elementColor)
-//                 .opacity(parseFloat(csvdata[i].data[13]))
-//         }
-//     }
-//
-// }
 
 var posterList = [];
 var div;
@@ -1288,8 +1190,8 @@ function constructPoster2(featureData){
 }
 
 function getDataCallback(data, containedNoise, isExtended, selectedID) {
-
-    console.log(_draw.defs())
+    // $.get("/test.csv",function(data){
+    // console.log(data);
     if(isExtended){
         $(".square2").empty()
         features2 = csv2array(data);
@@ -1305,7 +1207,7 @@ function getDataCallback(data, containedNoise, isExtended, selectedID) {
         if(selectedID){
             for(var index in selectedID){
                 features2.push(features[selectedID[index]])
-            }   
+            }
         }
         constructPoster(features2,isExtended)
 
@@ -1448,8 +1350,9 @@ export {
     noises2
 };
 
-
 export {
+    createPoster,
+    createShapes,
     getDataCallback,
     constructPoster2,
     getfavorite
