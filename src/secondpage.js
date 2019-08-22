@@ -19,8 +19,6 @@ localStorage.setItem('simpleComplexClick_times',0) //horizontal
 localStorage.setItem('favoritesClick_times',0) //number of favorites saved
 localStorage.setItem('transitionClick_times',0) //number of transition pairs chosen
 
-const Loading = require('react-loading-animation'); //loading animation
-
 const loading = require('./img/loading.gif')
 const loading2 = require('./img/blueloading.gif')
 const loading3 = require('./img/loading3.gif')

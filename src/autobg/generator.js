@@ -622,7 +622,7 @@ function createShapes(cList, rList, tList, draw) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
 
-            draw.defs().add(shape)
+            //draw.defs().add(shape)
             tList[index] = shape
 
 
@@ -674,7 +674,7 @@ function createShapes(cList, rList, tList, draw) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
 
-            draw.defs().add(shape)
+            //draw.defs().add(shape)
             rList[index] = shape
 
 
@@ -736,15 +736,13 @@ function createShapes(cList, rList, tList, draw) {
                 }))
             }
 
-            draw.defs().add(shape)
+            //draw.defs().add(shape)
             cList[index] = shape
 
         }
     }
 
 }
-
-var drawList = []
 
 //Define the number of deatures for each shape
 // const NUM_SHAPE_FEATURES=15,
@@ -805,8 +803,6 @@ function rotate(shape, index) {
 var div = document.createElement("div");
 div.setAttribute("id", "container");
 
-// 被选中的海报
-var choosed = null;
 
 var _draw = SVG('test').size(width, height)
 var _circleList = [], _rectList = [], _triList = [];
@@ -866,12 +862,7 @@ function zoomPoster(csvdata){
 }
 
 function favPoster(csvdata,num) {
-    // var subdiv = document.createElement("div");
-    // subdiv.setAttribute("id", "poster"+num);
-    // subdiv.setAttribute("class", "poster");
-    // div.appendChild(subdiv)
-    // document.body.appendChild(div);
-    // console.log(pnt.state);
+
     var draw = SVG('favorite'+num).size(width, height)
 
 
@@ -931,13 +922,6 @@ function favPoster(csvdata,num) {
 
 // 生成海报，并为每一张海报添加click函数
 function createPoster(csvdata, num, isExtended) {
-
-    // var subdiv = document.createElement("div");
-    // subdiv.setAttribute("id", "poster"+num);
-    // subdiv.setAttribute("class", "poster");
-    // div.appendChild(subdiv)
-    // document.body.appendChild(div);
-    // console.log(pnt.state);
     if(isExtended)
         var draw = SVG('square'+num).size(width, height)
     else
@@ -1019,10 +1003,6 @@ function createPoster(csvdata, num, isExtended) {
     // })
 }
 
-
-function setChoosedNull() {
-    choosed = null;
-}
 
 // // 生成“输入名字”页面的卡片上的海报
 // function createCardPoster(csvdata) {
@@ -1308,8 +1288,8 @@ function constructPoster2(featureData){
 }
 
 function getDataCallback(data, containedNoise, isExtended, selectedID) {
-    // $.get("/test.csv",function(data){
-    // console.log(data);
+
+    console.log(_draw.defs())
     if(isExtended){
         $(".square2").empty()
         features2 = csv2array(data);
@@ -1462,26 +1442,14 @@ function getfavorite(featureData) {
 }
 
 export {
-    _circleList,
-    _rectList,
-    _triList,
-    height,
-    width,
     features,
     features2,
     noises,
     noises2
 };
 
-export {
-    choosed,
-    posterList,
-    setChoosedNull
-};
 
 export {
-    createPoster,
-    createShapes,
     getDataCallback,
     constructPoster2,
     getfavorite
