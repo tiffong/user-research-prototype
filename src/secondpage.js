@@ -19,8 +19,11 @@ localStorage.setItem('simpleComplexClick_times',0) //horizontal
 localStorage.setItem('favoritesClick_times',0) //number of favorites saved
 localStorage.setItem('transitionClick_times',0) //number of transition pairs chosen
 
+const Loading = require('react-loading-animation'); //loading animation
 
 const loading = require('./img/loading.gif')
+const loading2 = require('./img/blueloading.gif')
+const loading3 = require('./img/loading3.gif')
 
 var requestBody = {}
 var leftsideposters = []
@@ -106,13 +109,13 @@ class SecondPage extends Component {
               leetle = true
   		  	 	//update times that the posters were clicked
 	  	  	    var times = Number(localStorage.getItem('transitionClick_times'))
-				localStorage.setItem('transitionClick_times',(times+2))
+				      localStorage.setItem('transitionClick_times',(times+2))
 
 			  	  clickedID_1 = this.state.twoclickedposters[0].replace(/[^0-9]/ig,"");
-				  clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
+				    clickedID_2 = this.state.twoclickedposters[1].replace(/[^0-9]/ig,"");
 
 
-				  console.log('from x to y',  clickedID_2, clickedID_1)
+				    console.log('from x to y',  clickedID_2, clickedID_1)
 			      console.log(noises)
 
 			      requestBody = {
@@ -161,16 +164,35 @@ class SecondPage extends Component {
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
-    // this.setState(prevState => ({
-    //   needlittleLoadingLogo: true
-    // }))
+//handling loading sign
+    if(!this.state.transitionmodeclicked) {
+      
+      this.setState(prevState => ({
+        needlittleLoadingLogo: true
+      }))
 
-    // setTimeout( () => {
-    //   this.setState( prevState => ({
-    //     needlittleLoadingLogo: false
-    //   }));
-    // }, 850);
+      setTimeout( () => {
+        this.setState( prevState => ({
+          needlittleLoadingLogo: false
+        }));
+      }, 300);
 
+    } else if (this.state.transitionmodeclicked && (this.state.twoclickedposters.length+1)%2 === 0) {
+      
+      this.setState(prevState => ({
+        needlittleLoadingLogo: true
+      }))
+
+      setTimeout( () => {
+        this.setState( prevState => ({
+          needlittleLoadingLogo: false
+        }));
+      }, 300);
+
+    }
+
+
+//handling removing border
   	$("#poster"+clickedID).removeClass('posterclicked')
 	  $("#poster"+clickedID).addClass('poster')
 
@@ -192,42 +214,40 @@ class SecondPage extends Component {
 	  	//console.log('ID of the poster you clicked: ', clickedID)
 	  	console.log('noises', noises)
 
-		requestBody = {
-	        circle: noises[clickedID][30],
-	        square: noises[clickedID][31],
-	        triangle: noises[clickedID][32],
-	        bright_dark: noises[clickedID][33],
-	        soft_sharp: noises[clickedID][34],
-	        warm_cool: noises[clickedID][35],
-	        simple_complex: noises[clickedID][36],
-	        disorder_inorder: noises[clickedID][37],
-	        high_low: noises[clickedID][38],
-	        random_noise:noises[clickedID].slice(0,30)
-	    }
+  		requestBody = {
+  	        circle: noises[clickedID][30],
+  	        square: noises[clickedID][31],
+  	        triangle: noises[clickedID][32],
+  	        bright_dark: noises[clickedID][33],
+  	        soft_sharp: noises[clickedID][34],
+  	        warm_cool: noises[clickedID][35],
+  	        simple_complex: noises[clickedID][36],
+  	        disorder_inorder: noises[clickedID][37],
+  	        high_low: noises[clickedID][38],
+  	        random_noise:noises[clickedID].slice(0,30)
+  	    }
 
-	    console.log('request body', requestBody)
+  	    console.log('request body', requestBody)
 
-		axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
-		  .then(function (response) {
-              var clickedArrays= [clickedID]
-			  getDataCallback(response.data, true, true, clickedArrays)
-              console.log("features2", features2)
-		  })
-		  .catch(function (error) {
-			  console.log(error);
-		  }); 		
-  	} else {
-  		console.log('moved')
-  		if(clickedID_1 && clickedID_2){
-  		$("#poster"+clickedID_1).removeClass('posterclicked')
-			$("#poster"+clickedID_1).addClass('poster')
+  		axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
+  		  .then(function (response) {
+                var clickedArrays= [clickedID]
+  			  getDataCallback(response.data, true, true, clickedArrays)
+                console.log("features2", features2)
+  		  })
+  		  .catch(function (error) {
+  			  console.log(error);
+  		  }); 		
+  	} else { //if you're in transitionmode
+  		
+    		$("#poster"+clickedID_1).removeClass('posterclicked')
+  			$("#poster"+clickedID_1).addClass('poster')
 
-			$("#poster"+clickedID_2).removeClass('posterclicked')
-			$("#poster"+clickedID_2).addClass('poster')
+  			$("#poster"+clickedID_2).removeClass('posterclicked')
+  			$("#poster"+clickedID_2).addClass('poster')
 
-			clickedID_1 = null
-			clickedID_2 = null
-  		}
+  			clickedID_1 = null
+  			clickedID_2 = null
   	}
 
   }
@@ -354,6 +374,7 @@ class SecondPage extends Component {
 //when you click CANCEL: TRANSITION mode --> EXPLORE mode
   	if(this.state.transitionmodeclicked) {
 	  	
+
       //user time spent on transition page
       end3 = new Date
       localStorage.setItem('transitionPage_time',(end3-start3) ) 
@@ -513,7 +534,7 @@ class SecondPage extends Component {
       this.setState( prevState => ({
         needLoadingLogo: false
       }));
-    }, 1400);
+    }, 400);
 
 
     $("#poster"+clickedID).removeClass('posterclicked')
@@ -686,11 +707,13 @@ class SecondPage extends Component {
 					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
 					      		
                     <div className='square2' onClick={this.handleGreyClick} id='square24' ></div>
+                     
                      { this.state.needlittleLoadingLogo &&
                           <div className='littleloading'>
-                            <img src={loading}/>
+                             <img src={loading3} />  
                           </div>
                       }
+
 
 					      		<div className="square2" onClick={this.handleGreyClick} id='square14' ></div>
 					      		<div className="square2" onClick={this.handleGreyClick} id='square13' ></div>
@@ -778,7 +801,7 @@ class SecondPage extends Component {
 			      	  </div>
 
 			      	  <div className='line2'> 
-			      	  	<Line x1={40} x2={965} y1={485} y2={485}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  	<Line x1={40} x2={970} y1={485} y2={485}  stroke={{color:'black'}} strokeWidth={1} />
 			      	  </div>
 
 			      	  <div className='line3'> 
@@ -850,8 +873,8 @@ class SecondPage extends Component {
 				        <div className='square2' id='square16' onClick={this.handleGreyClick}> </div>
 
                      { this.state.needlittleLoadingLogo &&
-                          <div className='littleloading'>
-                            <img src={loading}/>
+                          <div className='littleloading2'>
+                            <img src={loading3}/>
                           </div>
                       }
 

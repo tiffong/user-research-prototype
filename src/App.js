@@ -457,7 +457,10 @@ handleClickToStart = () => {
 
   render(){
  
-    return <div className="App">
+    return <div className='format'>
+
+
+    <div className="App">
 
     { !this.state.hasBegun &&
       <div className='openingPage'>  
@@ -468,9 +471,10 @@ handleClickToStart = () => {
         </div>
       </div>
     }
+    
       <header className="leftside">
         <poster/>
-        <h2 className='title'> DesignFinder: Automated Design </h2>
+        <h2 className='title'>  DesignFinder: Automated Design </h2>
 
         <div className='colshape'> Color Range </div>
 
@@ -489,7 +493,7 @@ handleClickToStart = () => {
          <div className = 'buttonflex'>
           <p className='hsv'> Saturation:  </p>
 
-          <div className = 'buttongroup'> 
+          <div className = 'buttongroup2'> 
             <button className={this.state.HighClicked ? "buttonClicked": "buttonUnclicked"} id='left' onClick={this.handleHighClick}> High </button>
             <button className={this.state.HighLowClicked ? "buttonClicked": "buttonUnclicked"} onClick={this.handleHighLowClick}> Low & High </button>
             <button className={this.state.LowClicked ? "buttonClicked": "buttonUnclicked"} id='right' onClick={this.handleLowClick}> Low </button>
@@ -498,7 +502,7 @@ handleClickToStart = () => {
         </div>
          <div className = 'buttonflex'>
           <p className='hsv'> Value:  </p>
-          <div className ='buttongroup'>
+          <div className ='buttongroup3'>
             <button className={this.state.BrightClicked ? "buttonClicked": "buttonUnclicked"} id='left' onClick={this.handleBrightClick} id='left'> Bright </button>
             <button className={this.state.BrightDarkClicked ? "buttonClicked": "buttonUnclicked"} onClick={this.handleBrightDarkClick}> Dark & Bright</button>
             <button className={this.state.DarkClicked ? "buttonClicked": "buttonUnclicked"} id='right' onClick={this.handleDarkClick}> Dark </button>
@@ -542,27 +546,27 @@ handleClickToStart = () => {
         <div className='rightsideflex'>
           <h2 id="samples"> Samples </h2>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster0" />
             <PosterSamples id="poster1" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster2" />
             <PosterSamples id="poster3" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster4" />
             <PosterSamples id="poster5" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster6" />
             <PosterSamples id="poster7" />
           </div>
 
-          <div className ='row'>
+          <div className ='rowp1'>
             <PosterSamples id="poster8" />
             <PosterSamples id="poster9" />
           </div>
@@ -573,6 +577,9 @@ handleClickToStart = () => {
       </header>
 
     </div>
+
+
+  </div>
   } 
 }
 
