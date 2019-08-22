@@ -158,9 +158,8 @@ class SecondPage extends Component {
 			          	  
                     $(".littleloading2").hide()
 
-                    var clickedArrays= [clickedID_1,clickedID_2]
-			              getDataCallback(response.data, true, true, clickedArrays)
-			              
+                    var clickedArrays= [clickedID_2,clickedID_1]
+                        getDataCallback(response.data, true, true, clickedArrays)
 			          })
 			          .catch(function (error) {
 			              console.log(error);
