@@ -79,6 +79,7 @@ def parse_req_1():
     # now it just for test on postman
     # result["random_noise"] = [float(x) for x in request.args.get("random_noise")[1:-1].split(",")]
     result["random_noise"] = requestedData["random_noise"]
+
     return result
 
 @app.route("/test", methods = ["POST"])
