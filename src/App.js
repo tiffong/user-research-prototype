@@ -70,6 +70,13 @@ class App extends React.Component{
   
     this.getDataAxios()
 
+    if( localStorage.getItem('showinstructions') === 'donot') {
+        this.setState( prevState => ({
+          hasBegun: true
+        }));
+    }
+
+
   } 
 
   componentDidUpdate(prevProps, prevState) {

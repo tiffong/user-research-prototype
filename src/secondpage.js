@@ -83,6 +83,10 @@ class SecondPage extends Component {
    $('.littleloading').hide()
    $('.littleloading2').hide()
 
+//so instructions only show up when the user has begun for the very first time
+    localStorage.setItem('showinstructions', 'donot')
+
+
    this.getDataAxios()
   }
 
