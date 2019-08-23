@@ -532,6 +532,7 @@ handleClickToStart = () => {
         <div className='taskAbuttons'>
           <button className={this.state.taskAbegun ? "clickToStart": "clickToStartUnclicked"} onClick={this.handleStartTaskA}> {this.state.taskAbegun ? 'Task A Begun' : 'Begin Task A'} </button>
           <button className={this.state.taskAfinished ? "clickToStart": "clickToStartUnclicked"} onClick={this.handleFinishTaskA}> {this.state.taskBbegun ? 'Finish Task A' : 'Task A Finished'} </button>
+          <a href='https://www.wjx.cn/jq/44451886.aspx'> Click to Take Survey A </a>
         </div>
 
         <h4> 实验组B（w/ DesignFinder）： </h4>

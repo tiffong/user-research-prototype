@@ -643,11 +643,17 @@ class SecondPage extends Component {
 				
         
 
-		    </div>
+		    </div>w
 
 
         {this.state.isFinished &&
-          <div className='finishedbanner'> Thank you for completing the study! </div>
+          
+          <div className='finishedbanner'>
+          <div > Thank you for completing the study! </div>
+          <a shref='https://www.wjx.cn/jq/44451886.aspx'> Click to Take Survey </a>
+          </div>
+
+
         }
 
         <button className = 'finishedbutton' onClick={this.handleFinished}> Finished </button>

@@ -206,9 +206,13 @@
   font-weight: lighter;
   font-size: 15px;
   position: relative;
-  left: 44.5px;
+  left: 55px;
   outline: none !important;
   box-shadow: none;
+}
+
+a:hover {
+  cursor: pointer;
 }
 
 .download:hover {
