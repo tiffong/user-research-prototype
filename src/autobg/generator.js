@@ -621,9 +621,9 @@ function createShapes(cList, rList, tList, draw) {
             } else if (svg[i].getElementsByTagName('polygon')[0]) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
-            draw.symbol().add(shape)
-            tList[index] = shape
 
+            tList[index] = shape
+            draw.defs().add(shape)
 
         } else if (svg[i].getElementById('square')) {
             data = svg[i].getElementById('square').childNodes[1]
@@ -672,9 +672,9 @@ function createShapes(cList, rList, tList, draw) {
             } else if (svg[i].getElementsByTagName('polygon')[0]) {
                 shape.add(draw.polygon().attr("points", svg[i].getElementsByTagName('polygon')[0].getAttribute("points")))
             }
-            draw.symbol().add(shape)
-            rList[index] = shape
 
+            rList[index] = shape
+            draw.defs().add(shape)
 
         } else if (svg[i].getElementById('circular')) {
             data = svg[i].getElementById('circular').childNodes[1]
@@ -733,8 +733,9 @@ function createShapes(cList, rList, tList, draw) {
                     "r": svg[i].getElementsByTagName('circle')[0].getAttribute("r")
                 }))
             }
-            draw.symbol().add(shape)
+
             cList[index] = shape
+            draw.defs().add(shape)
 
         }
     }
@@ -791,21 +792,29 @@ function rotate(shape, index) {
     return randomRotation;
 }
 
-var div = document.createElement("div");
-div.setAttribute("id", "container");
+// var div = document.createElement("div");
+// div.setAttribute("id", "container");
 
 
-var _draw = SVG('test').size(width, height)
-var _circleList = [], _rectList = [], _triList = [];
-createShapes(_circleList,_rectList,_triList,_draw)
+// var _draw = SVG('test').size(width, height)
+// var _circleList = [], _rectList = [], _triList = [];
+// createShapes(_circleList,_rectList,_triList,_draw)
+//
+// console.log(_draw.defs())
+
 
 
 function zoomPoster(csvdata){
     var draw = SVG("choosed").size(width, height)
 
-    var circleList = _circleList.concat(),
-        rectList = _rectList.concat(),
-        triList = _triList.concat();
+    // var circleList = _circleList.concat(),
+    //     rectList = _rectList.concat(),
+    //     triList = _triList.concat();
+    var circleList = [],
+        rectList = [],
+        triList = [];
+
+    createShapes(circleList,rectList,triList,draw)
 
     var shapeList = triList.concat(rectList, circleList);
 
@@ -818,7 +827,7 @@ function zoomPoster(csvdata){
     draw.rect(width, height).fill(bgGradient)
     // let start = new Date().getTime();
     for (var i = 0; i < csvdata.length; i++) {
-        if (csvdata[i].name === "element") {
+        if (csvdata[i].name === "element" && csvdata[i].data[13]>0.01 && csvdata[i].data[3]>=0.005) {
             var shapeNormalX = Math.round((NUM_ELEMENT_TYPE - 1) * csvdata[i].data[0]),
                 shapeNormalY = Math.round((NUM_ELEMENT_X - 1) * csvdata[i].data[1]),
                 shapeNormalZ = Math.round((NUM_ELEMENT_Y - 1) * csvdata[i].data[2]);
@@ -873,7 +882,7 @@ function favPoster(csvdata,num) {
     draw.rect(width, height).fill(bgGradient)
     // let start = new Date().getTime();
     for (var i = 0; i < csvdata.length; i++) {
-        if (csvdata[i].name === "element") {
+        if (csvdata[i].name === "element" && csvdata[i].data[13]>0.01 && csvdata[i].data[3]>=0.005) {
             var shapeNormalX = Math.round((NUM_ELEMENT_TYPE - 1) * csvdata[i].data[0]),
                 shapeNormalY = Math.round((NUM_ELEMENT_X - 1) * csvdata[i].data[1]),
                 shapeNormalZ = Math.round((NUM_ELEMENT_Y - 1) * csvdata[i].data[2]);
@@ -918,9 +927,14 @@ function createPoster(csvdata, num, isExtended) {
     else
         var draw = SVG('poster'+num).size(width, height)
 
-    var circleList = _circleList.concat(),
-        rectList = _rectList.concat(),
-        triList = _triList.concat();
+    // var circleList = _circleList.concat(),
+    //     rectList = _rectList.concat(),
+    //     triList = _triList.concat();
+    var circleList = [],
+        rectList = [],
+        triList = [];
+
+    createShapes(circleList,rectList,triList,draw)
 
     var shapeList = triList.concat(rectList, circleList);
 
@@ -933,7 +947,7 @@ function createPoster(csvdata, num, isExtended) {
     draw.rect(width, height).fill(bgGradient)
     // let start = new Date().getTime();
     for (var i = 0; i < csvdata.length; i++) {
-        if (csvdata[i].name === "element") {
+        if (csvdata[i].name === "element" && csvdata[i].data[13]>0.01 && csvdata[i].data[3]>=0.005) {
             var shapeNormalX = Math.round((NUM_ELEMENT_TYPE - 1) * csvdata[i].data[0]),
                 shapeNormalY = Math.round((NUM_ELEMENT_X - 1) * csvdata[i].data[1]),
                 shapeNormalZ = Math.round((NUM_ELEMENT_Y - 1) * csvdata[i].data[2]);
@@ -1190,8 +1204,7 @@ function constructPoster2(featureData){
 }
 
 function getDataCallback(data, containedNoise, isExtended, selectedID) {
-    // $.get("/test.csv",function(data){
-    // console.log(data);
+    // console.log(_draw.defs())
     if(isExtended){
         $(".square2").empty()
         features2 = csv2array(data);

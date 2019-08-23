@@ -704,12 +704,12 @@ class SecondPage extends Component {
 					      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>			      
 					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
 					      		
-                    <div className='square2' onClick={this.handleGreyClick} id='square24' ></div>
-                     
-                   
-                    <div className='littleloading'>
-                       <img src={loading3} />  
-                    </div>
+								<div className='square2' onClick={this.handleGreyClick} id='square24' ></div>
+
+
+								<div className='littleloading'>
+								   <img src={loading3} />
+								</div>
                       
 
 
