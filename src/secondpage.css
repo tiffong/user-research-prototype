@@ -6,6 +6,9 @@
 
 }
 
+
+
+
 .loading {
   position: absolute;
   left:230px;
@@ -85,7 +88,7 @@
   position: absolute;
   z-index: 1;
   transform: rotate(-45deg);
-  left: 666px;
+  left: 674px;
   top: 36px;
 }
 
@@ -140,11 +143,12 @@
   position: absolute;
   z-index: 1;
   transform: rotate(-225deg);
-  left: 1589px;
-  top: 957px;
+  left: 1593px;
+  top: 958px;
 }
 
 .leftside2 {
+
   display: flex;
   padding-left: 40px;
   padding-right: 20px;
@@ -153,6 +157,10 @@
   width: 560px;
   background-color: #D8D8D8;
 
+}
+
+.shapes{
+  margin-top: 15px;
 }
 
 .posterrows{
@@ -214,11 +222,6 @@
 }
 
 
-.instructions {
-  font-family: arial;
-  padding-top: 20px;
-  font-size: 18px;
-}
 
 /*Back button and transition mode button*/
 .button2 {
@@ -323,6 +326,7 @@
 }
 
 .sideflex{
+
   display: flex;
   flex-direction: row;
   position: absolute;
@@ -401,8 +405,55 @@
   margin: 3px;
   border: solid black 2px;
 }
+/*central squares*/
+.sidesquare {
 
-/*#square2 {
-  margin-right: 9px;
-}*/
+/*  background-color: #D8D8D8;*/
+/*  display: inline-block;*/
+/*
+  vertical-align: middle;*/
+/*  margin: 4px;*/
+  border: solid black 2px;
+  padding-left: 1px;
+  padding-top: 1px;
+  margin: 3px;
 
+}
+
+.finishedbutton {
+  position: relative;
+  left: 85vw;
+  bottom: 90vh;
+  height: 50px;
+  width: 100px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: lighter;
+  margin-top: 10px;
+  z-index: 8;
+  outline: none !important;
+  box-shadow: none;
+
+}
+
+.finishedbutton:hover {
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+
+.finishedbanner {
+
+  font-size: 30px;
+  text-align: center;
+  justify-content: center;
+  height: 100vh; /* For 100% screen height */
+  width:  100vw; /* For 100% screen width */
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 40px;
+  background-color: white;
+  color: black;
+  z-index: 10;
+
+}

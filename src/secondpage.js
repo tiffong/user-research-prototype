@@ -18,6 +18,8 @@ localStorage.setItem('brightDarkClick_times',0) //top right to bottom left
 localStorage.setItem('simpleComplexClick_times',0) //horizontal
 localStorage.setItem('favoritesClick_times',0) //number of favorites saved
 localStorage.setItem('transitionClick_times',0) //number of transition pairs chosen
+localStorage.setItem('exploreClick_times',0) //number of svgs clicked in explore mode
+
 
 const loading = require('./img/loading.gif')
 const loading2 = require('./img/blueloading.gif')
@@ -40,11 +42,13 @@ var end2;
 var start3;
 var end3;
 
+var veryend;
+
 var favoriteList = []
 var favoriteID
 
-
 var hasEmptied = false;
+
 
 
 class SecondPage extends Component {
@@ -63,8 +67,8 @@ class SecondPage extends Component {
   		popupimage: null,
   		popupid: '', //the id of the clicked poster on the right side
   		canclickpopup: false,
-      needLoadingLogo: true,
-      needlittleLoadingLogo: false,
+      isFinished: false,
+
   	}
 
   	this.handleGreyClick = this.handleGreyClick.bind(this) //causes currentTarget to be able to be accessed
@@ -72,15 +76,6 @@ class SecondPage extends Component {
 
 //initially sets up the posters that are displayed by putting them in an array
   componentDidMount() {
-   //TODO: get a loading symbol for 6 seconds as initial posters load
-
-  // display loading logo
-  // setTimeout( () => {
-  // this.setState( prevState => ({
-  //   needLoadingLogo: false
-  // }));
-  // }, 1800);
-
    //set timer here
    start2 = new Date
    console.log(start2)
@@ -181,6 +176,11 @@ class SecondPage extends Component {
 //this is used to handle when you click a svg
   handleSVGClick = (e) => {
 
+//now you can click on popups
+    this.setState(prevState => ({
+      canclickpopup: true,
+    }))
+
 //handling loading symbol in both explore and transition modes 
     if(!this.state.transitionmodeclicked) {
       $('.littleloading').show()
@@ -227,7 +227,11 @@ class SecondPage extends Component {
   		axios.post('http://127.0.0.1:5000/img_augmentation', requestBody)
   		  .then(function (response) {
                 var clickedArrays= [clickedID]
-  			  getDataCallback(response.data, true, true, clickedArrays)
+  			        getDataCallback(response.data, true, true, clickedArrays)
+                
+                var times = Number(localStorage.getItem('exploreClick_times'))
+                localStorage.setItem('exploreClick_times',(times+1))
+
                 console.log("features2", features2)
 
           $(".littleloading").hide()
@@ -265,14 +269,17 @@ class SecondPage extends Component {
       
   	} else if (this.state.transitionmodeclicked) {
   		
+      end3 = new Date
+      localStorage.setItem('transitionPage_time',(end3-start3) )
 
-  	$("#poster"+clickedID_1).removeClass('posterclicked')
-    $("#poster"+clickedID_1).addClass('poster')   
-  	$("#poster"+clickedID_2).removeClass('posterclicked')
-    $("#poster"+clickedID_2).addClass('poster')
+    	$("#poster"+clickedID_1).removeClass('posterclicked')
+      $("#poster"+clickedID_1).addClass('poster')   
+    	$("#poster"+clickedID_2).removeClass('posterclicked')
+      $("#poster"+clickedID_2).addClass('poster')
 
   		this.setState(prevState => ({
-	      transitionmodeclicked: false
+	      transitionmodeclicked: false,
+        canclickpopup: false
 	    })) 
   	}
 
@@ -282,16 +289,19 @@ class SecondPage extends Component {
 //what happens when you click a square on the right side -- it enlarges
   handleGreyClick = (e) => {
 
-  	///TODO: make it so the image they clicked shows up larger
   	e.persist() //removes the event from the pool allowing references to the event to be retained asynchronously
 
-	var id_of_clicked_grey = e.currentTarget.id
-	var replace = Number(id_of_clicked_grey.replace('square', ''))
-  	favoriteID = replace
+    if(this.state.canclickpopup) {
+      var id_of_clicked_grey = e.currentTarget.id
+      var replace = Number(id_of_clicked_grey.replace('square', ''))
+      favoriteID = replace
 
-  	setTimeout(function () {
-        constructPoster2(features2[replace])
-    },100)
+      setTimeout(function () {
+          constructPoster2(features2[replace])
+      },100)
+
+    }
+
 
 
 
@@ -371,21 +381,13 @@ class SecondPage extends Component {
 //remove last clicked poster if you're coming from explore mode
     if(clickedID) {
      $("#poster"+clickedID).removeClass('posterclicked')
-     
+     $("#poster"+clickedID).addClass('poster')
     }
 
 //if you are in transition mode, then you should have the CANCEL functionality
 //when you click CANCEL: GETS RID OF borders of poster
   	if(this.state.transitionmodeclicked) {
 	  	
-      //user time spent on transition page
-      end3 = new Date
-      localStorage.setItem('transitionPage_time',(end3-start3) ) 
-
-      //TODO: remove border from current clicked poster if there is just one currently clicked
-      // if ()
-
-
 //remove border from last two clicked posters
       //remove border of last clicked poster 1
 	  	$("#poster"+clickedID_1).removeClass('posterclicked')
@@ -404,6 +406,7 @@ class SecondPage extends Component {
 //if you are in EXPLORE mode --> TRANSITION MODE
   	} else {
 
+
       end2 = new Date
       start3 = end2
       console.log('explore time', (end2-start2))
@@ -412,7 +415,8 @@ class SecondPage extends Component {
 	  	//set transitionmodeclicked to true because you just clicked it
 		this.setState(prevState => ({
 	      transitionmodeclicked: true,
-	      twoclickedposters: []
+	      twoclickedposters: [],
+        canclickpopup: false,
 	    })) 
 	   	
   	}
@@ -569,39 +573,40 @@ class SecondPage extends Component {
 
       download(downloadContent,"sample.svg", "text/html")     
     }
+  }
 
+  handleFinished = () => {
+    console.log('finished')
 
+    this.setState(prevState => ({
+      isFinished: true,
+    }))
+    var page1_time = Number(localStorage.getItem('page1_time'))
+    
+    var veryend = new Date //when they finished the application
+    var page2_time = veryend - start2
+
+    localStorage.setItem('overallTime', (page1_time + page2_time)) //top left to right bottom
+    
 
   }
 
   render() {
     return (
 
-
-      <div className = 'lrcontainer2'>
-
+    <div className = 'lrcontainer2'>
 	    <div className = 'leftside2'>
 	      	
-
 		      	<div className='buttflexrow'>
-			      	<button className='button2' onClick={this.handleBackButton} > Back  </button>
-			      	
+			      	<button className='button2' onClick={this.handleBackButton} > Back  </button>     	
 			      	<button className='button2' onClick={this.handleTransitionModeClick}  > {this.state.transitionmodeclicked ? 'Cancel' : 'Transition Mode'} </button>
-		      	</div>
+		      	</div>   
 
-              
               <div className='loading'>
                 <img src={loading}/>
               </div>
-            
-
 		      	<div className='posterrows'>
-
-
-
-					{this.dynamicallyRenderPosters()}
-
-
+					     {this.dynamicallyRenderPosters()}
 		      	</div>
 
 			<button className='refreshbutton' onClick={this.handleRefresh}>  More ☟ </button>
@@ -633,17 +638,27 @@ class SecondPage extends Component {
 			
 				</div>
 				
+        
+
 		    </div>
+
+
+        {this.state.isFinished &&
+          <div className='finishedbanner'> Thank you for completing the study! </div>
+        }
+
+        <button className = 'finishedbutton' onClick={this.handleFinished}> Finished </button>
 
 
 	    </div>
 
-	    { !this.state.transitionmodeclicked &&
+
+	    { !this.state.transitionmodeclicked && 
 			    <div className = 'rightside2'>
 			      	<div className='exploreconditional'>
 
 				      <div className = 'conditionalpopupdiv'>
-				          {this.state.isGreyClicked && !this.state.xout && 
+				          {this.state.isGreyClicked && !this.state.xout &&
 
 					            <div className='popup' > 
 					            	<button className='cancelbutton' onClick={this.handleXout}> X </button>
@@ -705,9 +720,9 @@ class SecondPage extends Component {
 					      		<div className="square2" onClick={this.handleGreyClick} id='square16' ></div>			      
 					      		<div className="square2" onClick={this.handleGreyClick} id='square15' ></div>
 					      		
-                    <div className='square2' onClick={this.handleGreyClick} id='square24' ></div>
-                     
-                   
+                    <div className='square2 centersquare' onClick={this.handleGreyClick} id='square24' ></div>
+                
+     
                     <div className='littleloading'>
                        <img src={loading3} />  
                     </div>
@@ -796,7 +811,7 @@ class SecondPage extends Component {
 				      </div>	
 
 				      <div className='line'>
-			      	  	<Line x1={44} x2={960} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  	<Line x1={46} x2={969} y1={22} y2={948}  stroke={{color:'black'}} strokeWidth={1} />
 			      	  </div>
 
 			      	  <div className='line2'> 
@@ -808,7 +823,7 @@ class SecondPage extends Component {
 			      	  </div>
 
 			      	  <div className='line4'> 
-			      	  	<Line x1={962} x2={50} y1={28} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
+			      	  	<Line x1={962} x2={50} y1={30} y2={942}  stroke={{color:'black'}} strokeWidth={1} />
 			      	  </div>
 
 
@@ -816,14 +831,8 @@ class SecondPage extends Component {
 			      </div>
 			    </div> 
 			} 
-
-
-			
 			{
 				this.state.transitionmodeclicked &&
-
-
-
 				<div className='rightsidetransition'>
 
 			      <div className = 'conditionalpopupdiv'>
@@ -843,7 +852,7 @@ class SecondPage extends Component {
 
 
 					<div className='row'> 
-				        <div className='square2' id='square29' >  </div>
+				        <div className='square2 sidesquare' id='square29' onClick={this.handleGreyClick}>  </div>
 				        <div className='square2' id='square0' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square1' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square2' onClick={this.handleGreyClick}> </div>
@@ -893,10 +902,11 @@ class SecondPage extends Component {
 				        <div className='square2' id='square25' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square26' onClick={this.handleGreyClick}> </div>
 				        <div className='square2' id='square27' onClick={this.handleGreyClick}> </div>
-				        <div className='square2' id='square28'>  </div>
+				        <div className='square2 sidesquare' id='square28' onClick={this.handleGreyClick}>  </div>
 				    </div>
 				</div>	
 			}
+
       </div>
     );
   }

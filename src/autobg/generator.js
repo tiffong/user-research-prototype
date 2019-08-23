@@ -1205,6 +1205,7 @@ function getDataCallback(data, containedNoise, isExtended, selectedID) {
         }
 
         if(selectedID){
+            features2.reverse()
             for(var index in selectedID){
                 features2.push(features[selectedID[index]])
             }
