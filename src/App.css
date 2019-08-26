@@ -12,6 +12,8 @@
   text-align: left;
   margin-left: 40px;
   margin-top: 20px;
+    height: 100vh; /* For 100% screen height */
+  width:  100vw; /* For 100% screen width */
 }
 
 .App {
