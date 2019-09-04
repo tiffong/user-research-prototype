@@ -682,7 +682,7 @@ class SecondPage extends Component {
 			          </div>
 
 				      <div className='sideflex'> 				  
-					      <div className='simple'> Simple </div>
+					      <div className='complex'> Complex </div>
 
 					      <div>
 
@@ -781,7 +781,7 @@ class SecondPage extends Component {
 
 					      </div>
 
-					      <div className='complex'> Complex </div>
+					      <div className='simple'> Simple </div>
 
 				      </div>
 
