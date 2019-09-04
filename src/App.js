@@ -544,11 +544,10 @@ handleClickToStart = () => {
         <div> </div>
     </div>
 
-
         <div className='startbuttonstyle'>
         <button className={this.state.taskBbegun ? "clickToStart": "clickToStartUnclicked"} onClick={this.handleClickToStart}> Start Task B </button>
         </div>
-      </div>
+    </div>
     }
     
       <header className="leftside">
